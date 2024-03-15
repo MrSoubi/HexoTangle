@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=10 format=3 uid="uid://d33r44fu71nhh"]
 
 [ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
 [ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
@@ -9,6 +9,15 @@
 shader = ExtResource("3_w15ah")
 shader_parameter/light_blue = Vector3(0.44, 0.78, 0.9)
 shader_parameter/dark_blue = Vector3(0.44, 0.78, 0.9)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hdpkf"]
+font_size = 150
+
+[sub_resource type="LabelSettings" id="LabelSettings_q6cic"]
+font_size = 150
+
+[sub_resource type="LabelSettings" id="LabelSettings_xtufk"]
+font_size = 150
 
 [sub_resource type="LabelSettings" id="LabelSettings_3112v"]
 font_size = 30
@@ -29,21 +38,42 @@ autostart = true
 [node name="Grid" parent="." instance=ExtResource("1_ae5do")]
 position = Vector2(960, 350)
 
-[node name="ControlGUI" type="Control" parent="."]
-layout_mode = 3
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -86.0
+offset_bottom = 623.0
+grow_horizontal = 0
+
+[node name="ThirdUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
+layout_mode = 2
+text = "3"
+label_settings = SubResource("LabelSettings_hdpkf")
+
+[node name="SecondUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
+layout_mode = 2
+text = "2"
+label_settings = SubResource("LabelSettings_q6cic")
+
+[node name="FirstUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
+layout_mode = 2
+text = "1"
+label_settings = SubResource("LabelSettings_xtufk")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = 960.0
-offset_right = 960.0
+offset_left = -48.0
+offset_right = 48.0
+offset_bottom = 88.0
 grow_horizontal = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ControlGUI"]
-layout_mode = 1
-anchors_preset = -1
-grow_horizontal = 2
-
-[node name="ScoreLabel" type="Label" parent="ControlGUI/VBoxContainer"]
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 text = "SCORE"
 label_settings = SubResource("LabelSettings_3112v")
@@ -51,9 +81,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="LevelLabel" type="Label" parent="ControlGUI/VBoxContainer"]
+[node name="LevelLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
 layout_mode = 2
 text = "SCORE"
+label_settings = SubResource("LabelSettings_3112v")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="HoldLabel" type="Label" parent="ControlGUI/VBoxContainer"]
+layout_mode = 2
+text = "H"
 label_settings = SubResource("LabelSettings_3112v")
 horizontal_alignment = 1
 vertical_alignment = 1
