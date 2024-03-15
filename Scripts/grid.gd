@@ -10,6 +10,7 @@ var texture_L: Texture2D = load("res://Sprites/Hex_Orange.png")
 var texture_J: Texture2D = load("res://Sprites/Hex_DarkBlue.png")
 var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
 var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
+var texturePhantom : Texture2D = textureMoving;
 
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
@@ -34,6 +35,7 @@ var hexomino = load("res://Scripts/hexomino.gd");
 var gridDirection = Direction.TOP;
 
 var currentHexomino;
+var phantomHexomino;
 var heldHexomino = -1;
 
 var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
@@ -65,7 +67,34 @@ func _ready():
 	currentHexomino = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
 	drawHexomino();
 
+func drawPhantom():
+	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+	
+	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	
+	while (isPositionValid(localHex)):
+		localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	
+	localHex.move(addDirections(Direction.TOP, gridDirection))
+	
+	phantomHexomino = localHex;
+	
+	var localPositions = phantomHexomino.getPositions();
+	
+	for i in range(4):
+		var localCell = localPositions[i]
+		grid[localCell.x][localCell.y].setState(Cell.State.FREE, texturePhantom)
+
+func undrawPhantom():
+	if (phantomHexomino != null):
+		var localPositions = phantomHexomino.getPositions();
+			
+		for i in range(4):
+			var localCell = localPositions[i]
+			grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
+
 func drawHexomino():
+	drawPhantom();
 	var localPositions = currentHexomino.getPositions();
 	
 	for i in range(4):
@@ -73,8 +102,9 @@ func drawHexomino():
 		grid[localCell.x][localCell.y].setState(Cell.State.MOVING, currentHexomino.texture)
 
 func undrawHexomino():
+	undrawPhantom();
 	var localPositions = currentHexomino.getPositions();
-
+	
 	for i in range(4):
 		var localCell = localPositions[i]
 		grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
@@ -228,7 +258,9 @@ func blockHexomino():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture) 
+		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture)
+	
+	phantomHexomino = null;
 
 func addDirections(dir1: Direction, dir2: Direction) -> Direction:
 	var val1 = int(dir1);
@@ -298,13 +330,6 @@ func _input(event):
 			undrawHexomino();
 			currentHexomino = localHex;
 			drawHexomino();
-
-func rotateGrid():
-	gridDirection = addDirections(gridDirection, Direction.TOP_RIGHT);
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "rotation_degrees", self.rotation_degrees - 60, 0.08)
-	#rotate(deg_to_rad(-60));
-	#tween.tween_callback(self.queue_free)
 
 func hardDrop() -> Hexomino:
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
