@@ -10,6 +10,7 @@ var texture_L: Texture2D = load("res://Sprites/Hex_Orange.png")
 var texture_J: Texture2D = load("res://Sprites/Hex_DarkBlue.png")
 var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
 var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
+var texturePhantom : Texture2D = textureMoving;
 
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
@@ -34,6 +35,7 @@ var hexomino = load("res://Scripts/hexomino.gd");
 var gridDirection = Direction.TOP;
 
 var currentHexomino;
+var phantomHexomino;
 var heldHexomino = -1;
 
 var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
@@ -80,7 +82,34 @@ func _ready():
 	
 	drawHexomino();
 
+func drawPhantom():
+	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+	
+	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	
+	while (isPositionValid(localHex)):
+		localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	
+	localHex.move(addDirections(Direction.TOP, gridDirection))
+	
+	phantomHexomino = localHex;
+	
+	var localPositions = phantomHexomino.getPositions();
+	
+	for i in range(4):
+		var localCell = localPositions[i]
+		grid[localCell.x][localCell.y].setState(Cell.State.FREE, texturePhantom)
+
+func undrawPhantom():
+	if (phantomHexomino != null):
+		var localPositions = phantomHexomino.getPositions();
+			
+		for i in range(4):
+			var localCell = localPositions[i]
+			grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
+
 func drawHexomino():
+	drawPhantom();
 	var localPositions = currentHexomino.getPositions();
 	
 	for i in range(4):
@@ -88,8 +117,9 @@ func drawHexomino():
 		grid[localCell.x][localCell.y].setState(Cell.State.MOVING, currentHexomino.texture)
 
 func undrawHexomino():
+	undrawPhantom();
 	var localPositions = currentHexomino.getPositions();
-
+	
 	for i in range(4):
 		var localCell = localPositions[i]
 		grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
@@ -264,6 +294,7 @@ func blockHexomino():
 		var localCell = localPositions[i]
 		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture)
 	
+	phantomHexomino = null;
 	canHold = true;
 
 func addDirections(dir1: Direction, dir2: Direction) -> Direction:
