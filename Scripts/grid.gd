@@ -40,6 +40,8 @@ var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, Hex
 var grid = [];
 var nextQueue = []; #stocks hextypes
 
+var canHold: bool = true;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#global_translate(get_viewport().size/2)
@@ -160,16 +162,21 @@ func removeInverseLine(row: int):
 		removeLine(row-1)
 		
 func isPositionValid(hex: Hexomino) -> bool:
-	var positions = hex.getPositions()
-	var result = true;
+	var result;
 	
-	for i in range(4):
-		var localX = positions[i].x
-		var localY = positions[i].y
-		if (localX < grid.size() && localY < grid[0].size()):
-			result = result && grid[localX][localY].state != Cell.State.BLOCKED
-		else:
-			result = false;
+	if (hex != null):
+		var positions = hex.getPositions()
+		result = true;
+		
+		for i in range(4):
+			var localX = positions[i].x
+			var localY = positions[i].y
+			if (localX < grid.size() && localY < grid[0].size()):
+				result = result && grid[localX][localY].state != Cell.State.BLOCKED
+			else:
+				result = false;
+	else:
+		result = false;
 	
 	return result;
 
@@ -251,7 +258,9 @@ func blockHexomino():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture) 
+		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture)
+	
+	canHold = true;
 
 func addDirections(dir1: Direction, dir2: Direction) -> Direction:
 	var val1 = int(dir1);
@@ -285,37 +294,14 @@ func _input(event):
 			localHex.moveRight();
 		if event.keycode == KEY_LEFT:
 			localHex.moveLeft();
-		#if event.keycode == KEY_UP:
-			#localHex.move(addDirections(Direction.TOP, gridDirection));
-		if event.keycode == KEY_A:
+		if event.keycode == KEY_UP:
 			localHex = tryRotationAntiClockwise();
 		if event.keycode == KEY_Z:
 			localHex = tryRotationClockwise();
-		if event.keycode == KEY_D:
-			if (hold() == true):
-				var type = getNextHexomino()
-				localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
-			else:
-				localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, heldHexomino, heldHexomino.texture);
-				heldHexomino = -1;
-		#if event.keycode == KEY_I:
-			#localHex.type = HexType.I;
-		#if event.keycode == KEY_O:
-			#localHex.type = HexType.O;
-		#if event.keycode == KEY_T:
-			#localHex.type = HexType.T;
-		#if event.keycode == KEY_L:
-			#localHex.type = HexType.L;
-		#if event.keycode == KEY_J:
-			#localHex.type = HexType.J;
-		#if event.keycode == KEY_Z:
-			#localHex.type = HexType.Z;
-		#if event.keycode == KEY_S:
-			#localHex.type = HexType.S;
-		if event.keycode == KEY_UP:
+		if event.keycode == KEY_C:
+			localHex = tryHold();
+		if event.keycode == KEY_SPACE:
 			localHex = hardDrop();
-		#if event.keycode == KEY_A:
-			#rotateGrid();
 		
 		if isPositionValid(localHex):
 			undrawHexomino();
@@ -382,9 +368,21 @@ func tryRotationClockwise() -> Hexomino:
 	
 	return localHex;
 
-func hold() -> bool:
-	if (heldHexomino == -1):
-		heldHexomino = currentHexomino.type
-		return true;
+func tryHold() -> Hexomino:
+	var localHex;
+	
+	if(canHold):
+		heldHexomino = currentHexomino.type;
+		$"../ControlGUI/VBoxContainer/HoldLabel".text = str(heldHexomino);
+		canHold = false;
+		var type = getRandomHexType()
+		localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
 	else:
-		return false;
+		if(heldHexomino != -1):
+			localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
+			$"../ControlGUI/VBoxContainer/HoldLabel".text = "";
+			heldHexomino = -1
+		else:
+			localHex = null;
+	
+	return localHex;
