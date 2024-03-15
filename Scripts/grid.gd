@@ -226,9 +226,10 @@ func getNextHexomino() -> HexType:
 	
 	return result
 
-func update() -> int:
-	var result = score; #saves soft and hard drop score
-	score = 0;
+func update() -> Vector2i:
+	var localScore = score
+	score = 0
+	var lines = 0;
 	
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
@@ -239,22 +240,22 @@ func update() -> int:
 	else:
 		#undrawHexomino();
 		blockHexomino();
-		score = handleFullLines();
+		lines = handleFullLines();
 		@warning_ignore("integer_division")
 		var type = getNextHexomino()
 		currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 	
-	match (score):
+	match (lines):
 		1:
-			result += 100
+			localScore += 100
 		2:
-			result += 300
+			localScore += 300
 		3:
-			result += 500
+			localScore += 500
 		4:
-			result += 800
+			localScore += 800
 	
-	return result;
+	return Vector2i(localScore, lines); #score and number of lines
 
 func GetTextureFromType(type: HexType) -> Texture2D:
 	var result: Texture2D;
