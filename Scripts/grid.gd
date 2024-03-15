@@ -32,6 +32,7 @@ enum HexType {I, O, T, L, J, Z, S};
 
 var cell = load("res://Cell.tscn");
 var hexomino = load("res://Scripts/hexomino.gd");
+var sepLine = load("res://separation_line.tscn")
 
 var gridDirection = Direction.TOP;
 
@@ -42,23 +43,26 @@ var heldHexomino = -1;
 var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
 var grid = [];
 var nextQueue = []; #stocks hextypes
+var sepArray = []; # separation lines
 
 var canHold: bool = true;
 
 var score = 0;
 
+var offsetX = -14
+var offsetY = -18
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#global_translate(get_viewport().size/2)
-	
 	# Generation of every cell and setting of the positions
 	for n in range(GRID_HEIGHT):
+		#sepArray[n].position = Vector2(0, 0)
 		var r = [];
 		for m in range(GRID_WIDTH):
 			r.append(cell.instantiate());
 			add_child(r[m]);
 			r[m].position = Vector2(m * HORIZONTAL_SPACING - (GRID_WIDTH * HORIZONTAL_SPACING / 2.), (int(m % 2 == 1) + 2 * n) * VERTICAL_SPACING - (GRID_HEIGHT * VERTICAL_SPACING / 2.));
-			#r[m].get_node("Label").text = str(n) + "," + str(m);
+			
 		grid.append(r);
 	
 	for row in range(GRID_HEIGHT):
@@ -67,6 +71,12 @@ func _ready():
 	
 	for col in range(GRID_WIDTH):
 		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
+	
+	for n in range(GRID_HEIGHT):
+		sepArray.append(sepLine.instantiate())
+		sepArray[n].scale = Vector2(0.31, 0.31)
+		sepArray[n].position += Vector2(offsetX, ((n-5)*113*0.3) + offsetY)
+		add_child(sepArray[n])
 	
 	nextQueue.append(getRandomHexType());
 	nextQueue.append(getRandomHexType());
