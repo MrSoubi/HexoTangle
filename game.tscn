@@ -59,4 +59,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="HoldLabel" type="Label" parent="ControlGUI/VBoxContainer"]
+layout_mode = 2
+text = "H"
+label_settings = SubResource("LabelSettings_3112v")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
