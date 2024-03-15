@@ -1,8 +1,7 @@
 extends Node2D
 
-var textureFree: Texture2D = load("res://Sprites/Hexagon_White.png");
-var textureBlocked: Texture2D = load("res://Sprites/Hexagon_Black.png");
-var textureMoving: Texture2D = load("res://Sprites/Hexagon_Blue.png");
+var textureFree: Texture2D = load("res://Sprites/Hex_Empty.png");
+var textureBlocked: Texture2D = load("res://Sprites/Hex_Black.png");
 var texture_O: Texture2D = load("res://Sprites/Hex_Yellow.png")
 var texture_I: Texture2D = load("res://Sprites/Hex_Blue.png")
 var texture_T: Texture2D = load("res://Sprites/Hex_Purple.png")
@@ -10,7 +9,7 @@ var texture_L: Texture2D = load("res://Sprites/Hex_Orange.png")
 var texture_J: Texture2D = load("res://Sprites/Hex_DarkBlue.png")
 var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
 var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
-var texturePhantom : Texture2D = textureMoving;
+var texturePhantom : Texture2D = load("res://Sprites/Hex_Phantom.png")
 
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;

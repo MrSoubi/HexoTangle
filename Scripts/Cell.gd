@@ -6,8 +6,8 @@ var state: State = State.FREE;
 
 const SCALE = Vector2(0.3, 0.3);
 
-var textureFree: Texture2D = load("res://Sprites/Hexagon_White.png");
-var textureBlocked: Texture2D = load("res://Sprites/Hexagon_Black.png");
+var textureFree: Texture2D = load("res://Sprites/Hex_Empty.png");
+var textureBlocked: Texture2D = load("res://Sprites/Hex_Black.png");
 var textureMoving: Texture2D = load("res://Sprites/Hexagon_Blue.png");
 
 var texture_O: Texture2D = load("res://Sprites/Hex_Yellow.png")
