@@ -23,6 +23,8 @@ const CELL_WIDTH: float = 2.0 * CELL_SIZE;
 const VERTICAL_SPACING: float = 0.5 * CELL_HEIGHT;
 const HORIZONTAL_SPACING: float = 0.75 * CELL_WIDTH;
 
+const startingPosition = Vector2(1,GRID_WIDTH/2);
+
 const ORIGIN: Vector2 = Vector2(100, 100);
 
 enum Direction {TOP, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT, TOP_LEFT}
@@ -73,7 +75,7 @@ func _ready():
 	
 	@warning_ignore("integer_division")
 	var type = getNextHexomino()
-	currentHexomino = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
+	currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 
 
 	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".text = str(nextQueue[2])
@@ -240,7 +242,7 @@ func update() -> int:
 		score = handleFullLines();
 		@warning_ignore("integer_division")
 		var type = getNextHexomino()
-		currentHexomino = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
+		currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 	
 	match (score):
 		1:
@@ -402,17 +404,32 @@ func tryRotationClockwise() -> Hexomino:
 func tryHold() -> Hexomino:
 	var localHex;
 	
-	if(canHold):
+	if(canHold && heldHexomino == -1):
 		heldHexomino = currentHexomino.type;
-		$"../ControlGUI/VBoxContainer/HoldLabel".text = str(heldHexomino);
+		match (heldHexomino):
+			0:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "I";
+			1:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "O";
+			2:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "T";
+			3:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "L";
+			4:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "J";
+			5:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "Z";
+			6:
+				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "S";
 		canHold = false;
 		var type = getRandomHexType()
-		localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
+		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 	else:
 		if(heldHexomino != -1):
-			localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../ControlGUI/VBoxContainer/HoldLabel".text = "";
+			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
+			$"../CanvasLayer/VBoxContainer/HoldLabel".text = "";
 			heldHexomino = -1
+			canHold = false;
 		else:
 			localHex = null;
 	
