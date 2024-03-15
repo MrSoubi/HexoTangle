@@ -271,13 +271,13 @@ func _input(event):
 			localHex.moveRight();
 		if event.keycode == KEY_LEFT:
 			localHex.moveLeft();
-		if event.keycode == KEY_A:
+		if event.keycode == KEY_UP:
 			localHex = tryRotationAntiClockwise();
 		if event.keycode == KEY_Z:
 			localHex = tryRotationClockwise();
-		if event.keycode == KEY_D:
+		if event.keycode == KEY_C:
 			localHex = tryHold();
-		if event.keycode == KEY_UP:
+		if event.keycode == KEY_SPACE:
 			localHex = hardDrop();
 		
 		if isPositionValid(localHex):
