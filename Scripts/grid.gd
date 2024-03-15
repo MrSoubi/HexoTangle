@@ -264,11 +264,11 @@ func _input(event):
 			localHex.moveLeft();
 		#if event.keycode == KEY_UP:
 			#localHex.move(addDirections(Direction.TOP, gridDirection));
-		if event.keycode == KEY_A:
+		if event.keycode == KEY_UP:
 			localHex = tryRotationAntiClockwise();
 		if event.keycode == KEY_Z:
 			localHex = tryRotationClockwise();
-		if event.keycode == KEY_D:
+		if event.keycode == KEY_C:
 			if (hold() == true):
 				var type = getRandomHexType()
 				localHex = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
@@ -289,7 +289,7 @@ func _input(event):
 			#localHex.type = HexType.Z;
 		#if event.keycode == KEY_S:
 			#localHex.type = HexType.S;
-		if event.keycode == KEY_UP:
+		if event.keycode == KEY_SPACE:
 			localHex = hardDrop();
 		#if event.keycode == KEY_A:
 			#rotateGrid();
