@@ -1,0 +1,446 @@
+[gd_scene load_steps=4 format=3 uid="uid://dfw2wmyitfo16"]
+
+[ext_resource type="PackedScene" uid="uid://bmsln880ub8ag" path="res://Hexominos/Scenes/Sun.tscn" id="1_76ou6"]
+[ext_resource type="Texture2D" uid="uid://rl8k06idtsgg" path="res://Hexagon_128_Empty.png" id="2_owoa3"]
+[ext_resource type="PackedScene" uid="uid://bl0hqokjobc4" path="res://Cell.tscn" id="3_qk2j8"]
+
+[node name="TestScene" type="Node"]
+
+[node name="Hexomino" parent="." instance=ExtResource("1_76ou6")]
+position = Vector2(576, 0)
+
+[node name="Node2D3" type="Node2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="Node2D3"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D3/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D3/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D3"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D3/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D3/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D4" type="Node2D" parent="."]
+position = Vector2(192, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D4"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D4/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D4/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D4"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D4/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D4/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D5" type="Node2D" parent="."]
+position = Vector2(384, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D5"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D5/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D5/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D5"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D5/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D5/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D6" type="Node2D" parent="."]
+position = Vector2(576, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D6"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D6/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D6/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D6"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D6/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D6/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D7" type="Node2D" parent="."]
+position = Vector2(768, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D7"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D7/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D7/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D7"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D7/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D7/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D8" type="Node2D" parent="."]
+position = Vector2(960, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D8"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D8/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D8/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D8"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D8/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D8/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D9" type="Node2D" parent="."]
+position = Vector2(1152, 0)
+
+[node name="Node2D" type="Node2D" parent="Node2D9"]
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D9/Node2D"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D9/Node2D"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Node2D2" type="Node2D" parent="Node2D9"]
+position = Vector2(96, 55.426)
+
+[node name="Hexagon128Empty_1" type="Sprite2D" parent="Node2D9/Node2D2"]
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_2" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 110.851)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_3" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 221.702)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_4" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 332.553)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_5" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 443.404)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_6" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 554.255)
+texture = ExtResource("2_owoa3")
+
+[node name="Hexagon128Empty_7" type="Sprite2D" parent="Node2D9/Node2D2"]
+position = Vector2(0, 665.106)
+texture = ExtResource("2_owoa3")
+
+[node name="Cell" parent="." instance=ExtResource("3_qk2j8")]
+position = Vector2(672, 610)

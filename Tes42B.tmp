@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfw2wmyitfo16"]
+
+[ext_resource type="PackedScene" uid="uid://bmsln880ub8ag" path="res://Hexominos/Scenes/Sun.tscn" id="1_76ou6"]
+[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="2_ijhic"]
+
+[node name="TestScene" type="Node"]
+
+[node name="Hexomino" parent="." instance=ExtResource("1_76ou6")]
+position = Vector2(576, 0)
+
+[node name="Grid" parent="." instance=ExtResource("2_ijhic")]

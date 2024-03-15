@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfw2wmyitfo16"]
+
+[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="2_ijhic"]
+
+[node name="TestScene" type="Node"]
+
+[node name="Grid" parent="." instance=ExtResource("2_ijhic")]

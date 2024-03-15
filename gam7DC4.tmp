@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://d33r44fu71nhh"]
+
+[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
+[ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_xep6p")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Grid" parent="." instance=ExtResource("1_ae5do")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
