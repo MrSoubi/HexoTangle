@@ -38,6 +38,7 @@ var heldHexomino = -1;
 
 var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
 var grid = [];
+var nextQueue = []; #stocks hextypes
 
 var canHold: bool = true;
 
@@ -62,9 +63,19 @@ func _ready():
 	for col in range(GRID_WIDTH):
 		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
 	
+	nextQueue.append(getRandomHexType());
+	nextQueue.append(getRandomHexType());
+	nextQueue.append(getRandomHexType());
+	
 	@warning_ignore("integer_division")
-	var type = getRandomHexType()
+	var type = getNextHexomino()
 	currentHexomino = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
+
+
+	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".text = str(nextQueue[2])
+	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".text = str(nextQueue[1])
+	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".text = str(nextQueue[0])
+	
 	drawHexomino();
 
 func drawHexomino():
@@ -169,6 +180,18 @@ func isPositionValid(hex: Hexomino) -> bool:
 	
 	return result;
 
+func getNextHexomino() -> HexType:
+	var result = nextQueue[0]
+	nextQueue[0] = nextQueue[1]
+	nextQueue[1] = nextQueue[2]
+	nextQueue[2] = getRandomHexType()
+	
+	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".text = str(nextQueue[2])
+	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".text = str(nextQueue[1])
+	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".text = str(nextQueue[0])
+	
+	return result
+
 func update() -> int:
 	var score = 0;
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
@@ -182,7 +205,7 @@ func update() -> int:
 		blockHexomino();
 		score = handleFullLines();
 		@warning_ignore("integer_division")
-		var type = getRandomHexType()
+		var type = getNextHexomino()
 		currentHexomino = hexomino.new(Vector2(3,GRID_WIDTH/2), Direction.TOP, type, GetTextureFromType(type));
 	
 	match (score):
