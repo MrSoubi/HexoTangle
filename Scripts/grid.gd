@@ -42,6 +42,8 @@ var nextQueue = []; #stocks hextypes
 
 var canHold: bool = true;
 
+var score = 0;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#global_translate(get_viewport().size/2)
@@ -193,7 +195,9 @@ func getNextHexomino() -> HexType:
 	return result
 
 func update() -> int:
-	var score = 0;
+	var result = score; #saves soft and hard drop score
+	score = 0;
+	
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
 	if isPositionValid(localHex):
@@ -210,15 +214,15 @@ func update() -> int:
 	
 	match (score):
 		1:
-			score = 100
+			result += 100
 		2:
-			score = 300
+			result += 300
 		3:
-			score = 500
+			result += 500
 		4:
-			score = 800
+			result += 800
 	
-	return score;
+	return result;
 
 func GetTextureFromType(type: HexType) -> Texture2D:
 	var result: Texture2D;
@@ -290,6 +294,8 @@ func _input(event):
 		
 		if event.keycode == KEY_DOWN:
 			localHex.move(addDirections(Direction.BOTTOM, gridDirection))
+			if isPositionValid(localHex):
+				score += 1;
 		if event.keycode == KEY_RIGHT:
 			localHex.moveRight();
 		if event.keycode == KEY_LEFT:
@@ -308,19 +314,13 @@ func _input(event):
 			currentHexomino = localHex;
 			drawHexomino();
 
-func rotateGrid():
-	gridDirection = addDirections(gridDirection, Direction.TOP_RIGHT);
-	var tween = get_tree().create_tween()
-	tween.tween_property(self, "rotation_degrees", self.rotation_degrees - 60, 0.08)
-	#rotate(deg_to_rad(-60));
-	#tween.tween_callback(self.queue_free)
-
 func hardDrop() -> Hexomino:
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	
 	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
 	
 	while (isPositionValid(localHex)):
+		score += 2
 		localHex.move(addDirections(Direction.BOTTOM, gridDirection));
 	
 	localHex.move(addDirections(Direction.TOP, gridDirection))

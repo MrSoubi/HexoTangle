@@ -21,3 +21,4 @@ func _on_timer_timeout():
 
 func GetFallSpeed() -> float:
 	return (0.8 - ((level - 1) * 0.007)) ** (level - 1)
+
