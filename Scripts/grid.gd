@@ -49,11 +49,18 @@ var canHold: bool = true;
 
 var score = 0;
 
-var offsetX = -14
-var offsetY = -18
+var offsetX = -14.5
+var offsetY = -18.4
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Separation lines
+	for n in range(GRID_HEIGHT):
+		sepArray.append(sepLine.instantiate())
+		sepArray[n].scale = Vector2(0.31, 0.31)
+		sepArray[n].position += Vector2(offsetX, ((n-5)*113*0.3) + offsetY)
+		add_child(sepArray[n])
+	
 	# Generation of every cell and setting of the positions
 	for n in range(GRID_HEIGHT):
 		#sepArray[n].position = Vector2(0, 0)
@@ -71,12 +78,6 @@ func _ready():
 	
 	for col in range(GRID_WIDTH):
 		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
-	
-	for n in range(GRID_HEIGHT):
-		sepArray.append(sepLine.instantiate())
-		sepArray[n].scale = Vector2(0.31, 0.31)
-		sepArray[n].position += Vector2(offsetX, ((n-5)*113*0.3) + offsetY)
-		add_child(sepArray[n])
 	
 	nextQueue.append(getRandomHexType());
 	nextQueue.append(getRandomHexType());
