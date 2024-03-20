@@ -4,20 +4,14 @@
 [ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
 [ext_resource type="Texture2D" uid="uid://b2pfilhuo1pdn" path="res://Sprites/Hexagon_White.png" id="3_lb86j"]
 [ext_resource type="Shader" path="res://game.gdshader" id="3_w15ah"]
+[ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="5_hmenq"]
+[ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="6_s1ckg"]
+[ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="7_42lau"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_17j0s"]
 shader = ExtResource("3_w15ah")
 shader_parameter/light_blue = Vector3(0.44, 0.78, 0.9)
 shader_parameter/dark_blue = Vector3(0.44, 0.78, 0.9)
-
-[sub_resource type="LabelSettings" id="LabelSettings_hdpkf"]
-font_size = 150
-
-[sub_resource type="LabelSettings" id="LabelSettings_q6cic"]
-font_size = 150
-
-[sub_resource type="LabelSettings" id="LabelSettings_xtufk"]
-font_size = 150
 
 [sub_resource type="LabelSettings" id="LabelSettings_3112v"]
 font_size = 30
@@ -49,20 +43,23 @@ offset_left = -86.0
 offset_bottom = 623.0
 grow_horizontal = 0
 
-[node name="ThirdUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
-layout_mode = 2
-text = "3"
-label_settings = SubResource("LabelSettings_hdpkf")
+[node name="ThirdUpcoming" type="Sprite2D" parent="CanvasLayer/VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_hmenq")
+centered = false
+offset = Vector2(-100, 100)
 
-[node name="SecondUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
-layout_mode = 2
-text = "2"
-label_settings = SubResource("LabelSettings_q6cic")
+[node name="SecondUpcoming" type="Sprite2D" parent="CanvasLayer/VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("6_s1ckg")
+centered = false
+offset = Vector2(-100, 600)
 
-[node name="FirstUpcoming" type="Label" parent="CanvasLayer/VBoxContainer2"]
-layout_mode = 2
-text = "1"
-label_settings = SubResource("LabelSettings_xtufk")
+[node name="FirstUpcoming" type="Sprite2D" parent="CanvasLayer/VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_42lau")
+centered = false
+offset = Vector2(-100, 1100)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 5
