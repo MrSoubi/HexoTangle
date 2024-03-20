@@ -30,7 +30,7 @@ texture = ExtResource("3_lb86j")
 autostart = true
 
 [node name="Grid" parent="." instance=ExtResource("1_ae5do")]
-position = Vector2(400, 350)
+position = Vector2(400, 450)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
@@ -86,12 +86,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="HoldLabel" type="Label" parent="CanvasLayer/VBoxContainer"]
-layout_mode = 2
-text = "H"
-label_settings = SubResource("LabelSettings_3112v")
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="HoldLabel" type="Sprite2D" parent="CanvasLayer/VBoxContainer"]
+scale = Vector2(0.3, 0.3)
+offset = Vector2(150, 600)
 metadata/_edit_use_anchors_ = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
