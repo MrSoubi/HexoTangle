@@ -448,26 +448,26 @@ func tryHold() -> Hexomino:
 		heldHexomino = currentHexomino.type;
 		match (heldHexomino):
 			0:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "I";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_I;
 			1:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "O";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_O;
 			2:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "T";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_T;
 			3:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "L";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_L;
 			4:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "J";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_J;
 			5:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "Z";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_Z;
 			6:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".text = "S";
+				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_S;
 		canHold = false;
 		var type = getRandomHexType()
 		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 	else:
 		if(heldHexomino != -1):
 			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../CanvasLayer/VBoxContainer/HoldLabel".text = "";
+			$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
 			heldHexomino = -1
 			canHold = false;
 		else:
