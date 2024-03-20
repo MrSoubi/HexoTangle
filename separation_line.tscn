@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvhsew0cugvdw"]
+
+[ext_resource type="Texture2D" uid="uid://c4mvmck7s87fj" path="res://Sprites/SeparationLine.png" id="1_3a7e1"]
+
+[node name="SeparationLine" type="Sprite2D"]
+texture = ExtResource("1_3a7e1")
