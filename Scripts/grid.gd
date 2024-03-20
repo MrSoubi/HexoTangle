@@ -446,7 +446,19 @@ func tryHold() -> Hexomino:
 	
 	if(canHold && heldHexomino == -1):
 		heldHexomino = currentHexomino.type;
-		match (heldHexomino):
+		canHold = false;
+		var type = getNextHexomino()
+		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+	else:
+		if(heldHexomino != -1 && canHold):
+			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
+			$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
+			heldHexomino = currentHexomino.type;
+			canHold = false;
+		else:
+			localHex = null;
+	
+	match (heldHexomino):
 			0:
 				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_I;
 			1:
@@ -461,16 +473,5 @@ func tryHold() -> Hexomino:
 				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_Z;
 			6:
 				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_S;
-		canHold = false;
-		var type = getRandomHexType()
-		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
-	else:
-		if(heldHexomino != -1):
-			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
-			heldHexomino = -1
-			canHold = false;
-		else:
-			localHex = null;
 	
 	return localHex;
