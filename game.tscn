@@ -36,7 +36,7 @@ texture = ExtResource("3_lb86j")
 autostart = true
 
 [node name="Grid" parent="." instance=ExtResource("1_ae5do")]
-position = Vector2(960, 350)
+position = Vector2(400, 350)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
