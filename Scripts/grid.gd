@@ -11,6 +11,14 @@ var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
 var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
 var texturePhantom : Texture2D = load("res://Sprites/Hex_Phantom.png")
 
+var texture_Form_O: Texture2D = load("res://Sprites/Form_O.png")
+var texture_Form_I: Texture2D = load("res://Sprites/Form_I.png")
+var texture_Form_T: Texture2D = load("res://Sprites/Form_T.png")
+var texture_Form_L: Texture2D = load("res://Sprites/Form_L.png")
+var texture_Form_J: Texture2D = load("res://Sprites/Form_J.png")
+var texture_Form_S: Texture2D = load("res://Sprites/Form_S.png")
+var texture_Form_Z: Texture2D = load("res://Sprites/Form_Z.png")
+
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
 
@@ -88,11 +96,32 @@ func _ready():
 	currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 
 
-	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".text = str(nextQueue[2])
-	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".text = str(nextQueue[1])
-	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".text = str(nextQueue[0])
+	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
+	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
+	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
 	
 	drawHexomino();
+
+func GetTextureFromHexType(t: HexType) -> Texture2D:
+	var result;
+	
+	match(t):
+		HexType.O:
+			result = texture_Form_O
+		HexType.I:
+			result = texture_Form_I
+		HexType.T:
+			result = texture_Form_T
+		HexType.L:
+			result = texture_Form_L
+		HexType.J:
+			result = texture_Form_J
+		HexType.S:
+			result = texture_Form_S
+		HexType.Z:
+			result = texture_Form_Z
+	
+	return result
 
 func drawPhantom():
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
@@ -230,9 +259,9 @@ func getNextHexomino() -> HexType:
 	nextQueue[1] = nextQueue[2]
 	nextQueue[2] = getRandomHexType()
 	
-	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".text = str(nextQueue[2])
-	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".text = str(nextQueue[1])
-	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".text = str(nextQueue[0])
+	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
+	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
+	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
 	
 	return result
 
