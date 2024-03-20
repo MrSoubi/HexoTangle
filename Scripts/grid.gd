@@ -102,6 +102,33 @@ func _ready():
 	
 	drawHexomino();
 
+func Reset():
+	canHold = true;
+	heldHexomino = -1;
+	$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
+	
+	bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
+	nextQueue = []; #stocks hextypes
+	nextQueue.append(getRandomHexType());
+	nextQueue.append(getRandomHexType());
+	nextQueue.append(getRandomHexType());
+	
+	score = 0;
+	
+	var type = getNextHexomino()
+	currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+	
+	for n in range(GRID_HEIGHT):
+		for m in range(GRID_WIDTH):
+			grid[n][m].setState(Cell.State.FREE, textureFree)
+	
+	for row in range(GRID_HEIGHT):
+		grid[row][0].setState(Cell.State.BLOCKED, textureBlocked)
+		grid[row][GRID_WIDTH-1].setState(Cell.State.BLOCKED, textureBlocked)
+	
+	for col in range(GRID_WIDTH):
+		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
+
 func GetTextureFromHexType(t: HexType) -> Texture2D:
 	var result;
 	

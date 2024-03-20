@@ -30,3 +30,16 @@ func _on_timer_timeout():
 func GetFallSpeed() -> float:
 	return (0.8 - ((level - 1) * 0.007)) ** (level - 1)
 
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			ResetGame();
+
+func ResetGame():
+	score = 0
+	level = 1
+	lines = 0
+	linesToDoUntilNextLevel = 5
+	$Timer.wait_time = 1.0;
+	$CanvasLayer/VBoxContainer/LevelLabel.text = str(0);
+	$Grid.Reset()
