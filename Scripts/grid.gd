@@ -479,7 +479,7 @@ func tryHold() -> Hexomino:
 	else:
 		if(heldHexomino != -1 && canHold):
 			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
+			$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
 			heldHexomino = currentHexomino.type;
 			canHold = false;
 		else:
@@ -487,18 +487,18 @@ func tryHold() -> Hexomino:
 	
 	match (heldHexomino):
 			0:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_I;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_I;
 			1:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_O;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_O;
 			2:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_T;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_T;
 			3:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_L;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_L;
 			4:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_J;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_J;
 			5:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_Z;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_Z;
 			6:
-				$"../CanvasLayer/VBoxContainer/HoldLabel".texture = texture_Form_S;
+				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_S;
 	
 	return localHex;
