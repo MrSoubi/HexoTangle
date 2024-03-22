@@ -105,7 +105,7 @@ func _ready():
 func Reset():
 	canHold = true;
 	heldHexomino = -1;
-	$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
+	$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
 	
 	bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
 	nextQueue = []; #stocks hextypes
