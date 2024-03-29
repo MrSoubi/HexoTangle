@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=11 format=3 uid="uid://d33r44fu71nhh"]
 
 [ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
 [ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="5_hmenq"]
 [ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="6_s1ckg"]
 [ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="7_42lau"]
+[ext_resource type="AudioStream" uid="uid://dvg76orhtgq4o" path="res://Sound/HexoTangle_MainTheme.mp3" id="8_ftwso"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_17j0s"]
 shader = ExtResource("3_w15ah")
@@ -95,5 +96,13 @@ size_flags_horizontal = 4
 scale = Vector2(0.2, 0.2)
 offset = Vector2(0, 200)
 metadata/_edit_use_anchors_ = true
+
+[node name="BackGroundMusicPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_ftwso")
+autoplay = true
+
+[node name="FXPlayer" type="AudioStreamPlayer2D" parent="."]
+
+[node name="FXPlayer2" type="AudioStreamPlayer2D" parent="."]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

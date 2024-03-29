@@ -19,6 +19,15 @@ var texture_Form_J: Texture2D = load("res://Sprites/Form_J.png")
 var texture_Form_S: Texture2D = load("res://Sprites/Form_S.png")
 var texture_Form_Z: Texture2D = load("res://Sprites/Form_Z.png")
 
+var sfx_hardDrop: AudioStream = load("res://Sound/HardDrop.wav")
+var sfx_softDrop: AudioStream = load("res://Sound/SoftDrop.wav")
+var sfx_rotation: AudioStream = load("res://Sound/Rotation.wav")
+var sfx_movement: AudioStream = load("res://Sound/Movement.wav")
+var sfx_hold: AudioStream = load("res://Sound/Hold.wav")
+var sfx_unhold: AudioStream = load("res://Sound/Unhold.wav")
+var sfx_error: AudioStream = load("res://Sound/Error.wav")
+
+
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
 
@@ -105,7 +114,7 @@ func _ready():
 func Reset():
 	canHold = true;
 	heldHexomino = -1;
-	$"../CanvasLayer/VBoxContainer/HoldLabel".texture = null;
+	$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
 	
 	bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
 	nextQueue = []; #stocks hextypes
@@ -396,23 +405,33 @@ func _input(event):
 			localHex.move(addDirections(Direction.BOTTOM, gridDirection))
 			if isPositionValid(localHex):
 				score += 1;
+			$"../FXPlayer".stream = sfx_softDrop;
 		if event.keycode == KEY_RIGHT:
 			localHex.moveRight();
+			$"../FXPlayer".stream = sfx_movement;
 		if event.keycode == KEY_LEFT:
 			localHex.moveLeft();
+			$"../FXPlayer".stream = sfx_movement;
 		if event.keycode == KEY_UP:
 			localHex = tryRotationAntiClockwise();
+			$"../FXPlayer".stream = sfx_rotation;
 		if event.keycode == KEY_Z:
 			localHex = tryRotationClockwise();
+			$"../FXPlayer".stream = sfx_rotation;
 		if event.keycode == KEY_C:
 			localHex = tryHold();
 		if event.keycode == KEY_SPACE:
 			localHex = hardDrop();
+			$"../FXPlayer".stream = sfx_hardDrop;
 		
 		if isPositionValid(localHex):
 			undrawHexomino();
 			currentHexomino = localHex;
 			drawHexomino();
+		else:
+			$"../FXPlayer".stream = sfx_error;
+		
+		$"../FXPlayer".play()
 
 func hardDrop() -> Hexomino:
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
@@ -474,6 +493,7 @@ func tryHold() -> Hexomino:
 	if(canHold && heldHexomino == -1):
 		heldHexomino = currentHexomino.type;
 		canHold = false;
+		$"../FXPlayer".stream = sfx_hold;
 		var type = getNextHexomino()
 		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
 	else:
@@ -482,6 +502,7 @@ func tryHold() -> Hexomino:
 			$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
 			heldHexomino = currentHexomino.type;
 			canHold = false;
+			$"../FXPlayer".stream = sfx_unhold;
 		else:
 			localHex = null;
 	
