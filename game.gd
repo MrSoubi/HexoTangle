@@ -1,6 +1,11 @@
 @tool
 extends Node2D
 
+var sfx_oneLine: AudioStream = load("res://Sound/OneLine.wav")
+var sfx_twoLines: AudioStream = load("res://Sound/TwoLines.wav")
+var sfx_threeLines: AudioStream = load("res://Sound/ThreeLines.wav")
+var sfx_fourLines: AudioStream = load("res://Sound/FourLines.wav")
+
 var score: int = 0;
 var level: int = 1;
 var lines: int = 0;
@@ -17,6 +22,21 @@ func _ready():
 
 func _on_timer_timeout():
 	var scoreAndLines = $Grid.update();
+	
+	match(scoreAndLines.y):
+		1:
+			$FXPlayer2.stream = sfx_oneLine
+		2:
+			$FXPlayer2.stream = sfx_twoLines
+		3:
+			$FXPlayer2.stream = sfx_threeLines
+		4:
+			$FXPlayer2.stream = sfx_fourLines
+		_:
+			$FXPlayer2.stream = null
+	
+	$FXPlayer2.play()
+			
 	score += scoreAndLines.x * level;
 	lines += scoreAndLines.y;
 	print(str(lines))

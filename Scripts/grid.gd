@@ -27,6 +27,7 @@ var sfx_hold: AudioStream = load("res://Sound/Hold.wav")
 var sfx_unhold: AudioStream = load("res://Sound/Unhold.wav")
 var sfx_error: AudioStream = load("res://Sound/Error.wav")
 
+
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
 

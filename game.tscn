@@ -103,4 +103,6 @@ autoplay = true
 
 [node name="FXPlayer" type="AudioStreamPlayer2D" parent="."]
 
+[node name="FXPlayer2" type="AudioStreamPlayer2D" parent="."]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
