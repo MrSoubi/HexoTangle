@@ -6,6 +6,8 @@ extends Node2D
 @export var grid: Node
 @export var ui: Node
 
+@export var leaderboard: Node
+
 var score: int = 0;
 var level: int = 1;
 var lines: int = 0;
@@ -17,8 +19,18 @@ func _ready():
 		grid.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
 		
 	if not Engine.is_editor_hint():
+		initializeLeaderBoard();
 		timer.wait_time = 1.0;
 		$UI/VBoxContainer/LevelLabel.text = str(0);
+
+func initializeLeaderBoard():
+	SilentWolf.configure({
+		"api_key": "MIibx4NgJy1Jm3c2Iw6NxaXPQC8eIg535fguNf4W",
+		"game_id": "HexoTangle",
+		"log_level": 0
+	})
+	
+	leaderboard.render();
 
 func _on_timer_timeout():
 	var scoreAndLines = grid.update();
@@ -49,6 +61,7 @@ func GetFallSpeed() -> float:
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
+			SilentWolf.Scores.save_score("admin", score);
 			ResetGame();
 
 func ResetGame():
