@@ -4,6 +4,7 @@ extends Node2D
 @export var timer: Timer
 @export var soundManager: Node
 @export var grid: Node
+@export var ui: Node
 
 var score: int = 0;
 var level: int = 1;
@@ -56,5 +57,5 @@ func ResetGame():
 	lines = 0
 	linesToDoUntilNextLevel = 5
 	timer.wait_time = 1.0;
-	$CanvasLayer/VBoxContainer/LevelLabel.text = str(0);
+	$UI/VBoxContainer/LevelLabel.text = str(0);
 	grid.Reset()

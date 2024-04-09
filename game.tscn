@@ -1,9 +1,8 @@
-[gd_scene load_steps=25 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=23 format=3 uid="uid://d33r44fu71nhh"]
 
 [ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
 [ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
-[ext_resource type="Texture2D" uid="uid://b2pfilhuo1pdn" path="res://Sprites/Hexagon_White.png" id="3_lb86j"]
-[ext_resource type="Shader" path="res://game.gdshader" id="3_w15ah"]
+[ext_resource type="Script" path="res://UI.gd" id="3_qfqky"]
 [ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="5_hmenq"]
 [ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="6_s1ckg"]
 [ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="7_42lau"]
@@ -21,11 +20,6 @@
 [ext_resource type="AudioStream" uid="uid://dxm1fkjo6g522" path="res://Sound/Hold.wav" id="18_5ed10"]
 [ext_resource type="AudioStream" uid="uid://5h5wm8bomui0" path="res://Sound/Error.wav" id="19_45we2"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_17j0s"]
-shader = ExtResource("3_w15ah")
-shader_parameter/light_blue = Vector3(0.44, 0.78, 0.9)
-shader_parameter/dark_blue = Vector3(0.44, 0.78, 0.9)
-
 [sub_resource type="LabelSettings" id="LabelSettings_3112v"]
 font_size = 30
 font_color = Color(0, 0.572549, 0, 1)
@@ -37,27 +31,23 @@ font_color = Color(0, 0, 0, 1)
 font_size = 141
 font_color = Color(0, 0, 0, 1)
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("timer", "soundManager", "grid")]
+[node name="Game" type="Node2D" node_paths=PackedStringArray("timer", "soundManager", "grid", "ui")]
 script = ExtResource("1_xep6p")
 timer = NodePath("Timer")
 soundManager = NodePath("SoundManager")
 grid = NodePath("Grid")
-
-[node name="Background" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_17j0s")
-position = Vector2(-51, -5)
-scale = Vector2(1267, 1082)
-texture = ExtResource("3_lb86j")
+ui = NodePath("UI")
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
 [node name="Grid" parent="." node_paths=PackedStringArray("soundManager") instance=ExtResource("1_ae5do")]
-position = Vector2(400, 375)
+position = Vector2(400, 288)
 soundManager = NodePath("../SoundManager")
 
 [node name="UI" type="CanvasLayer" parent="."]
 follow_viewport_enabled = true
+script = ExtResource("3_qfqky")
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="UI"]
 anchors_preset = 1
@@ -337,6 +327,92 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/GameUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer_Left" type="VBoxContainer" parent="UI/GameUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="VBoxContainer_Hold" type="VBoxContainer" parent="UI/GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="TextureRect_Hold" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Hold"]
+layout_mode = 2
+
+[node name="VBoxContainer_Score" type="VBoxContainer" parent="UI/GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Score"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="Label_Value" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Score"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Time" type="VBoxContainer" parent="UI/GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Time"]
+layout_mode = 2
+text = "TIME"
+
+[node name="Label_Value" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Time"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Lines" type="VBoxContainer" parent="UI/GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Lines"]
+layout_mode = 2
+text = "LINES"
+
+[node name="Label_Value" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Lines"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Level" type="VBoxContainer" parent="UI/GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Level"]
+layout_mode = 2
+text = "LEVEL"
+
+[node name="Label_Value" type="Label" parent="UI/GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Level"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Right" type="VBoxContainer" parent="UI/GameUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="TextureRect_Next_1" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_2" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_3" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_4" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_5" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_6" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
 
 [node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
 script = ExtResource("9_tkctc")

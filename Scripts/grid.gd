@@ -486,7 +486,7 @@ func tryHold() -> Hexomino:
 	else:
 		if(heldHexomino != -1 && canHold):
 			localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
+			$"../UI/VBoxContainer/Control/HoldLabel".texture = null;
 			heldHexomino = currentHexomino.type;
 			canHold = false;
 			soundManager.playSFX(GlobalData.SFX.HOLD)

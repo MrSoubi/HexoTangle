@@ -17,3 +17,5 @@ enum Direction {TOP = 0, TOP_RIGHT = 1, BOTTOM_RIGHT = 2, BOTTOM = 3, BOTTOM_LEF
 enum HexType {I, O, T, L, J, Z, S};
 
 enum State {FREE, BLOCKED, MOVING};
+
+var score: int
