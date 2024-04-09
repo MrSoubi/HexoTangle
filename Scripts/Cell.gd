@@ -1,8 +1,8 @@
 class_name Cell extends Node2D
 
-enum State {FREE, BLOCKED, MOVING};
+@export var sprite: Sprite2D;
 
-var state: State = State.FREE;
+var state: GlobalData.State = GlobalData.State.FREE;
 
 const SCALE = Vector2(0.3, 0.3);
 
@@ -22,12 +22,12 @@ var texture: Texture2D;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Sprite2D.texture = textureFree;
+	sprite.texture = textureFree;
 	apply_scale(SCALE);
 
 func isEmpty() -> bool:
-	return state == State.FREE;
+	return state == GlobalData.State.FREE;
 
-func setState(newState: State, texture: Texture2D):
+func setState(newState: GlobalData.State, texture: Texture2D):
 	state = newState;
-	$Sprite2D.texture = texture;
+	sprite.texture = texture;

@@ -5,8 +5,9 @@
 [sub_resource type="LabelSettings" id="LabelSettings_4y3gx"]
 font_color = Color(1, 0, 0, 1)
 
-[node name="Cell" type="Node2D"]
+[node name="Cell" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_euml1")
+sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

@@ -1,5 +1,7 @@
 extends Node2D
 
+@export var soundManager: Node
+
 var textureFree: Texture2D = load("res://Sprites/Hex_Empty.png");
 var textureBlocked: Texture2D = load("res://Sprites/Hex_Black.png");
 var texture_O: Texture2D = load("res://Sprites/Hex_Yellow.png")
@@ -19,15 +21,6 @@ var texture_Form_J: Texture2D = load("res://Sprites/Form_J.png")
 var texture_Form_S: Texture2D = load("res://Sprites/Form_S.png")
 var texture_Form_Z: Texture2D = load("res://Sprites/Form_Z.png")
 
-var sfx_hardDrop: AudioStream = load("res://Sound/HardDrop.wav")
-var sfx_softDrop: AudioStream = load("res://Sound/SoftDrop.wav")
-var sfx_rotation: AudioStream = load("res://Sound/Rotation.wav")
-var sfx_movement: AudioStream = load("res://Sound/Movement.wav")
-var sfx_hold: AudioStream = load("res://Sound/Hold.wav")
-var sfx_unhold: AudioStream = load("res://Sound/Unhold.wav")
-var sfx_error: AudioStream = load("res://Sound/Error.wav")
-
-
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
 
@@ -43,23 +36,18 @@ const startingPosition = Vector2(1,GRID_WIDTH/2);
 
 const ORIGIN: Vector2 = Vector2(100, 100);
 
-enum Direction {TOP, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM, BOTTOM_LEFT, TOP_LEFT}
-
-enum HexType {I, O, T, L, J, Z, S};
 
 var cell = load("res://Cell.tscn");
 var hexomino = load("res://Scripts/hexomino.gd");
 var sepLine = load("res://separation_line.tscn")
 
-var gridDirection = Direction.TOP;
-
 var currentHexomino;
 var phantomHexomino;
 var heldHexomino = -1;
 
-var bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
+var bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
 var grid = [];
-var nextQueue = []; #stocks hextypes
+var nextQueue = []; #stocks GlobalData.HexTypes
 var sepArray = []; # separation lines
 
 var canHold: bool = true;
@@ -90,11 +78,11 @@ func _ready():
 		grid.append(r);
 	
 	for row in range(GRID_HEIGHT):
-		grid[row][0].setState(Cell.State.BLOCKED, textureBlocked)
-		grid[row][GRID_WIDTH-1].setState(Cell.State.BLOCKED, textureBlocked)
+		grid[row][0].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, textureBlocked)
 	
 	for col in range(GRID_WIDTH):
-		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
+		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, textureBlocked)
 	
 	nextQueue.append(getRandomHexType());
 	nextQueue.append(getRandomHexType());
@@ -102,22 +90,22 @@ func _ready():
 	
 	@warning_ignore("integer_division")
 	var type = getNextHexomino()
-	currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
 
 
-	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
-	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
-	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
+	$"../UI/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
+	$"../UI/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
+	$"../UI/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
 	
 	drawHexomino();
 
 func Reset():
 	canHold = true;
 	heldHexomino = -1;
-	$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
+	$"../UI/VBoxContainer/Control/HoldLabel".texture = null;
 	
-	bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
-	nextQueue = []; #stocks hextypes
+	bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
+	nextQueue = []; #stocks GlobalData.HexTypes
 	nextQueue.append(getRandomHexType());
 	nextQueue.append(getRandomHexType());
 	nextQueue.append(getRandomHexType());
@@ -125,36 +113,36 @@ func Reset():
 	score = 0;
 	
 	var type = getNextHexomino()
-	currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
 	
 	for n in range(GRID_HEIGHT):
 		for m in range(GRID_WIDTH):
-			grid[n][m].setState(Cell.State.FREE, textureFree)
+			grid[n][m].setState(GlobalData.State.FREE, textureFree)
 	
 	for row in range(GRID_HEIGHT):
-		grid[row][0].setState(Cell.State.BLOCKED, textureBlocked)
-		grid[row][GRID_WIDTH-1].setState(Cell.State.BLOCKED, textureBlocked)
+		grid[row][0].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, textureBlocked)
 	
 	for col in range(GRID_WIDTH):
-		grid[GRID_HEIGHT-1][col].setState(Cell.State.BLOCKED, textureBlocked)
+		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, textureBlocked)
 
-func GetTextureFromHexType(t: HexType) -> Texture2D:
+func GetTextureFromHexType(t: GlobalData.HexType) -> Texture2D:
 	var result;
 	
 	match(t):
-		HexType.O:
+		GlobalData.HexType.O:
 			result = texture_Form_O
-		HexType.I:
+		GlobalData.HexType.I:
 			result = texture_Form_I
-		HexType.T:
+		GlobalData.HexType.T:
 			result = texture_Form_T
-		HexType.L:
+		GlobalData.HexType.L:
 			result = texture_Form_L
-		HexType.J:
+		GlobalData.HexType.J:
 			result = texture_Form_J
-		HexType.S:
+		GlobalData.HexType.S:
 			result = texture_Form_S
-		HexType.Z:
+		GlobalData.HexType.Z:
 			result = texture_Form_Z
 	
 	return result
@@ -162,12 +150,12 @@ func GetTextureFromHexType(t: HexType) -> Texture2D:
 func drawPhantom():
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	
-	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	
 	while (isPositionValid(localHex)):
-		localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+		localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	
-	localHex.move(addDirections(Direction.TOP, gridDirection))
+	localHex.move(addDirections(GlobalData.Direction.TOP, 0))
 	
 	phantomHexomino = localHex;
 	
@@ -175,7 +163,7 @@ func drawPhantom():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.FREE, texturePhantom)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, texturePhantom)
 
 func undrawPhantom():
 	if (phantomHexomino != null):
@@ -183,7 +171,7 @@ func undrawPhantom():
 			
 		for i in range(4):
 			var localCell = localPositions[i]
-			grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
+			grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, textureFree)
 
 func drawHexomino():
 	drawPhantom();
@@ -191,7 +179,7 @@ func drawHexomino():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.MOVING, currentHexomino.texture)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.MOVING, currentHexomino.texture)
 
 func undrawHexomino():
 	undrawPhantom();
@@ -199,7 +187,7 @@ func undrawHexomino():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.FREE, textureFree)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, textureFree)
 
 func isInverseLineFull(row: int) -> bool:
 	var result: bool = true;
@@ -255,7 +243,7 @@ func handleFullLines():
 func removeLine(row: int):
 	if (row == 0):
 		for col in range(1, GRID_WIDTH-1):
-			grid[row][col].setState(Cell.State.FREE, textureFree);
+			grid[row][col].setState(GlobalData.State.FREE, textureFree);
 	else:
 		for col in range(1, GRID_WIDTH-1):
 			grid[row][col].setState(grid[row-1][col].state, grid[row-1][col].get_node("Sprite2D").texture);
@@ -264,7 +252,7 @@ func removeLine(row: int):
 func removeInverseLine(row: int):
 	if (row == 0):
 		for col in range(1, GRID_WIDTH-1):
-			grid[row][col].setState(Cell.State.FREE, textureFree);
+			grid[row][col].setState(GlobalData.State.FREE, textureFree);
 	else:
 		for col in range(1, GRID_WIDTH-1):
 			grid[row][col].setState(grid[row-1][col].state, grid[row-1][col].get_node("Sprite2D").texture);
@@ -281,7 +269,7 @@ func isPositionValid(hex: Hexomino) -> bool:
 			var localX = positions[i].x
 			var localY = positions[i].y
 			if (localX < grid.size() && localY < grid[0].size()):
-				result = result && grid[localX][localY].state != Cell.State.BLOCKED
+				result = result && grid[localX][localY].state != GlobalData.State.BLOCKED
 			else:
 				result = false;
 	else:
@@ -289,15 +277,15 @@ func isPositionValid(hex: Hexomino) -> bool:
 	
 	return result;
 
-func getNextHexomino() -> HexType:
+func getNextHexomino() -> GlobalData.HexType:
 	var result = nextQueue[0]
 	nextQueue[0] = nextQueue[1]
 	nextQueue[1] = nextQueue[2]
 	nextQueue[2] = getRandomHexType()
 	
-	$"../CanvasLayer/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
-	$"../CanvasLayer/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
-	$"../CanvasLayer/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
+	$"../UI/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
+	$"../UI/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
+	$"../UI/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
 	
 	return result
 
@@ -307,7 +295,7 @@ func update() -> Vector2i:
 	var lines = 0;
 	
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	if isPositionValid(localHex):
 		undrawHexomino();
 		currentHexomino = localHex;
@@ -318,7 +306,7 @@ func update() -> Vector2i:
 		lines = handleFullLines();
 		@warning_ignore("integer_division")
 		var type = getNextHexomino()
-		currentHexomino = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+		currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
 	
 	match (lines):
 		1:
@@ -332,28 +320,28 @@ func update() -> Vector2i:
 	
 	return Vector2i(localScore, lines); #score and number of lines
 
-func GetTextureFromType(type: HexType) -> Texture2D:
+func GetTextureFromType(type: GlobalData.HexType) -> Texture2D:
 	var result: Texture2D;
 	
 	match(type):
-		HexType.I:
+		GlobalData.HexType.I:
 			result = texture_I;
-		HexType.O:
+		GlobalData.HexType.O:
 			result = texture_O;
-		HexType.T:
+		GlobalData.HexType.T:
 			result = texture_T;
-		HexType.L:
+		GlobalData.HexType.L:
 			result = texture_L;
-		HexType.J:
+		GlobalData.HexType.J:
 			result = texture_J;
-		HexType.Z:
+		GlobalData.HexType.Z:
 			result = texture_Z;
-		HexType.S:
+		GlobalData.HexType.S:
 			result = texture_S;
 		
 	return result;
 
-func getRandomHexType() -> HexType:
+func getRandomHexType() -> GlobalData.HexType:
 	var k = bag[randi_range(0, bag.size()-1)];
 	bag.erase(k);
 	
@@ -361,7 +349,7 @@ func getRandomHexType() -> HexType:
 	print(bag)
 	
 	if (bag.size() == 0):
-		bag = [HexType.I, HexType.O, HexType.T, HexType.L, HexType.J, HexType.Z, HexType.S];
+		bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
 	
 	return k;
 
@@ -370,30 +358,30 @@ func blockHexomino():
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(Cell.State.BLOCKED, currentHexomino.texture)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.BLOCKED, currentHexomino.texture)
 	
 	phantomHexomino = null;
 	canHold = true;
 
-func addDirections(dir1: Direction, dir2: Direction) -> Direction:
+func addDirections(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> GlobalData.Direction:
 	var val1 = int(dir1);
 	var val2 = int(dir2);
 	
-	var result: Direction;
+	var result: GlobalData.Direction;
 	
 	match (val1 + val2) % 6:
 		0:
-			result = Direction.TOP
+			result = GlobalData.Direction.TOP
 		1:
-			result = Direction.TOP_RIGHT
+			result = GlobalData.Direction.TOP_RIGHT
 		2:
-			result = Direction.BOTTOM_RIGHT
+			result = GlobalData.Direction.BOTTOM_RIGHT
 		3:
-			result = Direction.BOTTOM
+			result = GlobalData.Direction.BOTTOM
 		4:
-			result = Direction.BOTTOM_LEFT
+			result = GlobalData.Direction.BOTTOM_LEFT
 		5:
-			result = Direction.TOP_LEFT
+			result = GlobalData.Direction.TOP_LEFT
 	
 	return result;
 	
@@ -402,47 +390,46 @@ func _input(event):
 		var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 		
 		if event.keycode == KEY_DOWN:
-			localHex.move(addDirections(Direction.BOTTOM, gridDirection))
+			localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0))
 			if isPositionValid(localHex):
 				score += 1;
-			$"../FXPlayer".stream = sfx_softDrop;
+			soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
 		if event.keycode == KEY_RIGHT:
 			localHex.moveRight();
-			$"../FXPlayer".stream = sfx_movement;
+			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
 		if event.keycode == KEY_LEFT:
 			localHex.moveLeft();
-			$"../FXPlayer".stream = sfx_movement;
+			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
 		if event.keycode == KEY_UP:
 			localHex = tryRotationAntiClockwise();
-			$"../FXPlayer".stream = sfx_rotation;
+			soundManager.playSFX(GlobalData.SFX.ROTATION)
 		if event.keycode == KEY_Z:
 			localHex = tryRotationClockwise();
-			$"../FXPlayer".stream = sfx_rotation;
+			soundManager.playSFX(GlobalData.SFX.ROTATION)
 		if event.keycode == KEY_C:
 			localHex = tryHold();
 		if event.keycode == KEY_SPACE:
 			localHex = hardDrop();
-			$"../FXPlayer".stream = sfx_hardDrop;
+			soundManager.playSFX(GlobalData.SFX.HARD_DROP)
 		
 		if isPositionValid(localHex):
 			undrawHexomino();
 			currentHexomino = localHex;
 			drawHexomino();
 		else:
-			$"../FXPlayer".stream = sfx_error;
+			soundManager.playSFX(GlobalData.SFX.ERROR)
 		
-		$"../FXPlayer".play()
 
 func hardDrop() -> Hexomino:
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	
-	localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	
 	while (isPositionValid(localHex)):
 		score += 2
-		localHex.move(addDirections(Direction.BOTTOM, gridDirection));
+		localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	
-	localHex.move(addDirections(Direction.TOP, gridDirection))
+	localHex.move(addDirections(GlobalData.Direction.TOP, 0))
 	return localHex;
 
 func tryRotationAntiClockwise() -> Hexomino:
@@ -452,17 +439,17 @@ func tryRotationAntiClockwise() -> Hexomino:
 	localHex.rotateAntiClockwise();
 	
 	if (!isPositionValid(localHex)):
-		localHex.move(addDirections(Direction.TOP_LEFT, gridDirection));
+		localHex.move(addDirections(GlobalData.Direction.TOP_LEFT, 0));
 	
 		if (!isPositionValid(localHex)):
 			localHex = baseHex;
 			localHex.rotateAntiClockwise();
-			localHex.move(addDirections(Direction.TOP_RIGHT, gridDirection));
+			localHex.move(addDirections(GlobalData.Direction.TOP_RIGHT, 0));
 		
 			if (!isPositionValid(localHex)):
 				localHex = baseHex;
 				localHex.rotateAntiClockwise();
-				localHex.move(addDirections(Direction.TOP, gridDirection));
+				localHex.move(addDirections(GlobalData.Direction.TOP, 0));
 	
 	return localHex;
 
@@ -473,17 +460,17 @@ func tryRotationClockwise() -> Hexomino:
 	localHex.rotateClockwise();
 	
 	if (!isPositionValid(localHex)):
-		localHex.move(addDirections(Direction.TOP_RIGHT, gridDirection));
+		localHex.move(addDirections(GlobalData.Direction.TOP_RIGHT, 0));
 	
 		if (!isPositionValid(localHex)):
 			localHex = baseHex;
 			localHex.rotateClockwise();
-			localHex.move(addDirections(Direction.TOP_LEFT, gridDirection));
+			localHex.move(addDirections(GlobalData.Direction.TOP_LEFT, 0));
 		
 			if (!isPositionValid(localHex)):
 				localHex = baseHex;
 				localHex.rotateClockwise();
-				localHex.move(addDirections(Direction.TOP, gridDirection));
+				localHex.move(addDirections(GlobalData.Direction.TOP, 0));
 	
 	return localHex;
 
@@ -493,33 +480,33 @@ func tryHold() -> Hexomino:
 	if(canHold && heldHexomino == -1):
 		heldHexomino = currentHexomino.type;
 		canHold = false;
-		$"../FXPlayer".stream = sfx_hold;
+		soundManager.playSFX(GlobalData.SFX.HOLD)
 		var type = getNextHexomino()
-		localHex = hexomino.new(startingPosition, Direction.TOP, type, GetTextureFromType(type));
+		localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
 	else:
 		if(heldHexomino != -1 && canHold):
-			localHex = hexomino.new(startingPosition, Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
+			localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
 			$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = null;
 			heldHexomino = currentHexomino.type;
 			canHold = false;
-			$"../FXPlayer".stream = sfx_unhold;
+			soundManager.playSFX(GlobalData.SFX.HOLD)
 		else:
 			localHex = null;
 	
 	match (heldHexomino):
 			0:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_I;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_I;
 			1:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_O;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_O;
 			2:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_T;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_T;
 			3:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_L;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_L;
 			4:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_J;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_J;
 			5:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_Z;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_Z;
 			6:
-				$"../CanvasLayer/VBoxContainer/Control/HoldLabel".texture = texture_Form_S;
+				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_S;
 	
 	return localHex;

@@ -1,10 +1,9 @@
 @tool
 extends Node2D
 
-var sfx_oneLine: AudioStream = load("res://Sound/OneLine.wav")
-var sfx_twoLines: AudioStream = load("res://Sound/TwoLines.wav")
-var sfx_threeLines: AudioStream = load("res://Sound/ThreeLines.wav")
-var sfx_fourLines: AudioStream = load("res://Sound/FourLines.wav")
+@export var timer: Timer
+@export var soundManager: Node
+@export var grid: Node
 
 var score: int = 0;
 var level: int = 1;
@@ -14,38 +13,34 @@ var linesToDoUntilNextLevel = 5;
 func _ready():
 	if Engine.is_editor_hint():
 		#$ControlGUI.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
-		$Grid.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
-		print(ProjectSettings.get_setting("display/window/size/viewport_width"))
+		grid.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
+		
 	if not Engine.is_editor_hint():
-		$Timer.wait_time = 1.0;
-		$CanvasLayer/VBoxContainer/LevelLabel.text = str(0);
+		timer.wait_time = 1.0;
+		$UI/VBoxContainer/LevelLabel.text = str(0);
 
 func _on_timer_timeout():
-	var scoreAndLines = $Grid.update();
+	var scoreAndLines = grid.update();
 	
 	match(scoreAndLines.y):
 		1:
-			$FXPlayer2.stream = sfx_oneLine
+			soundManager.playSFX(GlobalData.SFX.ONE_LINE);
 		2:
-			$FXPlayer2.stream = sfx_twoLines
+			soundManager.playSFX(GlobalData.SFX.TWO_LINES);
 		3:
-			$FXPlayer2.stream = sfx_threeLines
+			soundManager.playSFX(GlobalData.SFX.THREE_LINES);
 		4:
-			$FXPlayer2.stream = sfx_fourLines
-		_:
-			$FXPlayer2.stream = null
+			soundManager.playSFX(GlobalData.SFX.FOUR_LINES);
 	
-	$FXPlayer2.play()
-			
 	score += scoreAndLines.x * level;
 	lines += scoreAndLines.y;
 	print(str(lines))
 	if(lines >= linesToDoUntilNextLevel):
 		level += 1
 		linesToDoUntilNextLevel += 5 * level
-		$CanvasLayer/VBoxContainer/LevelLabel.text = str(level);
-	$CanvasLayer/VBoxContainer/ScoreLabel.text = str(score);
-	$Timer.wait_time = GetFallSpeed()
+		$UI/VBoxContainer/LevelLabel.text = str(level);
+	$UI/VBoxContainer/ScoreLabel.text = str(score);
+	timer.wait_time = GetFallSpeed()
 
 func GetFallSpeed() -> float:
 	return (0.8 - ((level - 1) * 0.007)) ** (level - 1)
@@ -60,6 +55,6 @@ func ResetGame():
 	level = 1
 	lines = 0
 	linesToDoUntilNextLevel = 5
-	$Timer.wait_time = 1.0;
+	timer.wait_time = 1.0;
 	$CanvasLayer/VBoxContainer/LevelLabel.text = str(0);
-	$Grid.Reset()
+	grid.Reset()
