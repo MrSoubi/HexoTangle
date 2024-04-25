@@ -1,16 +1,16 @@
-[gd_scene load_steps=29 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=26 format=3 uid="uid://d33r44fu71nhh"]
 
 [ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
-[ext_resource type="Script" path="res://game.gd" id="1_xep6p"]
+[ext_resource type="Script" path="res://Scripts/game.gd" id="1_xep6p"]
 [ext_resource type="Shader" path="res://background.gdshader" id="2_hrjri"]
-[ext_resource type="Script" path="res://UI.gd" id="3_qfqky"]
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="3_qfqky"]
 [ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="5_hmenq"]
 [ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="6_s1ckg"]
 [ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="7_42lau"]
 [ext_resource type="AudioStream" uid="uid://dvg76orhtgq4o" path="res://Sound/HexoTangle_MainTheme.mp3" id="8_ftwso"]
 [ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="8_q1775"]
-[ext_resource type="Script" path="res://SoundManager.gd" id="9_tkctc"]
-[ext_resource type="Script" path="res://LeaderBoard.gd" id="9_x1esd"]
+[ext_resource type="Script" path="res://Scripts/SoundManager.gd" id="9_tkctc"]
+[ext_resource type="Script" path="res://Scripts/LeaderBoard.gd" id="9_x1esd"]
 [ext_resource type="AudioStream" uid="uid://ccoe3gq8k2b75" path="res://Sound/OneLine.wav" id="10_pmf37"]
 [ext_resource type="AudioStream" uid="uid://dh6wuu1hs72px" path="res://Sound/TwoLines.wav" id="11_prouk"]
 [ext_resource type="AudioStream" uid="uid://cfnvpu7y6c7nu" path="res://Sound/ThreeLines.wav" id="12_fcj3h"]
@@ -21,7 +21,6 @@
 [ext_resource type="AudioStream" uid="uid://jvthburumka2" path="res://Sound/Movement.wav" id="17_lc6ri"]
 [ext_resource type="AudioStream" uid="uid://dxm1fkjo6g522" path="res://Sound/Hold.wav" id="18_5ed10"]
 [ext_resource type="AudioStream" uid="uid://5h5wm8bomui0" path="res://Sound/Error.wav" id="19_45we2"]
-[ext_resource type="Texture2D" uid="uid://b2pfilhuo1pdn" path="res://Sprites/Hexagon_White.png" id="22_2jxjx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gaa0i"]
 shader = ExtResource("2_hrjri")
@@ -36,13 +35,6 @@ font_color = Color(0, 0, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_k7ujp"]
 font_size = 141
 font_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Curve" id="Curve_r5mpa"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.128019, 0.641544), 1.35635, 1.35635, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="Gradient" id="Gradient_5yoe1"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 0, 1, 1)
 
 [node name="Game" type="Node2D" node_paths=PackedStringArray("timer", "soundManager", "grid", "ui", "leaderboard")]
 script = ExtResource("1_xep6p")
@@ -153,7 +145,18 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.411765, 0.439216, 0.878431, 1)
 
-[node name="Title" type="TextureRect" parent="UI/MainMenu"]
+[node name="TitleContainer" type="Control" parent="UI/MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+scale = Vector2(0.864975, 0.864975)
+
+[node name="Title" type="TextureRect" parent="UI/MainMenu/TitleContainer"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -344,6 +347,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LeaderBoard" type="Control" parent="UI"]
+visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 5
@@ -502,6 +506,22 @@ layout_mode = 2
 [node name="TextureRect_Next_6" type="TextureRect" parent="UI/GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 
+[node name="HelpUI" type="Control" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseMenu" type="Control" parent="UI"]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
 script = ExtResource("9_tkctc")
 musicPlayer = NodePath("MusicPlayer")
@@ -527,27 +547,9 @@ autoplay = true
 
 [node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 
-[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
-position = Vector2(-40, 0)
-amount = 200
-lifetime = 1.2
-explosiveness = 0.4
-randomness = 0.5
-texture = ExtResource("22_2jxjx")
-emission_shape = 3
-emission_rect_extents = Vector2(800, 50)
-gravity = Vector2(0, -500)
-angular_velocity_min = -100.0
-angular_velocity_max = 100.0
-radial_accel_min = -500.0
-radial_accel_max = 500.0
-scale_amount_min = 0.0
-scale_amount_max = 0.5
-scale_amount_curve = SubResource("Curve_r5mpa")
-color_ramp = SubResource("Gradient_5yoe1")
-hue_variation_min = 1.0
-hue_variation_max = 1.0
-
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="UI/MainMenu/VBoxContainer/Button_Play" to="UI" method="_on_button_play_pressed"]
+[connection signal="pressed" from="UI/MainMenu/VBoxContainer/Button_Settings" to="UI" method="_on_button_settings_pressed"]
+[connection signal="pressed" from="UI/MainMenu/VBoxContainer/Button_Help" to="UI" method="_on_button_help_pressed"]
 [connection signal="value_changed" from="UI/SettingsMenu/VBoxContainer/HSlider_Music" to="SoundManager" method="_on_h_slider_music_value_changed"]
 [connection signal="value_changed" from="UI/SettingsMenu/VBoxContainer/HSlider_VFX" to="SoundManager" method="_on_h_slider_vfx_value_changed"]

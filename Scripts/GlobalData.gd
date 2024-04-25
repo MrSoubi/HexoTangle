@@ -18,4 +18,5 @@ enum HexType {I, O, T, L, J, Z, S};
 
 enum State {FREE, BLOCKED, MOVING};
 
+enum GameState {MENU, PLAYING, PAUSED};
 var score: int

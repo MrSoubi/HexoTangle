@@ -8,6 +8,8 @@ extends Node2D
 
 @export var leaderboard: Node
 
+var state: GlobalData.GameState = GlobalData.GameState.MENU;
+
 var score: int = 0;
 var level: int = 1;
 var lines: int = 0;
@@ -72,3 +74,6 @@ func ResetGame():
 	timer.wait_time = 1.0;
 	$UI/VBoxContainer/LevelLabel.text = str(0);
 	grid.Reset()
+
+func StartGame():
+	ResetGame();
