@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dv0k3ctv3rp33"]
+[gd_scene load_steps=12 format=3 uid="uid://dv0k3ctv3rp33"]
 
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="1_7dekt"]
 [ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="2_7riej"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="5_d3vbs"]
 [ext_resource type="Script" path="res://Scripts/LeaderBoard.gd" id="6_n5x4s"]
 [ext_resource type="Script" path="res://GameUI.gd" id="7_kevkj"]
+[ext_resource type="Texture2D" uid="uid://bxbcpvreqo6nr" path="res://icon.svg" id="8_snm2o"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3112v"]
 font_size = 30
@@ -375,7 +376,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameUI" type="Control" parent="."]
-visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 0
@@ -390,6 +390,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
 
 [node name="VBoxContainer_Left" type="VBoxContainer" parent="GameUI/MarginContainer"]
 layout_mode = 2
@@ -453,21 +457,27 @@ size_flags_vertical = 4
 
 [node name="TextureRect_Next_1" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="TextureRect_Next_2" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="TextureRect_Next_3" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="TextureRect_Next_4" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="TextureRect_Next_5" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="TextureRect_Next_6" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="HelpUI" type="Control" parent="."]
 visible = false
