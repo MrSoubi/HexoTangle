@@ -125,7 +125,6 @@ offset = Vector2(0, 200)
 metadata/_edit_use_anchors_ = true
 
 [node name="MainMenu" type="Control" parent="UI"]
-visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 5

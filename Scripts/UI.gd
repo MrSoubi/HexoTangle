@@ -7,26 +7,16 @@ extends CanvasLayer
 @onready var help_ui = $HelpUI
 @onready var pause_menu = $PauseMenu
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func _on_button_play_pressed():
 	_display_game_ui();
 
 
 func _on_button_settings_pressed():
-	pass # Replace with function body.
+	_display_settings_menu();
 
 
 func _on_button_help_pressed():
-	pass # Replace with function body.
+	_display_help_ui();
 
 func _display_game_ui():
 	main_menu.visible = false;
