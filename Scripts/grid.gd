@@ -384,40 +384,43 @@ func addDirections(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> Gl
 			result = GlobalData.Direction.TOP_LEFT
 	
 	return result;
-	
+
+var canPlay: bool = false;
+
 func _input(event):
-	if event is InputEventKey and event.pressed:
-		var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-		
-		if event.keycode == KEY_DOWN:
-			localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0))
+	if (canPlay):
+		if event is InputEventKey and event.pressed:
+			var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+			
+			if event.keycode == KEY_DOWN:
+				localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0))
+				if isPositionValid(localHex):
+					score += 1;
+				soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
+			if event.keycode == KEY_RIGHT:
+				localHex.moveRight();
+				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
+			if event.keycode == KEY_LEFT:
+				localHex.moveLeft();
+				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
+			if event.keycode == KEY_UP:
+				localHex = tryRotationAntiClockwise();
+				soundManager.playSFX(GlobalData.SFX.ROTATION)
+			if event.keycode == KEY_Z:
+				localHex = tryRotationClockwise();
+				soundManager.playSFX(GlobalData.SFX.ROTATION)
+			if event.keycode == KEY_C:
+				localHex = tryHold();
+			if event.keycode == KEY_SPACE:
+				localHex = hardDrop();
+				soundManager.playSFX(GlobalData.SFX.HARD_DROP)
+			
 			if isPositionValid(localHex):
-				score += 1;
-			soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
-		if event.keycode == KEY_RIGHT:
-			localHex.moveRight();
-			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
-		if event.keycode == KEY_LEFT:
-			localHex.moveLeft();
-			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
-		if event.keycode == KEY_UP:
-			localHex = tryRotationAntiClockwise();
-			soundManager.playSFX(GlobalData.SFX.ROTATION)
-		if event.keycode == KEY_Z:
-			localHex = tryRotationClockwise();
-			soundManager.playSFX(GlobalData.SFX.ROTATION)
-		if event.keycode == KEY_C:
-			localHex = tryHold();
-		if event.keycode == KEY_SPACE:
-			localHex = hardDrop();
-			soundManager.playSFX(GlobalData.SFX.HARD_DROP)
-		
-		if isPositionValid(localHex):
-			undrawHexomino();
-			currentHexomino = localHex;
-			drawHexomino();
-		else:
-			soundManager.playSFX(GlobalData.SFX.ERROR)
+				undrawHexomino();
+				currentHexomino = localHex;
+				drawHexomino();
+			else:
+				soundManager.playSFX(GlobalData.SFX.ERROR)
 		
 
 func hardDrop() -> Hexomino:

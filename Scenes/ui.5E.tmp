@@ -1,0 +1,490 @@
+[gd_scene load_steps=11 format=3 uid="uid://dv0k3ctv3rp33"]
+
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="1_7dekt"]
+[ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="2_7riej"]
+[ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="3_qm6dp"]
+[ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="4_2u2gg"]
+[ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="5_d3vbs"]
+[ext_resource type="Script" path="res://Scripts/LeaderBoard.gd" id="6_n5x4s"]
+[ext_resource type="Script" path="res://GameUI.gd" id="7_kevkj"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_3112v"]
+font_size = 30
+font_color = Color(0, 0.572549, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_f871y"]
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_k7ujp"]
+font_size = 141
+font_color = Color(0, 0, 0, 1)
+
+[node name="UI" type="CanvasLayer"]
+follow_viewport_enabled = true
+script = ExtResource("1_7dekt")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -86.0
+offset_bottom = 623.0
+grow_horizontal = 0
+
+[node name="ThirdUpcoming" type="Sprite2D" parent="VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_7riej")
+centered = false
+offset = Vector2(-100, 100)
+
+[node name="SecondUpcoming" type="Sprite2D" parent="VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_qm6dp")
+centered = false
+offset = Vector2(-100, 600)
+
+[node name="FirstUpcoming" type="Sprite2D" parent="VBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_2u2gg")
+centered = false
+offset = Vector2(-100, 1100)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -48.0
+offset_right = 48.0
+offset_bottom = 92.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "SCORE"
+label_settings = SubResource("LabelSettings_3112v")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="LevelLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "SCORE"
+label_settings = SubResource("LabelSettings_3112v")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="HoldLabel" type="Sprite2D" parent="VBoxContainer/Control"]
+scale = Vector2(0.2, 0.2)
+offset = Vector2(0, 200)
+metadata/_edit_use_anchors_ = true
+
+[node name="MainMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 910.0
+grow_horizontal = 2
+
+[node name="BackGround" type="ColorRect" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.439216, 0.878431, 1)
+
+[node name="TitleContainer" type="Control" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+scale = Vector2(0.864975, 0.864975)
+
+[node name="Title" type="TextureRect" parent="MainMenu/TitleContainer"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -480.0
+offset_right = 480.0
+offset_bottom = 400.0
+grow_horizontal = 2
+texture = ExtResource("5_d3vbs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -33.0
+offset_right = 248.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button_Play" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+text = "PLAY"
+
+[node name="Button_Settings" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+text = "SETTINGS"
+
+[node name="Button_Help" type="Button" parent="MainMenu/VBoxContainer"]
+layout_mode = 2
+text = "HELP"
+
+[node name="CreditsLabel" type="Label" parent="MainMenu"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -23.0
+offset_right = 480.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "2024 - Emmanuel Bouis"
+label_settings = SubResource("LabelSettings_f871y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 910.0
+grow_horizontal = 2
+
+[node name="BackGround" type="ColorRect" parent="SettingsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.439216, 0.878431, 1)
+
+[node name="Label" type="Label" parent="SettingsMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "SETTINGS"
+label_settings = SubResource("LabelSettings_k7ujp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -33.0
+offset_right = 248.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label_Music" type="Label" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+text = "Music volume"
+
+[node name="HSlider_Music" type="HSlider" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label_VFX" type="Label" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+text = "Sound effects volume"
+
+[node name="HSlider_VFX" type="HSlider" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="Container_Hold" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="SettingsMenu/VBoxContainer/Container_Hold"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="SettingsMenu/VBoxContainer/Container_Hold"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Hold Queue
+"
+
+[node name="Container_Ghost" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckButton" type="CheckButton" parent="SettingsMenu/VBoxContainer/Container_Ghost"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Label" type="Label" parent="SettingsMenu/VBoxContainer/Container_Ghost"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Ghost Piece"
+
+[node name="Container_NextQueue" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="NextQueueLabel" type="Label" parent="SettingsMenu/VBoxContainer/Container_NextQueue"]
+layout_mode = 2
+text = "Number of Hexominos displayed in the Next Queue"
+
+[node name="SpinBox" type="SpinBox" parent="SettingsMenu/VBoxContainer/Container_NextQueue"]
+layout_mode = 2
+size_flags_horizontal = 8
+max_value = 6.0
+
+[node name="Container_LockDown" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="SettingsMenu/VBoxContainer/Container_LockDown"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Lock Down Mode"
+
+[node name="OptionButton" type="OptionButton" parent="SettingsMenu/VBoxContainer/Container_LockDown"]
+layout_mode = 2
+size_flags_horizontal = 8
+item_count = 3
+popup/item_0/text = "Infinite placement"
+popup/item_0/id = 0
+popup/item_1/text = "Extended"
+popup/item_1/id = 1
+popup/item_2/text = "Classic"
+popup/item_2/id = 2
+
+[node name="CreditsLabel" type="Label" parent="SettingsMenu"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -23.0
+offset_right = 480.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "2024 - Emmanuel Bouis"
+label_settings = SubResource("LabelSettings_f871y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LeaderBoard" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_right = 400.0
+offset_bottom = 910.0
+grow_horizontal = 2
+script = ExtResource("6_n5x4s")
+
+[node name="BackGround" type="ColorRect" parent="LeaderBoard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.411765, 0.439216, 0.878431, 1)
+
+[node name="Label" type="Label" parent="LeaderBoard"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "LEADERBOARD"
+label_settings = SubResource("LabelSettings_k7ujp")
+
+[node name="VBox_HighScores" type="VBoxContainer" parent="LeaderBoard"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -248.0
+offset_top = -33.0
+offset_right = 248.0
+offset_bottom = 33.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsLabel" type="Label" parent="LeaderBoard"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -23.0
+offset_right = 480.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "2024 - Emmanuel Bouis"
+label_settings = SubResource("LabelSettings_f871y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameUI" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("7_kevkj")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer_Left" type="VBoxContainer" parent="GameUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="VBoxContainer_Hold" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="TextureRect_Hold" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Hold"]
+layout_mode = 2
+
+[node name="VBoxContainer_Score" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Score"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="Label_Value" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Score"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Time" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Time"]
+layout_mode = 2
+text = "TIME"
+
+[node name="Label_Value" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Time"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Lines" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Lines"]
+layout_mode = 2
+text = "LINES"
+
+[node name="Label_Value" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Lines"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Level" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Level"]
+layout_mode = 2
+text = "LEVEL"
+
+[node name="Label_Value" type="Label" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Level"]
+layout_mode = 2
+text = "###"
+
+[node name="VBoxContainer_Right" type="VBoxContainer" parent="GameUI/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="TextureRect_Next_1" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_2" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_3" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_4" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_5" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="TextureRect_Next_6" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
+layout_mode = 2
+
+[node name="HelpUI" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="pressed" from="MainMenu/VBoxContainer/Button_Play" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="MainMenu/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="MainMenu/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]

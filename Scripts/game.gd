@@ -14,6 +14,7 @@ var score: int = 0;
 var level: int = 1;
 var lines: int = 0;
 var linesToDoUntilNextLevel = 5;
+var time: float = 0;
 
 func _ready():
 	if Engine.is_editor_hint():
@@ -22,8 +23,9 @@ func _ready():
 		
 	if not Engine.is_editor_hint():
 		initializeLeaderBoard();
-		timer.wait_time = 1.0;
 		$UI/VBoxContainer/LevelLabel.text = str(0);
+		
+		ui.display_main_menu();
 
 func initializeLeaderBoard():
 	SilentWolf.configure({
@@ -32,7 +34,7 @@ func initializeLeaderBoard():
 		"log_level": 0
 	})
 	
-	leaderboard.render();
+	#leaderboard.render();
 
 func _on_timer_timeout():
 	var scoreAndLines = grid.update();
@@ -49,13 +51,15 @@ func _on_timer_timeout():
 	
 	score += scoreAndLines.x * level;
 	lines += scoreAndLines.y;
-	print(str(lines))
+	
 	if(lines >= linesToDoUntilNextLevel):
 		level += 1
 		linesToDoUntilNextLevel += 5 * level
-		$UI/VBoxContainer/LevelLabel.text = str(level);
-	$UI/VBoxContainer/ScoreLabel.text = str(score);
+	
+	time += timer.wait_time;
 	timer.wait_time = GetFallSpeed()
+	
+	ui.update_values(score, lines, level, time);
 
 func GetFallSpeed() -> float:
 	return (0.8 - ((level - 1) * 0.007)) ** (level - 1)
@@ -63,17 +67,24 @@ func GetFallSpeed() -> float:
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
-			SilentWolf.Scores.save_score("admin", score);
-			ResetGame();
+			pause();
+			ui.display_pause_menu();
 
 func ResetGame():
 	score = 0
 	level = 1
 	lines = 0
 	linesToDoUntilNextLevel = 5
+	time = 0;
 	timer.wait_time = 1.0;
-	$UI/VBoxContainer/LevelLabel.text = str(0);
+	ui.update_values(score, lines, level, time);
 	grid.Reset()
 
-func StartGame():
+func _on_ui_start_game():
 	ResetGame();
+	timer.start();
+	grid.canPlay = true;
+
+func pause():
+	timer.set_paused(true);
+	grid.canPlay = false;

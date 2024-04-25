@@ -7,18 +7,27 @@ extends CanvasLayer
 @onready var help_ui = $HelpUI
 @onready var pause_menu = $PauseMenu
 
-func _on_button_play_pressed():
-	_display_game_ui();
+signal startGame;
 
+func _on_button_play_pressed():
+	display_game_ui();
+	startGame.emit();
 
 func _on_button_settings_pressed():
-	_display_settings_menu();
-
+	display_settings_menu();
 
 func _on_button_help_pressed():
-	_display_help_ui();
+	display_help_ui();
 
-func _display_game_ui():
+func display_main_menu():
+	main_menu.visible = true;
+	settings_menu.visible = false;
+	leader_board.visible = false;
+	game_ui.visible = false;
+	help_ui.visible = false;
+	pause_menu.visible = false;
+
+func display_game_ui():
 	main_menu.visible = false;
 	settings_menu.visible = false;
 	leader_board.visible = false;
@@ -26,7 +35,7 @@ func _display_game_ui():
 	help_ui.visible = false;
 	pause_menu.visible = false;
 
-func _display_settings_menu():
+func display_settings_menu():
 	main_menu.visible = false;
 	settings_menu.visible = true;
 	leader_board.visible = false;
@@ -34,7 +43,7 @@ func _display_settings_menu():
 	help_ui.visible = false;
 	pause_menu.visible = false;
 
-func _display_help_ui():
+func display_help_ui():
 	main_menu.visible = false;
 	settings_menu.visible = false;
 	leader_board.visible = false;
@@ -42,7 +51,7 @@ func _display_help_ui():
 	help_ui.visible = true;
 	pause_menu.visible = false;
 
-func _display_leaderboard():
+func display_leaderboard():
 	main_menu.visible = false;
 	settings_menu.visible = false;
 	leader_board.visible = true;
@@ -50,10 +59,16 @@ func _display_leaderboard():
 	help_ui.visible = false;
 	pause_menu.visible = false;
 
-func _display_pause_menu():
+func display_pause_menu():
 	main_menu.visible = false;
 	settings_menu.visible = false;
 	leader_board.visible = false;
 	game_ui.visible = false;
 	help_ui.visible = false;
 	pause_menu.visible = true;
+
+func update_values(score, lines, level, time):
+	game_ui.set_score(score);
+	game_ui.set_time(time);
+	game_ui.set_lines(lines);
+	game_ui.set_level(level);
