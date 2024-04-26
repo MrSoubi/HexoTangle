@@ -1,6 +1,6 @@
 extends Control
 
-@onready var texture_rect_hold = $MarginContainer/VBoxContainer_Left/VBoxContainer_Hold/TextureRect_Hold
+@onready var texture_rect_hold = $MarginContainer/VBoxContainer_Left/MarginContainer/TextureRect_Hold
 @onready var score_value = $MarginContainer/VBoxContainer_Left/VBoxContainer_Score/Label_Value
 @onready var time_value = $MarginContainer/VBoxContainer_Left/VBoxContainer_Time/Label_Value
 @onready var lines_value = $MarginContainer/VBoxContainer_Left/VBoxContainer_Lines/Label_Value

@@ -83,8 +83,19 @@ func ResetGame():
 func _on_ui_start_game():
 	ResetGame();
 	timer.start();
+	timer.set_paused(false);
+	state = GlobalData.GameState.PLAYING;
 	grid.canPlay = true;
 
 func pause():
 	timer.set_paused(true);
 	grid.canPlay = false;
+	state = GlobalData.GameState.PAUSED;
+
+func _on_ui_quit_game():
+	state = GlobalData.GameState.MENU;
+
+func _on_ui_resume_game():
+	state = GlobalData.GameState.PLAYING;
+	timer.set_paused(false);
+	grid.canPlay = true;

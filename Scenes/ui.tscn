@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dv0k3ctv3rp33"]
+[gd_scene load_steps=13 format=3 uid="uid://dv0k3ctv3rp33"]
 
 [ext_resource type="Script" path="res://Scripts/UI.gd" id="1_7dekt"]
 [ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="2_7riej"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/LeaderBoard.gd" id="6_n5x4s"]
 [ext_resource type="Script" path="res://GameUI.gd" id="7_kevkj"]
 [ext_resource type="Texture2D" uid="uid://bxbcpvreqo6nr" path="res://icon.svg" id="8_snm2o"]
+[ext_resource type="Script" path="res://Scenes/HelpUI.gd" id="9_jo1lo"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_3112v"]
 font_size = 30
@@ -376,6 +377,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameUI" type="Control" parent="."]
+visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 0
@@ -400,11 +402,13 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 
-[node name="VBoxContainer_Hold" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
 layout_mode = 2
+theme_override_constants/margin_bottom = 150
 
-[node name="TextureRect_Hold" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Left/VBoxContainer_Hold"]
+[node name="TextureRect_Hold" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Left/MarginContainer"]
 layout_mode = 2
+texture = ExtResource("8_snm2o")
 
 [node name="VBoxContainer_Score" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
 layout_mode = 2
@@ -479,6 +483,55 @@ texture = ExtResource("8_snm2o")
 layout_mode = 2
 texture = ExtResource("8_snm2o")
 
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 800.0
+offset_bottom = 910.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -258.5
+offset_top = -268.0
+offset_right = 258.5
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 200
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Button_Resume" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESUME"
+
+[node name="Button_Settings" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="Button_Help" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HOW TO PLAY"
+
+[node name="Button_Quit" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
 [node name="HelpUI" type="Control" parent="."]
 visible = false
 custom_minimum_size = Vector2(800, 910)
@@ -486,15 +539,210 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("9_jo1lo")
 
-[node name="PauseMenu" type="Control" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="HelpUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -329.0
+offset_top = -203.5
+offset_right = 329.0
+offset_bottom = 203.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="ColorRect" type="ColorRect" parent="HelpUI/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpUI/MarginContainer"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="HelpUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HOW TO PLAY"
+horizontal_alignment = 1
+
+[node name="HBoxContainer_HowToPlay" type="HBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer_Move" type="MarginContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Move"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Move/VBoxContainer"]
+layout_mode = 2
+text = "MOVE"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Move/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Use right and left arrow keys to move the falling Hexomino in the corresponding direction."
+autowrap_mode = 2
+
+[node name="MarginContainer_Rotate" type="MarginContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Rotate"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Rotate/VBoxContainer"]
+layout_mode = 2
+text = "ROTATE"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Rotate/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Use up arrow and Z key to rotate the falling Hexomino."
+autowrap_mode = 2
+
+[node name="MarginContainer_Drop" type="MarginContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Drop"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Drop/VBoxContainer"]
+layout_mode = 2
+text = "DROP"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_HowToPlay/MarginContainer_Drop/VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Use space key to Hard Drop the falling Hexomino into place."
+autowrap_mode = 2
+
+[node name="VBoxContainer_Controls" type="VBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer"]
 visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="Label_MoveLeft" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Move left: left arrow"
+
+[node name="Label_MoveRight" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Move right: right arrow"
+
+[node name="Label_RotateAntiClockWise" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Rotate anti-clockwise: up arrow"
+
+[node name="Label_RotateClockWise" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Rotate clockwise: z"
+
+[node name="Label_SoftDrop" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Soft drop: down arrow"
+
+[node name="Label_HardDrop" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Hard drop: space"
+
+[node name="Label_Hold" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Hold: c"
+
+[node name="Label_Pause" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/VBoxContainer_Controls"]
+layout_mode = 2
+text = "Pause: escape"
+
+[node name="HBoxContainer_GeneralInfo" type="HBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_GeneralInfo"]
+layout_mode = 2
+text = "Win the game"
+
+[node name="HBoxContainer_Buttons" type="HBoxContainer" parent="HelpUI/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Button_Left" type="Button" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons"]
+layout_mode = 2
+text = "<"
+
+[node name="Button_Back" type="Button" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons"]
+layout_mode = 2
+text = "BACK"
+
+[node name="Button_Right" type="Button" parent="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons"]
+layout_mode = 2
+text = ">"
+
+[node name="GameOverMenu" type="Control" parent="."]
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("9_jo1lo")
+
+[node name="MarginContainer" type="MarginContainer" parent="GameOverMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -329.0
+offset_top = -203.5
+offset_right = 329.0
+offset_bottom = 203.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 300
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 300
+
+[node name="ColorRect" type="ColorRect" parent="GameOverMenu/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Label_Title" type="Label" parent="GameOverMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="Button_NewGame" type="Button" parent="GameOverMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "RETRY"
+
+[node name="Button_Quit" type="Button" parent="GameOverMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
 
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Play" to="." method="_on_button_play_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Resume" to="." method="_on_button_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]
+[connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Left" to="HelpUI" method="_on_button_left_pressed"]
+[connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Back" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Right" to="HelpUI" method="_on_button_right_pressed"]
+[connection signal="pressed" from="GameOverMenu/MarginContainer/VBoxContainer/Button_NewGame" to="." method="_on_button_new_game_pressed"]
+[connection signal="pressed" from="GameOverMenu/MarginContainer/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]

@@ -8,6 +8,8 @@ extends CanvasLayer
 @onready var pause_menu = $PauseMenu
 
 signal startGame;
+signal resumeGame;
+signal quitGame;
 
 func _on_button_play_pressed():
 	display_game_ui();
@@ -18,6 +20,14 @@ func _on_button_settings_pressed():
 
 func _on_button_help_pressed():
 	display_help_ui();
+
+func _on_button_resume_pressed():
+	pause_menu.visible = false;
+	resumeGame.emit();
+
+func _on_button_quit_pressed():
+	display_main_menu();
+	quitGame.emit();
 
 func display_main_menu():
 	main_menu.visible = true;
@@ -44,12 +54,7 @@ func display_settings_menu():
 	pause_menu.visible = false;
 
 func display_help_ui():
-	main_menu.visible = false;
-	settings_menu.visible = false;
-	leader_board.visible = false;
-	game_ui.visible = false;
 	help_ui.visible = true;
-	pause_menu.visible = false;
 
 func display_leaderboard():
 	main_menu.visible = false;
@@ -60,11 +65,6 @@ func display_leaderboard():
 	pause_menu.visible = false;
 
 func display_pause_menu():
-	main_menu.visible = false;
-	settings_menu.visible = false;
-	leader_board.visible = false;
-	game_ui.visible = false;
-	help_ui.visible = false;
 	pause_menu.visible = true;
 
 func update_values(score, lines, level, time):
@@ -72,3 +72,11 @@ func update_values(score, lines, level, time):
 	game_ui.set_time(time);
 	game_ui.set_lines(lines);
 	game_ui.set_level(level);
+
+func _on_button_back_pressed():
+	help_ui.visible = false;
+
+
+func _on_button_new_game_pressed():
+	display_game_ui();
+	startGame.emit();

@@ -68,4 +68,6 @@ autoplay = true
 [node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
+[connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]
 [connection signal="startGame" from="UI" to="." method="_on_ui_start_game"]
