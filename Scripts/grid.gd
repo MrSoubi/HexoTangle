@@ -2,25 +2,6 @@ extends Node2D
 
 @export var soundManager: Node
 
-var textureFree: Texture2D = load("res://Sprites/Hex_Empty.png");
-var textureBlocked: Texture2D = load("res://Sprites/Hex_Black.png");
-var texture_O: Texture2D = load("res://Sprites/Hex_Yellow.png")
-var texture_I: Texture2D = load("res://Sprites/Hex_Blue.png")
-var texture_T: Texture2D = load("res://Sprites/Hex_Purple.png")
-var texture_L: Texture2D = load("res://Sprites/Hex_Orange.png")
-var texture_J: Texture2D = load("res://Sprites/Hex_DarkBlue.png")
-var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
-var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
-var texturePhantom : Texture2D = load("res://Sprites/Hex_Phantom.png")
-
-var texture_Form_O: Texture2D = load("res://Sprites/Form_O.png")
-var texture_Form_I: Texture2D = load("res://Sprites/Form_I.png")
-var texture_Form_T: Texture2D = load("res://Sprites/Form_T.png")
-var texture_Form_L: Texture2D = load("res://Sprites/Form_L.png")
-var texture_Form_J: Texture2D = load("res://Sprites/Form_J.png")
-var texture_Form_S: Texture2D = load("res://Sprites/Form_S.png")
-var texture_Form_Z: Texture2D = load("res://Sprites/Form_Z.png")
-
 const GRID_HEIGHT: int = 21;
 const GRID_WIDTH: int = 12;
 
@@ -36,18 +17,18 @@ const startingPosition = Vector2(1,GRID_WIDTH/2);
 
 const ORIGIN: Vector2 = Vector2(100, 100);
 
-
 var cell = load("res://Cell.tscn");
 var hexomino = load("res://Scripts/hexomino.gd");
-var sepLine = load("res://separation_line.tscn")
+var sepLine = load("res://separation_line.tscn");
 
-var currentHexomino;
-var phantomHexomino;
-var heldHexomino = -1;
+var current_hexomino: Hexomino;
+var current_hexomino_position: Vector2i;
+var phantom_hexomino;
+var held_hexomino = -1;
 
-var bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
+
 var grid = [];
-var nextQueue = []; #stocks GlobalData.HexTypes
+
 var sepArray = []; # separation lines
 
 var canHold: bool = true;
@@ -56,6 +37,8 @@ var score = 0;
 
 var offsetX = -14.5
 var offsetY = -18.4
+
+signal figure_blocked(line_count : int, cell_count : int, is_hard_drop : bool);
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -78,118 +61,126 @@ func _ready():
 		grid.append(r);
 	
 	for row in range(GRID_HEIGHT):
-		grid[row][0].setState(GlobalData.State.BLOCKED, textureBlocked)
-		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[row][0].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
+		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
 	
 	for col in range(GRID_WIDTH):
-		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
 	
-	nextQueue.append(getRandomHexType());
-	nextQueue.append(getRandomHexType());
-	nextQueue.append(getRandomHexType());
 	
 	@warning_ignore("integer_division")
-	var type = getNextHexomino()
-	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
+	#var type = getNextHexomino()
+	#current_hexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GlobalData.GetTextureFromType(type));
 
-
-	$"../UI/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
-	$"../UI/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
-	$"../UI/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
 	
-	drawHexomino();
+	draw_hexomino();
 
-func Reset():
+func get_occupied_cells_by_hexomino(position : Vector2i, hex : Hexomino) -> Array:
+	var positions = [];
+	
+	positions.append(position);
+	
+	match hex.type:
+		GlobalData.HexType.I:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP_RIGHT, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_LEFT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.BOTTOM_LEFT, hex.dir)));
+		GlobalData.HexType.O:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_RIGHT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.BOTTOM, hex.dir)));
+		GlobalData.HexType.T:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_LEFT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.BOTTOM_RIGHT, hex.dir)));
+		GlobalData.HexType.L:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP_LEFT, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_RIGHT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.TOP_RIGHT, hex.dir)));
+		GlobalData.HexType.J:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP_RIGHT, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_LEFT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.TOP_LEFT, hex.dir)));
+		GlobalData.HexType.Z:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_LEFT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.TOP_LEFT, hex.dir)));
+		GlobalData.HexType.S:
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.TOP, hex.dir)));
+			positions.append(get_neighbour(current_hexomino_position, GlobalData.add_directions(GlobalData.Direction.BOTTOM_RIGHT, hex.dir)));
+			positions.append(get_neighbour(positions[2], GlobalData.add_directions(GlobalData.Direction.BOTTOM, hex.dir)));
+	
+	return positions;
+
+func reset():
 	canHold = true;
-	heldHexomino = -1;
+	held_hexomino = -1;
 	$"../UI/VBoxContainer/Control/HoldLabel".texture = null;
 	
-	bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
-	nextQueue = []; #stocks GlobalData.HexTypes
-	nextQueue.append(getRandomHexType());
-	nextQueue.append(getRandomHexType());
-	nextQueue.append(getRandomHexType());
+	#nextQueue = []; #stocks GlobalData.HexTypes
+
 	
 	score = 0;
 	
-	var type = getNextHexomino()
-	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
+	#var type = getNextHexomino()
+	#current_hexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GlobalData.GetTextureFromType(type));
 	
 	for n in range(GRID_HEIGHT):
 		for m in range(GRID_WIDTH):
-			grid[n][m].setState(GlobalData.State.FREE, textureFree)
+			grid[n][m].setState(GlobalData.State.FREE, GlobalData.textureFree)
 	
 	for row in range(GRID_HEIGHT):
-		grid[row][0].setState(GlobalData.State.BLOCKED, textureBlocked)
-		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[row][0].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
+		grid[row][GRID_WIDTH-1].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
 	
 	for col in range(GRID_WIDTH):
-		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, textureBlocked)
+		grid[GRID_HEIGHT-1][col].setState(GlobalData.State.BLOCKED, GlobalData.textureBlocked)
 
-func GetTextureFromHexType(t: GlobalData.HexType) -> Texture2D:
-	var result;
-	
-	match(t):
-		GlobalData.HexType.O:
-			result = texture_Form_O
-		GlobalData.HexType.I:
-			result = texture_Form_I
-		GlobalData.HexType.T:
-			result = texture_Form_T
-		GlobalData.HexType.L:
-			result = texture_Form_L
-		GlobalData.HexType.J:
-			result = texture_Form_J
-		GlobalData.HexType.S:
-			result = texture_Form_S
-		GlobalData.HexType.Z:
-			result = texture_Form_Z
-	
-	return result
 
-func drawPhantom():
-	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+
+func draw_phantom():
+	var localHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
 	
-	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
+	localHex.move(GlobalData.add_directions(GlobalData.Direction.BOTTOM, 0));
 	
-	while (isPositionValid(localHex)):
-		localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
+	while (is_position_valid(localHex)):
+		localHex.move(GlobalData.add_directions(GlobalData.Direction.BOTTOM, 0));
 	
-	localHex.move(addDirections(GlobalData.Direction.TOP, 0))
+	localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP, 0))
 	
-	phantomHexomino = localHex;
+	phantom_hexomino = localHex;
 	
-	var localPositions = phantomHexomino.getPositions();
+	var localPositions = phantom_hexomino.getPositions();
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, texturePhantom)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, GlobalData.texturePhantom)
 
-func undrawPhantom():
-	if (phantomHexomino != null):
-		var localPositions = phantomHexomino.getPositions();
+func undraw_phantom():
+	if (phantom_hexomino != null):
+		var localPositions = phantom_hexomino.getPositions();
 			
 		for i in range(4):
 			var localCell = localPositions[i]
-			grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, textureFree)
+			grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, GlobalData.textureFree)
 
-func drawHexomino():
-	drawPhantom();
-	var localPositions = currentHexomino.getPositions();
+func draw_hexomino():
+	draw_phantom();
+	var localPositions = current_hexomino.getPositions();
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(GlobalData.State.MOVING, currentHexomino.texture)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.MOVING, current_hexomino.texture)
 
-func undrawHexomino():
-	undrawPhantom();
-	var localPositions = currentHexomino.getPositions();
+func undraw_hexomino():
+	undraw_phantom();
+	var localPositions = current_hexomino.getPositions();
 	
 	for i in range(4):
 		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, textureFree)
+		grid[localCell.x][localCell.y].setState(GlobalData.State.FREE, GlobalData.textureFree)
 
-func isInverseLineFull(row: int) -> bool:
+func is_inverse_line_full(row: int) -> bool:
 	var result: bool = true;
 	
 	for i in range(GRID_WIDTH):
@@ -200,7 +191,7 @@ func isInverseLineFull(row: int) -> bool:
 	
 	return result;
 	
-func isLineFull(row: int) -> bool:
+func is_line_full(row: int) -> bool:
 	var result: bool = true;
 	
 	for i in range(GRID_WIDTH):
@@ -208,57 +199,57 @@ func isLineFull(row: int) -> bool:
 	
 	return result;
 
-func getFullLines() -> Array:
+func get_full_lines() -> Array:
 	var result = [];
 	
 	for i in range(GRID_HEIGHT):
-		if (isLineFull(i) && i != GRID_HEIGHT-1):
+		if (is_line_full(i) && i != GRID_HEIGHT-1):
 			result.append(i);
 	
 	return result;
 
-func getFullInverseLines() -> Array:
+func get_full_inverse_lines() -> Array:
 	var result = [];
 	
 	for i in range(GRID_HEIGHT):
-		if (isInverseLineFull(i) && i != GRID_HEIGHT-1):
+		if (is_inverse_line_full(i) && i != GRID_HEIGHT-1):
 			result.append(i);
 	
 	return result;
 	
-func handleFullLines():
-	var fullLines = getFullLines();
+func handle_full_lines():
+	var fullLines = get_full_lines();
 	
 	for row in fullLines:
-		removeLine(row);
+		remove_line(row);
 	
-	#fullLines = getFullInverseLines();
+	#fullLines = get_full_inverse_lines();
 	
 	for row in fullLines:
-		#removeInverseLine(row);
+		#remove_inverse_line(row);
 		pass
 	
 	return fullLines.size();
 
-func removeLine(row: int):
+func remove_line(row: int):
 	if (row == 0):
 		for col in range(1, GRID_WIDTH-1):
-			grid[row][col].setState(GlobalData.State.FREE, textureFree);
+			grid[row][col].setState(GlobalData.State.FREE, GlobalData.textureFree);
 	else:
 		for col in range(1, GRID_WIDTH-1):
 			grid[row][col].setState(grid[row-1][col].state, grid[row-1][col].get_node("Sprite2D").texture);
-		removeLine(row-1)
+		remove_line(row-1)
 
-func removeInverseLine(row: int):
+func remove_inverse_line(row: int):
 	if (row == 0):
 		for col in range(1, GRID_WIDTH-1):
-			grid[row][col].setState(GlobalData.State.FREE, textureFree);
+			grid[row][col].setState(GlobalData.State.FREE, GlobalData.textureFree);
 	else:
 		for col in range(1, GRID_WIDTH-1):
 			grid[row][col].setState(grid[row-1][col].state, grid[row-1][col].get_node("Sprite2D").texture);
-		removeLine(row-1)
+		remove_line(row-1)
 		
-func isPositionValid(hex: Hexomino) -> bool:
+func is_position_valid(hex: Hexomino) -> bool:
 	var result;
 	
 	if (hex != null):
@@ -277,293 +268,136 @@ func isPositionValid(hex: Hexomino) -> bool:
 	
 	return result;
 
-func getNextHexomino() -> GlobalData.HexType:
-	var result = nextQueue[0]
-	nextQueue[0] = nextQueue[1]
-	nextQueue[1] = nextQueue[2]
-	nextQueue[2] = getRandomHexType()
-	
-	$"../UI/VBoxContainer2/ThirdUpcoming".texture = GetTextureFromHexType(nextQueue[2])
-	$"../UI/VBoxContainer2/SecondUpcoming".texture = GetTextureFromHexType(nextQueue[1])
-	$"../UI/VBoxContainer2/FirstUpcoming".texture = GetTextureFromHexType(nextQueue[0])
-	
-	return result
 
-func update() -> Vector2i:
-	var localScore = score
-	score = 0
-	var lines = 0;
+func try_spawn_hexomino(hex: Hexomino) -> bool:
+	current_hexomino = hex;
+	draw_hexomino();
 	
-	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
-	if isPositionValid(localHex):
-		undrawHexomino();
-		currentHexomino = localHex;
-		drawHexomino();
-	else:
-		lines = endTurn();
-	
-	match (lines):
-		1:
-			localScore += 100
-		2:
-			localScore += 300
-		3:
-			localScore += 500
-		4:
-			localScore += 800
-	
-	return Vector2i(localScore, lines); #score and number of lines
+	return true;
 
-func endTurn() -> int:
-	blockHexomino();
-	var lines = handleFullLines();
-	@warning_ignore("integer_division")
-	GenNewHexomino();
-	return lines;
-
-func GenNewHexomino():
-	var type = getNextHexomino()
-	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
-	drawHexomino();
-
-func GetTextureFromType(type: GlobalData.HexType) -> Texture2D:
-	var result: Texture2D;
+func get_neighbour(position: Vector2, direction: GlobalData.Direction) -> Vector2:
+	var localX;
+	var localY;
 	
-	match(type):
-		GlobalData.HexType.I:
-			result = texture_I;
-		GlobalData.HexType.O:
-			result = texture_O;
-		GlobalData.HexType.T:
-			result = texture_T;
-		GlobalData.HexType.L:
-			result = texture_L;
-		GlobalData.HexType.J:
-			result = texture_J;
-		GlobalData.HexType.Z:
-			result = texture_Z;
-		GlobalData.HexType.S:
-			result = texture_S;
-		
-	return result;
+	match direction:
+		GlobalData.Direction.TOP:
+			localX = position.x - 1;
+			localY = position.y;
+		GlobalData.Direction.TOP_RIGHT:
+			localX = position.x - int(int(position.y) % 2 == 0);
+			localY = position.y + 1;
+		GlobalData.Direction.BOTTOM_RIGHT:
+			localX = position.x + int(int(position.y) % 2 == 1);
+			localY = position.y + 1;
+		GlobalData.Direction.BOTTOM:
+			localX = position.x + 1;
+			localY = position.y;
+		GlobalData.Direction.BOTTOM_LEFT:
+			localX = position.x + int(int(position.y) % 2 == 1);
+			localY = position.y - 1;
+		GlobalData.Direction.TOP_LEFT:
+			localX = position.x - int(int(position.y) % 2 == 0);
+			localY = position.y - 1;
+	
+	return Vector2(localX, localY);
 
-func getRandomHexType() -> GlobalData.HexType:
-	var k = bag[randi_range(0, bag.size()-1)];
-	bag.erase(k);
+func block_hexomino():
+	var localPositions = current_hexomino.getPositions();
 	
-	print(k)
-	print(bag)
+	for i in range(4):
+		var localCell = localPositions[i]
+		grid[localCell.x][localCell.y].setState(GlobalData.State.BLOCKED, current_hexomino.texture)
 	
-	if (bag.size() == 0):
-		bag = [GlobalData.HexType.I, GlobalData.HexType.O, GlobalData.HexType.T, GlobalData.HexType.L, GlobalData.HexType.J, GlobalData.HexType.Z, GlobalData.HexType.S];
-	
-	return k;
+	phantom_hexomino = null;
+	canHold = true;
 
-signal gameOver;
-func blockHexomino():
-	if (currentHexomino.position == startingPosition):
-		gameOver.emit();
-	else:
-		var localPositions = currentHexomino.getPositions();
-		
-		for i in range(4):
-			var localCell = localPositions[i]
-			grid[localCell.x][localCell.y].setState(GlobalData.State.BLOCKED, currentHexomino.texture)
-		
-		phantomHexomino = null;
-		canHold = true;
 
-func addDirections(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> GlobalData.Direction:
-	var val1 = int(dir1);
-	var val2 = int(dir2);
-	
-	var result: GlobalData.Direction;
-	
-	match (val1 + val2) % 6:
-		0:
-			result = GlobalData.Direction.TOP
-		1:
-			result = GlobalData.Direction.TOP_RIGHT
-		2:
-			result = GlobalData.Direction.BOTTOM_RIGHT
-		3:
-			result = GlobalData.Direction.BOTTOM
-		4:
-			result = GlobalData.Direction.BOTTOM_LEFT
-		5:
-			result = GlobalData.Direction.TOP_LEFT
-	
-	return result;
-
-var canPlay: bool = false;
-
-func tryMoveLeft(hex: Hexomino) -> Hexomino:
-	var localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+func try_move_left(hex: Hexomino) -> bool:
+	var localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 	
 	if int(localHex.position.y) % 2 == 0:
 		localHex.move(GlobalData.Direction.BOTTOM_LEFT);
-		if (not isPositionValid(localHex)):
-			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+		if (not is_position_valid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 			localHex.move(GlobalData.Direction.TOP_LEFT);
 	else:
 		localHex.move(GlobalData.Direction.TOP_LEFT);
-		if (not isPositionValid(localHex)):
-			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+		if (not is_position_valid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 			localHex.move(GlobalData.Direction.BOTTOM_LEFT);
 	
-	return localHex;
+	return true;
 
-func tryMoveRight(hex: Hexomino) -> Hexomino:
-	var localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+func try_move_right(hex: Hexomino) -> bool:
+	var localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 	
 	if int(localHex.position.y) % 2 == 0:
 		localHex.move(GlobalData.Direction.BOTTOM_RIGHT);
-		if (not isPositionValid(localHex)):
-			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+		if (not is_position_valid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 			localHex.move(GlobalData.Direction.TOP_RIGHT);
 	else:
 		localHex.move(GlobalData.Direction.TOP_RIGHT);
-		if (not isPositionValid(localHex)):
-			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+		if (not is_position_valid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, current_hexomino.type, hex.texture);
 			localHex.move(GlobalData.Direction.BOTTOM_RIGHT);
 	
 	return localHex;
 
-signal hexChanged;
-signal hardDropDone;
+func try_soft_drop() -> bool:
+	return true;
 
-func _input(event):
-	var isInputHardDrop = false;
-	if (canPlay):
-		if event is InputEventKey and event.pressed:
-			var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-			
-			if event.keycode == KEY_DOWN:
-				localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0))
-				if isPositionValid(localHex):
-					score += 1;
-				soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
-				hexChanged.emit();
-			if event.keycode == KEY_RIGHT:
-				localHex = tryMoveRight(localHex);
-				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
-			if event.keycode == KEY_LEFT:
-				localHex = tryMoveLeft(localHex);
-				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
-			if event.keycode == KEY_UP:
-				localHex = tryRotationAntiClockwise();
-				soundManager.playSFX(GlobalData.SFX.ROTATION)
-			if event.keycode == KEY_Z:
-				localHex = tryRotationClockwise();
-				soundManager.playSFX(GlobalData.SFX.ROTATION)
-			if event.keycode == KEY_C:
-				localHex = tryHold();
-			if event.keycode == KEY_SPACE:
-				localHex = tryHardDrop();
-				isInputHardDrop = true;
-				soundManager.playSFX(GlobalData.SFX.HARD_DROP)
-			
-			if isPositionValid(localHex):
-				undrawHexomino();
-				currentHexomino = localHex;
-				drawHexomino();
-			else:
-				soundManager.playSFX(GlobalData.SFX.ERROR)
-			
-			if (isInputHardDrop):
-				blockHexomino();
-				GenNewHexomino();
-
-func tryHardDrop() -> Hexomino:
-	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+func try_hard_drop() -> bool:
+	var localHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
 	
-	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
+	localHex.move(GlobalData.add_directions(GlobalData.Direction.BOTTOM, 0));
 	
-	while (isPositionValid(localHex)):
+	while (is_position_valid(localHex)):
 		score += 2
-		localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
+		localHex.move(GlobalData.add_directions(GlobalData.Direction.BOTTOM, 0));
 	
-	localHex.move(addDirections(GlobalData.Direction.TOP, 0))
+	localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP, 0))
 	
-	hardDropDone.emit()
-	return localHex;
+	return true;
 
-func tryRotationAntiClockwise() -> Hexomino:
-	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-	var baseHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+func try_rotate_anti_clockwise() -> bool:
+	var localHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
+	var baseHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
 	
 	localHex.rotateAntiClockwise();
 	
-	if (!isPositionValid(localHex)):
-		localHex.move(addDirections(GlobalData.Direction.TOP_LEFT, 0));
+	if (!is_position_valid(localHex)):
+		localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP_LEFT, 0));
 	
-		if (!isPositionValid(localHex)):
+		if (!is_position_valid(localHex)):
 			localHex = baseHex;
-			localHex.rotateAntiClockwise();
-			localHex.move(addDirections(GlobalData.Direction.TOP_RIGHT, 0));
+			localHex.rotate_anti_clockwise();
+			localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP_RIGHT, 0));
 		
-			if (!isPositionValid(localHex)):
+			if (!is_position_valid(localHex)):
 				localHex = baseHex;
-				localHex.rotateAntiClockwise();
-				localHex.move(addDirections(GlobalData.Direction.TOP, 0));
+				localHex.rotate_anti_clockwise();
+				localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP, 0));
 	
-	return localHex;
+	return true;
 
-func tryRotationClockwise() -> Hexomino:
-	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
-	var baseHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
+func try_rotate_clockwise() -> bool:
+	var localHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
+	var baseHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
 	
 	localHex.rotateClockwise();
 	
-	if (!isPositionValid(localHex)):
-		localHex.move(addDirections(GlobalData.Direction.TOP_RIGHT, 0));
+	if (!is_position_valid(localHex)):
+		localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP_RIGHT, 0));
 	
-		if (!isPositionValid(localHex)):
+		if (!is_position_valid(localHex)):
 			localHex = baseHex;
-			localHex.rotateClockwise();
-			localHex.move(addDirections(GlobalData.Direction.TOP_LEFT, 0));
+			localHex.rotate_clockwise();
+			localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP_LEFT, 0));
 		
-			if (!isPositionValid(localHex)):
+			if (!is_position_valid(localHex)):
 				localHex = baseHex;
-				localHex.rotateClockwise();
-				localHex.move(addDirections(GlobalData.Direction.TOP, 0));
+				localHex.rotate_clockwise();
+				localHex.move(GlobalData.add_directions(GlobalData.Direction.TOP, 0));
 	
-	return localHex;
-
-func tryHold() -> Hexomino:
-	var localHex;
-	
-	if(canHold && heldHexomino == -1):
-		heldHexomino = currentHexomino.type;
-		canHold = false;
-		soundManager.playSFX(GlobalData.SFX.HOLD)
-		var type = getNextHexomino()
-		localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
-	else:
-		if(heldHexomino != -1 && canHold):
-			localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, heldHexomino, GetTextureFromType(heldHexomino));
-			$"../UI/VBoxContainer/Control/HoldLabel".texture = null;
-			heldHexomino = currentHexomino.type;
-			canHold = false;
-			soundManager.playSFX(GlobalData.SFX.HOLD)
-		else:
-			localHex = null;
-	
-	match (heldHexomino):
-			0:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_I;
-			1:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_O;
-			2:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_T;
-			3:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_L;
-			4:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_J;
-			5:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_Z;
-			6:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = texture_Form_S;
-	
-	return localHex;
+	return true;
