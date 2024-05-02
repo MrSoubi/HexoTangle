@@ -67,13 +67,8 @@ autoplay = true
 
 [node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 
-[node name="GlobalTimer" type="Timer" parent="."]
-
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="gameOver" from="Grid" to="." method="_on_grid_game_over"]
-[connection signal="hardDropDone" from="Grid" to="." method="_on_grid_hard_drop_done"]
 [connection signal="hexChanged" from="Grid" to="." method="_on_grid_hex_changed"]
 [connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
 [connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]
 [connection signal="startGame" from="UI" to="." method="_on_ui_start_game"]
-[connection signal="timeout" from="GlobalTimer" to="." method="_on_global_timer_timeout"]

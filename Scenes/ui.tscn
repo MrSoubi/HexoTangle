@@ -689,12 +689,12 @@ layout_mode = 2
 text = ">"
 
 [node name="GameOverMenu" type="Control" parent="."]
+visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource("9_jo1lo")
 
 [node name="MarginContainer" type="MarginContainer" parent="GameOverMenu"]
 layout_mode = 1
