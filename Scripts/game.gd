@@ -37,6 +37,9 @@ func initializeLeaderBoard():
 	#leaderboard.render();
 
 func _on_timer_timeout():
+	updateGame();
+
+func updateGame():
 	var scoreAndLines = grid.update();
 	
 	match(scoreAndLines.y):
@@ -56,10 +59,8 @@ func _on_timer_timeout():
 		level += 1
 		linesToDoUntilNextLevel += 5 * level
 	
-	time += timer.wait_time;
 	timer.wait_time = GetFallSpeed()
-	
-	ui.update_values(score, lines, level, time);
+	ui.update_values(score, lines, level);
 
 func GetFallSpeed() -> float:
 	return (0.8 - ((level - 1) * 0.007)) ** (level - 1)
@@ -77,18 +78,22 @@ func ResetGame():
 	linesToDoUntilNextLevel = 5
 	time = 0;
 	timer.wait_time = 1.0;
-	ui.update_values(score, lines, level, time);
+	ui.update_values(score, lines, level);
+	ui.set_time(0);
 	grid.Reset()
 
 func _on_ui_start_game():
 	ResetGame();
 	timer.start();
+	$GlobalTimer.start();
 	timer.set_paused(false);
+	$GlobalTimer.set_paused(false);
 	state = GlobalData.GameState.PLAYING;
 	grid.canPlay = true;
 
 func pause():
 	timer.set_paused(true);
+	$GlobalTimer.set_paused(true);
 	grid.canPlay = false;
 	state = GlobalData.GameState.PAUSED;
 
@@ -98,4 +103,19 @@ func _on_ui_quit_game():
 func _on_ui_resume_game():
 	state = GlobalData.GameState.PLAYING;
 	timer.set_paused(false);
+	$GlobalTimer.set_paused(false);
 	grid.canPlay = true;
+
+func _on_grid_hex_changed():
+	timer.start();
+
+func _on_grid_game_over():
+	pause();
+	ui.display_game_over_menu();
+
+func _on_grid_hard_drop_done():
+	updateGame();
+
+func _on_global_timer_timeout():
+	time += $GlobalTimer.wait_time;
+	ui.set_time(time)

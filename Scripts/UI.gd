@@ -6,10 +6,14 @@ extends CanvasLayer
 @onready var game_ui = $GameUI
 @onready var help_ui = $HelpUI
 @onready var pause_menu = $PauseMenu
+@onready var game_over_menu = $GameOverMenu
 
 signal startGame;
 signal resumeGame;
 signal quitGame;
+
+func set_time(time: int):
+	game_ui.set_time(time);
 
 func _on_button_play_pressed():
 	display_game_ui();
@@ -36,6 +40,7 @@ func display_main_menu():
 	game_ui.visible = false;
 	help_ui.visible = false;
 	pause_menu.visible = false;
+	game_over_menu.visible = false;
 
 func display_game_ui():
 	main_menu.visible = false;
@@ -44,6 +49,7 @@ func display_game_ui():
 	game_ui.visible = true;
 	help_ui.visible = false;
 	pause_menu.visible = false;
+	game_over_menu.visible = false;
 
 func display_settings_menu():
 	main_menu.visible = false;
@@ -63,19 +69,21 @@ func display_leaderboard():
 	game_ui.visible = false;
 	help_ui.visible = false;
 	pause_menu.visible = false;
+	game_over_menu.visible = false;
 
 func display_pause_menu():
 	pause_menu.visible = true;
 
-func update_values(score, lines, level, time):
+func display_game_over_menu():
+	game_over_menu.visible = true;
+
+func update_values(score, lines, level):
 	game_ui.set_score(score);
-	game_ui.set_time(time);
 	game_ui.set_lines(lines);
 	game_ui.set_level(level);
 
 func _on_button_back_pressed():
 	help_ui.visible = false;
-
 
 func _on_button_new_game_pressed():
 	display_game_ui();

@@ -301,12 +301,7 @@ func update() -> Vector2i:
 		currentHexomino = localHex;
 		drawHexomino();
 	else:
-		#undrawHexomino();
-		blockHexomino();
-		lines = handleFullLines();
-		@warning_ignore("integer_division")
-		var type = getNextHexomino()
-		currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
+		lines = endTurn();
 	
 	match (lines):
 		1:
@@ -319,6 +314,18 @@ func update() -> Vector2i:
 			localScore += 800
 	
 	return Vector2i(localScore, lines); #score and number of lines
+
+func endTurn() -> int:
+	blockHexomino();
+	var lines = handleFullLines();
+	@warning_ignore("integer_division")
+	GenNewHexomino();
+	return lines;
+
+func GenNewHexomino():
+	var type = getNextHexomino()
+	currentHexomino = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GetTextureFromType(type));
+	drawHexomino();
 
 func GetTextureFromType(type: GlobalData.HexType) -> Texture2D:
 	var result: Texture2D;
@@ -353,15 +360,19 @@ func getRandomHexType() -> GlobalData.HexType:
 	
 	return k;
 
+signal gameOver;
 func blockHexomino():
-	var localPositions = currentHexomino.getPositions();
-	
-	for i in range(4):
-		var localCell = localPositions[i]
-		grid[localCell.x][localCell.y].setState(GlobalData.State.BLOCKED, currentHexomino.texture)
-	
-	phantomHexomino = null;
-	canHold = true;
+	if (currentHexomino.position == startingPosition):
+		gameOver.emit();
+	else:
+		var localPositions = currentHexomino.getPositions();
+		
+		for i in range(4):
+			var localCell = localPositions[i]
+			grid[localCell.x][localCell.y].setState(GlobalData.State.BLOCKED, currentHexomino.texture)
+		
+		phantomHexomino = null;
+		canHold = true;
 
 func addDirections(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> GlobalData.Direction:
 	var val1 = int(dir1);
@@ -387,7 +398,43 @@ func addDirections(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> Gl
 
 var canPlay: bool = false;
 
+func tryMoveLeft(hex: Hexomino) -> Hexomino:
+	var localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+	
+	if int(localHex.position.y) % 2 == 0:
+		localHex.move(GlobalData.Direction.BOTTOM_LEFT);
+		if (not isPositionValid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+			localHex.move(GlobalData.Direction.TOP_LEFT);
+	else:
+		localHex.move(GlobalData.Direction.TOP_LEFT);
+		if (not isPositionValid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+			localHex.move(GlobalData.Direction.BOTTOM_LEFT);
+	
+	return localHex;
+
+func tryMoveRight(hex: Hexomino) -> Hexomino:
+	var localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+	
+	if int(localHex.position.y) % 2 == 0:
+		localHex.move(GlobalData.Direction.BOTTOM_RIGHT);
+		if (not isPositionValid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+			localHex.move(GlobalData.Direction.TOP_RIGHT);
+	else:
+		localHex.move(GlobalData.Direction.TOP_RIGHT);
+		if (not isPositionValid(localHex)):
+			localHex = hexomino.new(hex.position, hex.dir, currentHexomino.type, hex.texture);
+			localHex.move(GlobalData.Direction.BOTTOM_RIGHT);
+	
+	return localHex;
+
+signal hexChanged;
+signal hardDropDone;
+
 func _input(event):
+	var isInputHardDrop = false;
 	if (canPlay):
 		if event is InputEventKey and event.pressed:
 			var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
@@ -397,11 +444,12 @@ func _input(event):
 				if isPositionValid(localHex):
 					score += 1;
 				soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
+				hexChanged.emit();
 			if event.keycode == KEY_RIGHT:
-				localHex.moveRight();
+				localHex = tryMoveRight(localHex);
 				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
 			if event.keycode == KEY_LEFT:
-				localHex.moveLeft();
+				localHex = tryMoveLeft(localHex);
 				soundManager.playSFX(GlobalData.SFX.MOVEMENT)
 			if event.keycode == KEY_UP:
 				localHex = tryRotationAntiClockwise();
@@ -412,7 +460,8 @@ func _input(event):
 			if event.keycode == KEY_C:
 				localHex = tryHold();
 			if event.keycode == KEY_SPACE:
-				localHex = hardDrop();
+				localHex = tryHardDrop();
+				isInputHardDrop = true;
 				soundManager.playSFX(GlobalData.SFX.HARD_DROP)
 			
 			if isPositionValid(localHex):
@@ -421,9 +470,12 @@ func _input(event):
 				drawHexomino();
 			else:
 				soundManager.playSFX(GlobalData.SFX.ERROR)
-		
+			
+			if (isInputHardDrop):
+				blockHexomino();
+				GenNewHexomino();
 
-func hardDrop() -> Hexomino:
+func tryHardDrop() -> Hexomino:
 	var localHex = hexomino.new(currentHexomino.position, currentHexomino.dir, currentHexomino.type, currentHexomino.texture);
 	
 	localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
@@ -433,6 +485,8 @@ func hardDrop() -> Hexomino:
 		localHex.move(addDirections(GlobalData.Direction.BOTTOM, 0));
 	
 	localHex.move(addDirections(GlobalData.Direction.TOP, 0))
+	
+	hardDropDone.emit()
 	return localHex;
 
 func tryRotationAntiClockwise() -> Hexomino:

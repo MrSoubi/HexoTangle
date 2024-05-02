@@ -115,9 +115,9 @@ func getPositions() -> Array:
 	match type:
 		GlobalData.HexType.I:
 			positions.append(self.position);
-			positions.append(getNeighbour(addDirections(GlobalData.Direction.TOP_LEFT, dir)));
-			positions.append(getNeighbour(addDirections(GlobalData.Direction.BOTTOM_RIGHT, dir)));
-			positions.append(getNeighbourFromPosition(positions[2], addDirections(GlobalData.Direction.BOTTOM_RIGHT, dir)));
+			positions.append(getNeighbour(addDirections(GlobalData.Direction.TOP_RIGHT, dir)));
+			positions.append(getNeighbour(addDirections(GlobalData.Direction.BOTTOM_LEFT, dir)));
+			positions.append(getNeighbourFromPosition(positions[2], addDirections(GlobalData.Direction.BOTTOM_LEFT, dir)));
 		GlobalData.HexType.O:
 			positions.append(self.position);
 			positions.append(getNeighbour(addDirections(GlobalData.Direction.BOTTOM, dir)));
