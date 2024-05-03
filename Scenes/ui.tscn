@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="3_qm6dp"]
 [ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="4_2u2gg"]
 [ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="5_d3vbs"]
-[ext_resource type="Script" path="res://Scripts/LeaderBoard.gd" id="6_n5x4s"]
+[ext_resource type="Script" path="res://Scripts/leader_board.gd" id="6_n5x4s"]
 [ext_resource type="Script" path="res://Scripts/UI/GameUI.gd" id="7_kevkj"]
 [ext_resource type="Texture2D" uid="uid://bxbcpvreqo6nr" path="res://icon.svg" id="8_snm2o"]
 [ext_resource type="Script" path="res://Scripts/UI/HelpUI.gd" id="9_jo1lo"]

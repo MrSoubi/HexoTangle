@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://h67o4tsbw5rf"]
 
-[ext_resource type="Script" path="res://Scripts/Hexomino.gd" id="1_0mx4w"]
+[ext_resource type="Script" path="res://Scripts/hexomino.gd" id="1_0mx4w"]
 [ext_resource type="PackedScene" uid="uid://bl0hqokjobc4" path="res://Scenes/cell.tscn" id="2_lqanb"]
 
 [node name="Hexomino" type="Node2D"]

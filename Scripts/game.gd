@@ -72,9 +72,7 @@ func handle_soft_drop():
 		test_hexomino.rotation = current_hexomino.rotation;
 		
 		# Application of the movement to the test hexomino
-		print(test_hexomino.cell_1.global_position)
 		test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING);
-		print(test_hexomino.cell_1.global_position)
 		
 		# Check of the new position and application of the movement to the current hexomino
 		# Or blocking of the current hexomino
@@ -82,7 +80,6 @@ func handle_soft_drop():
 		and grid.is_position_available(test_hexomino.cell_2.global_position)
 		and grid.is_position_available(test_hexomino.cell_3.global_position)
 		and grid.is_position_available(test_hexomino.cell_4.global_position)):
-			print("No block")
 			current_hexomino.move_to(test_hexomino.position);
 		else:
 			current_hexomino.block();
@@ -286,3 +283,7 @@ func _on_global_timer_timeout():
 
 func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
 	pass # Replace with function body.
+
+
+func _on_hexomino_hexomino_has_blocked():
+	grid.handle_full_lines()
