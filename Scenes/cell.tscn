@@ -1,24 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bl0hqokjobc4"]
+[gd_scene load_steps=3 format=3 uid="uid://bl0hqokjobc4"]
 
 [ext_resource type="Script" path="res://Scripts/cell.gd" id="1_gqpwa"]
 [ext_resource type="Texture2D" uid="uid://be1plmpgi48g0" path="res://Sprites/Hex_Empty.png" id="2_8e6lv"]
-[ext_resource type="Texture2D" uid="uid://u6idu73fucnn" path="res://Sprites/Hexagon_Black.png" id="3_ghcq6"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_4y3gx"]
-font_color = Color(1, 0, 0, 1)
 
 [node name="Cell" type="Node2D"]
 script = ExtResource("1_gqpwa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_8e6lv")
-
-[node name="Label" type="Label" parent="."]
-offset_right = 40.0
-offset_bottom = 23.0
-label_settings = SubResource("LabelSettings_4y3gx")
-
-[node name="HexagonBlack" type="Sprite2D" parent="."]
-position = Vector2(-1, -46)
-scale = Vector2(0.140625, 0.13964)
-texture = ExtResource("3_ghcq6")
