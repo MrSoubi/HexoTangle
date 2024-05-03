@@ -36,45 +36,45 @@ func set_type(type: GlobalData.HexType):
 			cell_4.set_color(GlobalData.HexType.O)
 		GlobalData.HexType.T:
 			cell_1.position = Vector2(0,0)
-			cell_2.position = GlobalData.V_SPACING
-			cell_3.position = GlobalData.V_SPACING * 2
-			cell_4.position = position - GlobalData.V_SPACING
+			cell_2.position = - GlobalData.V_SPACING # top
+			cell_3.position = (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # bottom left
+			cell_4.position = (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # bottom right
 			cell_1.set_color(GlobalData.HexType.T)
 			cell_2.set_color(GlobalData.HexType.T)
 			cell_3.set_color(GlobalData.HexType.T)
 			cell_4.set_color(GlobalData.HexType.T)
 		GlobalData.HexType.L:
 			cell_1.position = Vector2(0,0)
-			cell_2.position = GlobalData.V_SPACING
-			cell_3.position = GlobalData.V_SPACING * 2
-			cell_4.position = - GlobalData.V_SPACING
+			cell_2.position = - (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # top left
+			cell_3.position = (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # bottom right
+			cell_4.position = (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING - (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # bottom right then top right
 			cell_1.set_color(GlobalData.HexType.L)
 			cell_2.set_color(GlobalData.HexType.L)
 			cell_3.set_color(GlobalData.HexType.L)
 			cell_4.set_color(GlobalData.HexType.L)
 		GlobalData.HexType.J:
 			cell_1.position = Vector2(0,0)
-			cell_2.position = GlobalData.V_SPACING
-			cell_3.position = GlobalData.V_SPACING * 2
-			cell_4.position = - GlobalData.V_SPACING
+			cell_2.position = - (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # top right
+			cell_3.position = (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # bottom left
+			cell_4.position = (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING - (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # bottom left then top left
 			cell_1.set_color(GlobalData.HexType.J)
 			cell_2.set_color(GlobalData.HexType.J)
 			cell_3.set_color(GlobalData.HexType.J)
 			cell_4.set_color(GlobalData.HexType.J)
 		GlobalData.HexType.Z:
 			cell_1.position = Vector2(0,0)
-			cell_2.position = GlobalData.V_SPACING
-			cell_3.position = GlobalData.V_SPACING * 2
-			cell_4.position = - GlobalData.V_SPACING
+			cell_2.position = - (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # top left
+			cell_3.position = GlobalData.V_SPACING # bottom
+			cell_4.position = GlobalData.V_SPACING + (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # bottom then bottom right
 			cell_1.set_color(GlobalData.HexType.Z)
 			cell_2.set_color(GlobalData.HexType.Z)
 			cell_3.set_color(GlobalData.HexType.Z)
 			cell_4.set_color(GlobalData.HexType.Z)
 		GlobalData.HexType.S:
 			cell_1.position = Vector2(0,0)
-			cell_2.position = GlobalData.V_SPACING
-			cell_3.position = GlobalData.V_SPACING * 2
-			cell_4.position = - GlobalData.V_SPACING
+			cell_2.position = - (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING # top right
+			cell_3.position = GlobalData.V_SPACING # bottom
+			cell_4.position = GlobalData.V_SPACING + (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING # bottom then bottom left
 			cell_1.set_color(GlobalData.HexType.S)
 			cell_2.set_color(GlobalData.HexType.S)
 			cell_3.set_color(GlobalData.HexType.S)

@@ -343,6 +343,6 @@ func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
 
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
-	current_hexomino.set_type(GlobalData.HexType.I);
+	current_hexomino.set_type(GlobalData.HexType.Z);
 	handle_phantom()
 	# Gen new hexomino
