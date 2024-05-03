@@ -99,20 +99,19 @@ func handle_move_right():
 		test_hexomino.visible = false;
 		add_child(test_hexomino);
 		test_hexomino.set_type(current_hexomino.type);
-		test_hexomino.position = current_hexomino.position;
+		test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		var new_position = current_hexomino.position + GlobalData.H_SPACING;
 		if (side_movement_flip_flop):
-			new_position += GlobalData.V_SPACING / 2;
+			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
-			new_position -= GlobalData.V_SPACING / 2;
+			test_hexomino.position -= GlobalData.V_SPACING / 2;
 		
-		if (grid.is_position_available(test_hexomino.cell_1.position)
-		and grid.is_position_available(test_hexomino.cell_2.position)
-		and grid.is_position_available(test_hexomino.cell_3.position)
-		and grid.is_position_available(test_hexomino.cell_4.position)):
-			current_hexomino.move_to(new_position);
+		if (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+			current_hexomino.move_to(test_hexomino.position);
 			side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
@@ -124,27 +123,26 @@ func handle_move_left():
 		test_hexomino.visible = false;
 		add_child(test_hexomino);
 		test_hexomino.set_type(current_hexomino.type);
-		test_hexomino.position = current_hexomino.position;
+		test_hexomino.position = current_hexomino.position - GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		var new_position = current_hexomino.position - GlobalData.H_SPACING;
 		if (side_movement_flip_flop):
-			new_position += GlobalData.V_SPACING / 2;
+			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
-			new_position -= GlobalData.V_SPACING / 2;
+			test_hexomino.position -= GlobalData.V_SPACING / 2;
 		
-		if (grid.is_position_available(test_hexomino.cell_1.position)
-		and grid.is_position_available(test_hexomino.cell_2.position)
-		and grid.is_position_available(test_hexomino.cell_3.position)
-		and grid.is_position_available(test_hexomino.cell_4.position)):
-			current_hexomino.move_to(new_position);
+		if (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+			current_hexomino.move_to(test_hexomino.position);
 			side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
 
 func handle_rotate_anti_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
-		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		# Copy of the current hexomino state into a test hexomino, not visible for the player
 		var test_hexomino = hexomino.instantiate();
 		test_hexomino.visible = false;
 		add_child(test_hexomino);
@@ -152,10 +150,12 @@ func handle_rotate_anti_clockwise():
 		test_hexomino.position = current_hexomino.position;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		if (grid.is_position_available(test_hexomino.cell_1.position)
-		and grid.is_position_available(test_hexomino.cell_2.position)
-		and grid.is_position_available(test_hexomino.cell_3.position)
-		and grid.is_position_available(test_hexomino.cell_4.position)):
+		test_hexomino.rotate(deg_to_rad(60));
+		
+		if (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
 			current_hexomino.rotate_anti_clockwise();
 		
 		test_hexomino.queue_free();
@@ -170,11 +170,11 @@ func handle_rotate_clockwise():
 		test_hexomino.position = current_hexomino.position;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		test_hexomino.rotate(-60);
-		if (grid.is_position_available(test_hexomino.cell_1.position)
-		and grid.is_position_available(test_hexomino.cell_2.position)
-		and grid.is_position_available(test_hexomino.cell_3.position)
-		and grid.is_position_available(test_hexomino.cell_4.position)):
+		test_hexomino.rotate(deg_to_rad(-60));
+		if (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
 			current_hexomino.rotate_clockwise();
 		
 		test_hexomino.queue_free();
