@@ -218,6 +218,7 @@ func handle_phantom():
 		phantom.position = test_hexomino.position
 		phantom.rotation = test_hexomino.rotation
 		phantom.set_type(current_hexomino.type)
+		phantom.set_phantom_color()
 		
 		test_hexomino.queue_free()
 

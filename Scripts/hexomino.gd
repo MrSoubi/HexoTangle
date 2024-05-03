@@ -92,6 +92,11 @@ func rotate_anti_clockwise():
 func move_to(position: Vector2):
 	self.position = position
 
+func set_phantom_color():
+	cell_1.set_phantom_color()
+	cell_2.set_phantom_color()
+	cell_3.set_phantom_color()
+	cell_4.set_phantom_color()
 
 signal hexomino_has_blocked
 

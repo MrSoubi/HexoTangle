@@ -16,3 +16,6 @@ func set_color(type: GlobalData.HexType):
 			$Sprite2D.texture = GlobalData.texture_Z
 		GlobalData.HexType.S:
 			$Sprite2D.texture = GlobalData.texture_S
+
+func set_phantom_color():
+	$Sprite2D.texture = GlobalData.texturePhantom
