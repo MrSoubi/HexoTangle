@@ -29,22 +29,19 @@ script = ExtResource("1_xep6p")
 
 [node name="AnimatedBackground" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_gaa0i")
-position = Vector2(-2286, -2559)
-scale = Vector2(5.07333, 12.355)
+scale = Vector2(0.833333, 2.275)
 texture = ExtResource("8_q1775")
 centered = false
-
-[node name="Grid" parent="." instance=ExtResource("4_ywkpk")]
-script = ExtResource("5_absqa")
-
-[node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
 
 [node name="GlobalTimer" type="Timer" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
 
+[node name="Grid" parent="." instance=ExtResource("4_ywkpk")]
+position = Vector2(400, 288)
+script = ExtResource("5_absqa")
+
 [node name="UI" parent="." instance=ExtResource("5_e8trd")]
-follow_viewport_enabled = false
 
 [node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
 script = ExtResource("9_tkctc")
@@ -74,9 +71,7 @@ autoplay = true
 [node name="Bag" type="Node" parent="."]
 script = ExtResource("18_eur3c")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, 1302)
-zoom = Vector2(0.3, 0.3)
+[node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]

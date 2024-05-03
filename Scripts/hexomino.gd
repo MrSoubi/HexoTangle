@@ -1,11 +1,15 @@
-extends Node2D
+class_name Hexomino extends Node2D
 
 @onready var cell_1 = $Cell_1
 @onready var cell_2 = $Cell_2
 @onready var cell_3 = $Cell_3
 @onready var cell_4 = $Cell_4
 
-var dir: GlobalData.Direction;
+@onready var grid = $"../Grid"
+
+var cell = load("res://Scenes/cell.tscn");
+var hexomino = load("res://Scenes/hexomino.tscn");
+
 var type: GlobalData.HexType;
 
 func set_type(type: GlobalData.HexType):
@@ -52,21 +56,41 @@ func _ready():
 	set_type(GlobalData.HexType.O)
 
 func rotate_clockwise():
-	dir = (dir + 1) % 6;
+	rotate(deg_to_rad(-60))
 
 func rotate_anti_clockwise():
-	dir = (dir - 1) % 6;
-	if (dir < 0):
-		dir += 6
+	rotate(deg_to_rad(60))
 
 func move_to(position: Vector2):
 	self.position = position;
+	cell_1.update_label()
+	cell_2.update_label()
+	cell_3.update_label()
+	cell_4.update_label()
 
-func move_down():
-	pass;
-
-func move_right():
-	pass;
-
-func move_left():
-	pass;
+func block():
+	# The figure gives its cells to the grid stack
+	grid.add_cell(cell_1);
+	grid.add_cell(cell_2);
+	grid.add_cell(cell_3);
+	grid.add_cell(cell_4);
+	
+	# The figure moves back to the top of the screen
+	self.position = Vector2(0,0);
+	self.rotation = 0;
+	
+	# The figure generates a new set of cells
+	cell_1 = cell.instantiate();
+	cell_2 = cell.instantiate();
+	cell_3 = cell.instantiate();
+	cell_4 = cell.instantiate();
+	
+	cell_1.name = "Cell_1";
+	cell_2.name = "Cell_2";
+	cell_3.name = "Cell_3";
+	cell_4.name = "Cell_4";
+	
+	add_child(cell_1);
+	add_child(cell_2);
+	add_child(cell_3);
+	add_child(cell_4);

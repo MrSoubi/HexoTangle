@@ -9,6 +9,8 @@ extends Node2D
 @onready var bag = $Bag
 @onready var current_hexomino = $Hexomino
 
+var hexomino = load("res://Scenes/hexomino.tscn");
+
 var state: GlobalData.GameState = GlobalData.GameState.MENU;
 
 var score: int = 0;
@@ -16,6 +18,8 @@ var level: int = 1;
 var lines: int = 0;
 var linesToDoUntilNextLevel = 5;
 var time: float = 0;
+
+var side_movement_flip_flop: bool = true;
 
 func _ready():
 	ui.display_main_menu();
@@ -59,30 +63,121 @@ func _on_timer_timeout():
 
 func handle_soft_drop():
 	if (state == GlobalData.GameState.PLAYING):
-		var new_position = current_hexomino.position + GlobalData.V_SPACING;
-		if (grid.is_position_available(new_position)):
-			current_hexomino.move_to(new_position);
+		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate();
+		test_hexomino.visible = false;
+		add_child(test_hexomino);
+		test_hexomino.set_type(current_hexomino.type);
+		test_hexomino.position = current_hexomino.position;
+		test_hexomino.rotation = current_hexomino.rotation;
+		
+		# Application of the movement to the test hexomino
+		print(test_hexomino.cell_1.global_position)
+		test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING);
+		print(test_hexomino.cell_1.global_position)
+		
+		# Check of the new position and application of the movement to the current hexomino
+		# Or blocking of the current hexomino
+		if (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+			print("No block")
+			current_hexomino.move_to(test_hexomino.position);
+		else:
+			current_hexomino.block();
+			current_hexomino.set_type(GlobalData.HexType.I);
+		
+		test_hexomino.queue_free();
+		
 		timer.start();
 
 func handle_move_right():
 	if (state == GlobalData.GameState.PLAYING):
-		var new_position = current_hexomino.position + (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING;
-		if (grid.is_position_available(new_position)):
+		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate();
+		test_hexomino.visible = false;
+		add_child(test_hexomino);
+		test_hexomino.set_type(current_hexomino.type);
+		test_hexomino.position = current_hexomino.position;
+		test_hexomino.rotation = current_hexomino.rotation;
+		
+		var new_position = current_hexomino.position + GlobalData.H_SPACING;
+		if (side_movement_flip_flop):
+			new_position += GlobalData.V_SPACING / 2;
+		else:
+			new_position -= GlobalData.V_SPACING / 2;
+		
+		if (grid.is_position_available(test_hexomino.cell_1.position)
+		and grid.is_position_available(test_hexomino.cell_2.position)
+		and grid.is_position_available(test_hexomino.cell_3.position)
+		and grid.is_position_available(test_hexomino.cell_4.position)):
 			current_hexomino.move_to(new_position);
+			side_movement_flip_flop = not side_movement_flip_flop;
+		
+		test_hexomino.queue_free();
 
 func handle_move_left():
 	if (state == GlobalData.GameState.PLAYING):
-		var new_position = current_hexomino.position + (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING;
-		if (grid.is_position_available(new_position)):
+		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate();
+		test_hexomino.visible = false;
+		add_child(test_hexomino);
+		test_hexomino.set_type(current_hexomino.type);
+		test_hexomino.position = current_hexomino.position;
+		test_hexomino.rotation = current_hexomino.rotation;
+		
+		var new_position = current_hexomino.position - GlobalData.H_SPACING;
+		if (side_movement_flip_flop):
+			new_position += GlobalData.V_SPACING / 2;
+		else:
+			new_position -= GlobalData.V_SPACING / 2;
+		
+		if (grid.is_position_available(test_hexomino.cell_1.position)
+		and grid.is_position_available(test_hexomino.cell_2.position)
+		and grid.is_position_available(test_hexomino.cell_3.position)
+		and grid.is_position_available(test_hexomino.cell_4.position)):
 			current_hexomino.move_to(new_position);
+			side_movement_flip_flop = not side_movement_flip_flop;
+		
+		test_hexomino.queue_free();
 
 func handle_rotate_anti_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_rotate_anti_clockwise();
+		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate();
+		test_hexomino.visible = false;
+		add_child(test_hexomino);
+		test_hexomino.set_type(current_hexomino.type);
+		test_hexomino.position = current_hexomino.position;
+		test_hexomino.rotation = current_hexomino.rotation;
+		
+		if (grid.is_position_available(test_hexomino.cell_1.position)
+		and grid.is_position_available(test_hexomino.cell_2.position)
+		and grid.is_position_available(test_hexomino.cell_3.position)
+		and grid.is_position_available(test_hexomino.cell_4.position)):
+			current_hexomino.rotate_anti_clockwise();
+		
+		test_hexomino.queue_free();
 
 func handle_rotate_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_rotate_clockwise();
+		# Copy of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate();
+		test_hexomino.visible = false;
+		add_child(test_hexomino);
+		test_hexomino.set_type(current_hexomino.type);
+		test_hexomino.position = current_hexomino.position;
+		test_hexomino.rotation = current_hexomino.rotation;
+		
+		test_hexomino.rotate(-60);
+		if (grid.is_position_available(test_hexomino.cell_1.position)
+		and grid.is_position_available(test_hexomino.cell_2.position)
+		and grid.is_position_available(test_hexomino.cell_3.position)
+		and grid.is_position_available(test_hexomino.cell_4.position)):
+			current_hexomino.rotate_clockwise();
+		
+		test_hexomino.queue_free();
 
 func handle_hold():
 	if (state == GlobalData.GameState.PLAYING):
