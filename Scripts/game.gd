@@ -84,7 +84,6 @@ func handle_soft_drop():
 			current_hexomino.move_to(test_hexomino.position);
 		else:
 			current_hexomino.block();
-			current_hexomino.set_type(GlobalData.HexType.I);
 		
 		test_hexomino.queue_free();
 		
@@ -193,7 +192,27 @@ func handle_hold():
 
 func handle_hard_drop():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_hard_drop();
+		# Copy of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate()
+		test_hexomino.visible = false
+		add_child(test_hexomino)
+		test_hexomino.set_type(current_hexomino.type)
+		test_hexomino.position = current_hexomino.position
+		test_hexomino.rotation = current_hexomino.rotation
+		
+		while (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+			test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
+		
+		test_hexomino.move_to(test_hexomino.position - GlobalData.V_SPACING)
+		
+		current_hexomino.move_to(test_hexomino.position)
+		current_hexomino.block()
+		
+		test_hexomino.queue_free()
+		
 		timer.start();
 
 func handle_phantom():
@@ -324,3 +343,6 @@ func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
 
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
+	current_hexomino.set_type(GlobalData.HexType.I);
+	handle_phantom()
+	# Gen new hexomino
