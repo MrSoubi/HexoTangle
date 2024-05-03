@@ -32,9 +32,14 @@ func _ready():
 func is_position_available(position: Vector2) -> bool:
 	var result = true
 	
+	# Define min/max for border checking
+	var y_max = (HEIGHT - 1) * GlobalData.V_SPACING.y
+	var x_max = (WIDTH / 2) * GlobalData.H_SPACING.x
+	var x_min = - x_max
+	
 	for cell in get_children():
 		var distance = abs((cell.global_position - position).length())
-		result = result and distance > DETECTION_LENGTH
+		result = result and distance > DETECTION_LENGTH and position.x <= x_max and position.x >= x_min and position.y <= y_max
 		if (!result):
 			break
 	

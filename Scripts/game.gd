@@ -8,6 +8,7 @@ extends Node2D
 @onready var sound_manager = $SoundManager
 @onready var bag = $Bag
 @onready var current_hexomino = $Hexomino
+@onready var phantom = $Phantom
 
 var hexomino = load("res://Scenes/hexomino.tscn");
 
@@ -87,6 +88,8 @@ func handle_soft_drop():
 		
 		test_hexomino.queue_free();
 		
+		handle_phantom()
+		
 		timer.start();
 
 func handle_move_right():
@@ -112,6 +115,8 @@ func handle_move_right():
 			side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
+		
+		handle_phantom()
 
 func handle_move_left():
 	if (state == GlobalData.GameState.PLAYING):
@@ -136,6 +141,8 @@ func handle_move_left():
 			side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
+		
+		handle_phantom()
 
 func handle_rotate_anti_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
@@ -156,6 +163,8 @@ func handle_rotate_anti_clockwise():
 			current_hexomino.rotate_anti_clockwise();
 		
 		test_hexomino.queue_free();
+		
+		handle_phantom()
 
 func handle_rotate_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
@@ -175,6 +184,8 @@ func handle_rotate_clockwise():
 			current_hexomino.rotate_clockwise();
 		
 		test_hexomino.queue_free();
+		
+		handle_phantom()
 
 func handle_hold():
 	if (state == GlobalData.GameState.PLAYING):
@@ -185,18 +196,43 @@ func handle_hard_drop():
 		grid.try_hard_drop();
 		timer.start();
 
+func handle_phantom():
+	if (state == GlobalData.GameState.PLAYING):
+		# Copy of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = hexomino.instantiate()
+		test_hexomino.visible = false
+		add_child(test_hexomino)
+		test_hexomino.set_type(current_hexomino.type)
+		test_hexomino.position = current_hexomino.position
+		test_hexomino.rotation = current_hexomino.rotation
+		
+		while (grid.is_position_available(test_hexomino.cell_1.global_position)
+		and grid.is_position_available(test_hexomino.cell_2.global_position)
+		and grid.is_position_available(test_hexomino.cell_3.global_position)
+		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+			test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
+		
+		test_hexomino.move_to(test_hexomino.position - GlobalData.V_SPACING)
+		
+		
+		phantom.position = test_hexomino.position
+		phantom.rotation = test_hexomino.rotation
+		phantom.set_type(current_hexomino.type)
+		
+		test_hexomino.queue_free()
+
 func handle_pause_game():
 	if (state == GlobalData.GameState.PLAYING):
-		state = GlobalData.GameState.PAUSED;
+		state = GlobalData.GameState.PAUSED
 		
-		timer.set_paused(true);
-		global_timer.set_paused(true);
+		timer.set_paused(true)
+		global_timer.set_paused(true)
 		
-		ui.display_pause_menu();
+		ui.display_pause_menu()
 
 func handle_resume_game():
 	if (state == GlobalData.GameState.PAUSED):
-		state = GlobalData.GameState.PLAYING;
+		state = GlobalData.GameState.PLAYING
 		
 		timer.set_paused(false);
 		global_timer.set_paused(false);
@@ -218,7 +254,7 @@ func handle_quit_game():
 	timer.stop();
 	global_timer.stop();
 	
-	ui.display_game_menu();
+	ui.display_main_menu();
 
 func handle_start_game(startingLevel : int = 1):
 	state = GlobalData.GameState.PLAYING;

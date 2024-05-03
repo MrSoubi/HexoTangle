@@ -37,6 +37,8 @@ centered = false
 
 [node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
 
+[node name="Phantom" parent="." instance=ExtResource("20_q73wq")]
+
 [node name="GlobalTimer" type="Timer" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
@@ -77,6 +79,7 @@ position = Vector2(0, 1302)
 zoom = Vector2(0.3, 0.3)
 
 [connection signal="hexomino_has_blocked" from="Hexomino" to="." method="_on_hexomino_hexomino_has_blocked"]
+[connection signal="hexomino_has_blocked" from="Phantom" to="." method="_on_hexomino_hexomino_has_blocked"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
 [connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]
