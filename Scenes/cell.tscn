@@ -1,15 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://bl0hqokjobc4"]
+[gd_scene load_steps=4 format=3 uid="uid://bl0hqokjobc4"]
 
 [ext_resource type="Script" path="res://Scripts/Cell.gd" id="1_euml1"]
+[ext_resource type="Texture2D" uid="uid://be1plmpgi48g0" path="res://Sprites/Hex_Empty.png" id="2_8e6lv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4y3gx"]
 font_color = Color(1, 0, 0, 1)
 
-[node name="Cell" type="Node2D" node_paths=PackedStringArray("sprite")]
+[node name="Cell" type="Node2D"]
 script = ExtResource("1_euml1")
-sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8e6lv")
 
 [node name="Label" type="Label" parent="."]
 offset_right = 40.0

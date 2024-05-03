@@ -1,12 +1,13 @@
-@tool
 extends Node2D
 
-@export var timer: Timer
-@export var soundManager: Node
-@export var grid: Node
-@export var ui: Node
-@export var global_timer: Timer
-@export var leaderboard: Node
+@onready var animated_background = $AnimatedBackground
+@onready var global_timer = $GlobalTimer
+@onready var timer = $Timer
+@onready var grid = $Grid
+@onready var ui = $UI
+@onready var sound_manager = $SoundManager
+@onready var bag = $Bag
+@onready var current_hexomino = $Hexomino
 
 var state: GlobalData.GameState = GlobalData.GameState.MENU;
 
@@ -17,17 +18,9 @@ var linesToDoUntilNextLevel = 5;
 var time: float = 0;
 
 func _ready():
-	if Engine.is_editor_hint():
-		#$ControlGUI.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
-		grid.position.x = ProjectSettings.get_setting("display/window/size/viewport_width") / 2
-		
-	if not Engine.is_editor_hint():
-		initializeLeaderBoard();
-		$UI/VBoxContainer/LevelLabel.text = str(0);
-		
-		ui.display_main_menu();
+	ui.display_main_menu();
 
-func initializeLeaderBoard():
+func initialize_leaderBoard():
 	SilentWolf.configure({
 		"api_key": "MIibx4NgJy1Jm3c2Iw6NxaXPQC8eIg535fguNf4W",
 		"game_id": "HexoTangle",
@@ -41,24 +34,24 @@ func _input(event):
 		if event.keycode == KEY_ESCAPE:
 			handle_pause_game();
 		if event.keycode == KEY_DOWN:
-			soundManager.playSFX(GlobalData.SFX.SOFT_DROP)
+			sound_manager.playSFX(GlobalData.SFX.SOFT_DROP)
 			handle_soft_drop();
 		if event.keycode == KEY_RIGHT:
-			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
+			sound_manager.playSFX(GlobalData.SFX.MOVEMENT)
 			handle_move_right();
 		if event.keycode == KEY_LEFT:
-			soundManager.playSFX(GlobalData.SFX.MOVEMENT)
+			sound_manager.playSFX(GlobalData.SFX.MOVEMENT)
 			handle_move_left();
 		if event.keycode == KEY_UP:
-			soundManager.playSFX(GlobalData.SFX.ROTATION)
+			sound_manager.playSFX(GlobalData.SFX.ROTATION)
 			handle_rotate_anti_clockwise();
 		if event.keycode == KEY_Z:
-			soundManager.playSFX(GlobalData.SFX.ROTATION)
+			sound_manager.playSFX(GlobalData.SFX.ROTATION)
 			handle_rotate_clockwise();
 		if event.keycode == KEY_C:
 			handle_hold();
 		if event.keycode == KEY_SPACE:
-			soundManager.playSFX(GlobalData.SFX.HARD_DROP)
+			sound_manager.playSFX(GlobalData.SFX.HARD_DROP)
 			handle_hard_drop();
 
 func _on_timer_timeout():
@@ -66,16 +59,22 @@ func _on_timer_timeout():
 
 func handle_soft_drop():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_soft_drop();
+		var new_position = current_hexomino.position + GlobalData.V_SPACING;
+		if (grid.is_position_available(new_position)):
+			current_hexomino.move_to(new_position);
 		timer.start();
 
 func handle_move_right():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_move_right();
+		var new_position = current_hexomino.position + (GlobalData.V_SPACING / 2) + GlobalData.H_SPACING;
+		if (grid.is_position_available(new_position)):
+			current_hexomino.move_to(new_position);
 
 func handle_move_left():
 	if (state == GlobalData.GameState.PLAYING):
-		grid.try_move_left();
+		var new_position = current_hexomino.position + (GlobalData.V_SPACING / 2) - GlobalData.H_SPACING;
+		if (grid.is_position_available(new_position)):
+			current_hexomino.move_to(new_position);
 
 func handle_rotate_anti_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
@@ -138,8 +137,6 @@ func handle_start_game(startingLevel : int = 1):
 	linesToDoUntilNextLevel = 5; #WARNING should be adressed when starting from a level > 1 !
 	time = 0;
 	
-	grid.Reset()
-	
 	timer.wait_time = 1.0;
 	timer.start();
 	timer.set_paused(false);
@@ -151,18 +148,18 @@ func handle_start_game(startingLevel : int = 1):
 	ui.set_time(0);
 	ui.update_values(score, lines, level);
 
-func updateGame():
+func update_game():
 	var scoreAndLines = grid.update();
 	
 	match(scoreAndLines.y):
 		1:
-			soundManager.playSFX(GlobalData.SFX.ONE_LINE);
+			sound_manager.playSFX(GlobalData.SFX.ONE_LINE);
 		2:
-			soundManager.playSFX(GlobalData.SFX.TWO_LINES);
+			sound_manager.playSFX(GlobalData.SFX.TWO_LINES);
 		3:
-			soundManager.playSFX(GlobalData.SFX.THREE_LINES);
+			sound_manager.playSFX(GlobalData.SFX.THREE_LINES);
 		4:
-			soundManager.playSFX(GlobalData.SFX.FOUR_LINES);
+			sound_manager.playSFX(GlobalData.SFX.FOUR_LINES);
 	
 	score += scoreAndLines.x * level;
 	lines += scoreAndLines.y;
@@ -194,86 +191,3 @@ func _on_global_timer_timeout():
 
 func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
 	pass # Replace with function body.
-
-
-
-
-
-
-
-
-
-
-
-func try_hold() -> Hexomino:
-	var localHex;
-	
-	if(canHold && heldHexomino == -1):
-		heldHexomino = currentHexomino.type;
-		canHold = false;
-		soundManager.playSFX(GlobalData.SFX.HOLD)
-		var type = getNextHexomino()
-		localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, type, GlobalData.GetTextureFromType(type));
-	else:
-		if(heldHexomino != -1 && canHold):
-			localHex = hexomino.new(startingPosition, GlobalData.Direction.TOP, heldHexomino, GlobalData.GetTextureFromType(heldHexomino));
-			$"../UI/VBoxContainer/Control/HoldLabel".texture = null;
-			heldHexomino = currentHexomino.type;
-			canHold = false;
-			soundManager.playSFX(GlobalData.SFX.HOLD)
-		else:
-			localHex = null;
-	
-	match (heldHexomino):
-			0:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_I;
-			1:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_O;
-			2:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_T;
-			3:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_L;
-			4:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_J;
-			5:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_Z;
-			6:
-				$"../UI/VBoxContainer/Control/HoldLabel".texture = GlobalData.texture_Form_S;
-	
-	return localHex;
-
-
-func endTurn() -> int:
-	block_hexomino();
-	var lines = handleFullLines();
-	@warning_ignore("integer_division")
-	GenNewHexomino();
-	return lines;
-
-
-
-func update() -> Vector2i:
-	var localScore = score
-	score = 0
-	var lines = 0;
-	
-	var localHex = hexomino.new(current_hexomino.position, current_hexomino.dir, current_hexomino.type, current_hexomino.texture);
-	localHex.move(GlobalData.add_directions(GlobalData.Direction.BOTTOM, 0));
-	if isPositionValid(localHex):
-		undrawHexomino();
-		current_hexomino = localHex;
-		drawHexomino();
-	else:
-		lines = endTurn();
-	
-	match (lines):
-		1:
-			localScore += 100
-		2:
-			localScore += 300
-		3:
-			localScore += 500
-		4:
-			localScore += 800
-	
-	return Vector2i(localScore, lines); #score and number of lines

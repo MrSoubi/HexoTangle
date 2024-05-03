@@ -19,10 +19,11 @@ enum HexType {I, O, T, L, J, Z, S};
 enum State {FREE, BLOCKED, MOVING};
 
 enum GameState {MENU, PLAYING, PAUSED};
-var score: int
 
 var textureFree: Texture2D = load("res://Sprites/Hex_Empty.png");
 var textureBlocked: Texture2D = load("res://Sprites/Hex_Black.png");
+var texturePhantom : Texture2D = load("res://Sprites/Hex_Phantom.png")
+
 var texture_O: Texture2D = load("res://Sprites/Hex_Yellow.png")
 var texture_I: Texture2D = load("res://Sprites/Hex_Blue.png")
 var texture_T: Texture2D = load("res://Sprites/Hex_Purple.png")
@@ -30,7 +31,6 @@ var texture_L: Texture2D = load("res://Sprites/Hex_Orange.png")
 var texture_J: Texture2D = load("res://Sprites/Hex_DarkBlue.png")
 var texture_S: Texture2D = load("res://Sprites/Hex_Green.png")
 var texture_Z: Texture2D = load("res://Sprites/Hex_Red.png")
-var texturePhantom : Texture2D = load("res://Sprites/Hex_Phantom.png")
 
 var texture_Form_O: Texture2D = load("res://Sprites/Form_O.png")
 var texture_Form_I: Texture2D = load("res://Sprites/Form_I.png")
@@ -82,3 +82,6 @@ func add_directions(dir1: GlobalData.Direction, dir2: GlobalData.Direction) -> G
 			result = GlobalData.Direction.TOP_LEFT
 	
 	return result;
+
+const V_SPACING = Vector2(0, 108);
+const H_SPACING = Vector2(94, 0);
