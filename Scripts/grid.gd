@@ -9,6 +9,12 @@ const WIDTH: int = 10
 var cell = load("res://Scenes/cell.tscn")
 
 func _ready():
+	reset()
+
+func reset():
+	for n in get_children():
+		n.free()
+	
 	# Left border
 	for i in HEIGHT:
 		var c = cell.instantiate()
@@ -57,6 +63,7 @@ func add_cell(cell: Cell):
 	cell.global_position = temp_position
 	#cell.global_rotation = temp_rotation # Do not rotate here, so the cell texture stays in the correct orientation in the stack
 
+signal lines_completed(count: int)
 
 func handle_full_lines():
 	var lines = []
@@ -84,8 +91,6 @@ func handle_full_lines():
 			print("after adaptation : " + str(current_line))
 			lines[current_line].append(cell)
 	
-	# Send a signal !
-	
 	# Remove the cells that can be removed and move the others to the bottom
 	var full_line_count = 0
 	
@@ -99,3 +104,5 @@ func handle_full_lines():
 		else:
 			for cell in lines[i]:
 				cell.position += GlobalData.V_SPACING * full_line_count # Replace this by something that moves the cells to the bottom with a nice effect
+	
+	lines_completed.emit(full_line_count)

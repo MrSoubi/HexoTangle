@@ -80,6 +80,7 @@ position = Vector2(0, 1015)
 zoom = Vector2(0.3, 0.3)
 script = ExtResource("20_o431x")
 
+[connection signal="lines_completed" from="Grid" to="." method="_on_grid_lines_completed"]
 [connection signal="hexomino_has_blocked" from="Phantom" to="." method="_on_hexomino_hexomino_has_blocked"]
 [connection signal="hexomino_has_blocked" from="Hexomino" to="." method="_on_hexomino_hexomino_has_blocked"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

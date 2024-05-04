@@ -288,6 +288,8 @@ func handle_start_game(startingLevel : int = 1):
 	linesToDoUntilNextLevel = 5; #WARNING should be adressed when starting from a level > 1 !
 	time = 0;
 	
+	grid.reset()
+	
 	timer.wait_time = 1.0;
 	timer.start();
 	timer.set_paused(false);
@@ -334,17 +336,18 @@ func _on_ui_quit_game():
 func _on_ui_resume_game():
 	handle_resume_game();
 
-
 func _on_global_timer_timeout():
 	time += $GlobalTimer.wait_time;
 	ui.set_time(time)
-
-
-func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
-	pass # Replace with function body.
-
 
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
 	current_hexomino.set_type(bag.get_random_hex_type());
 	handle_phantom()
+
+
+func _on_grid_lines_completed(count):
+	score += count
+	lines += count
+	level += count
+	ui.update_values(score, lines, level)
