@@ -10,7 +10,7 @@ var bag = [
 	GlobalData.HexType.S
 	];
 
-func getRandomHexType() -> GlobalData.HexType:
+func get_random_hex_type() -> GlobalData.HexType:
 	var k = bag[randi_range(0, bag.size()-1)];
 	bag.erase(k);
 	

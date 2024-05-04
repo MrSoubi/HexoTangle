@@ -24,6 +24,7 @@ var side_movement_flip_flop: bool = true;
 
 func _ready():
 	ui.display_main_menu();
+	current_hexomino.set_type(bag.get_random_hex_type())
 
 func initialize_leaderBoard():
 	SilentWolf.configure({
@@ -345,6 +346,5 @@ func _on_grid_figure_blocked(line_count, cell_count, is_hard_drop):
 
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
-	current_hexomino.set_type(GlobalData.HexType.I);
+	current_hexomino.set_type(bag.get_random_hex_type());
 	handle_phantom()
-	# Gen new hexomino

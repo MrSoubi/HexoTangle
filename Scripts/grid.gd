@@ -1,6 +1,6 @@
 extends Node2D
 
-const DETECTION_LENGTH: int = 5
+const DETECTION_LENGTH: int = 2
 const HEIGHT: int = 20
 const WIDTH: int = 10
 
@@ -39,7 +39,9 @@ func is_position_available(position: Vector2) -> bool:
 	
 	for cell in get_children():
 		var distance = abs((cell.global_position - position).length())
-		result = result and distance > DETECTION_LENGTH and position.x <= x_max and position.x >= x_min and position.y <= y_max
+		result = (result # Do not continue if one cell is already on a bad place
+			and distance > DETECTION_LENGTH # Check if the cell is on top of another
+			)
 		if (!result):
 			break
 	
@@ -53,8 +55,8 @@ func add_cell(cell: Cell):
 	cell.name = "Cell_" + str(get_child_count())
 	add_child(cell)
 	cell.global_position = temp_position
-	cell.global_rotation = temp_rotation
-	# Check if a line has been done and trigger the coresponding signal
+	#cell.global_rotation = temp_rotation # Do not rotate here, so the cell texture stays in the correct orientation in the stack
+
 
 func handle_full_lines():
 	var lines = []
@@ -69,13 +71,17 @@ func handle_full_lines():
 	
 	for cell in get_children():
 		# Check if the current cell is not a border cell
-		if (cell.global_position.y < y_max and cell.global_position.x <= x_max and cell.global_position.x >= x_min): 
+		if (cell.global_position.y < y_max
+		and cell.global_position.x <= x_max
+		and cell.global_position.x >= x_min): 
 			
 			# Get the line position, and adjustement if it's on an odd column
-			var current_line = cell.global_position.y / GlobalData.V_SPACING.y
-			if int(cell.global_position.x / GlobalData.H_SPACING.x) % 2 == 1:
+			var current_line = snappedf(cell.global_position.y / GlobalData.V_SPACING.y, 0.1)
+			print("before adaptation : " + str(current_line))
+			if int(cell.global_position.x / GlobalData.H_SPACING.x) % 2 == 10:
 				current_line -= 0.5
 			
+			print("after adaptation : " + str(current_line))
 			lines[current_line].append(cell)
 	
 	# Send a signal !
@@ -89,7 +95,7 @@ func handle_full_lines():
 			full_line_count += 1
 			$"../Camera2D".zoom_in()
 			for cell in lines[i]:
-				cell.position += Vector2(2000, 2000) # Replace this by something that removes the cells
+				cell.queue_free()
 		else:
 			for cell in lines[i]:
 				cell.position += GlobalData.V_SPACING * full_line_count # Replace this by something that moves the cells to the bottom with a nice effect
