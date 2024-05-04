@@ -87,6 +87,7 @@ func handle_full_lines():
 	for i in range(lines.size() - 1, 0, -1):
 		if (lines[i].size() == WIDTH + 1):
 			full_line_count += 1
+			$"../Camera2D".zoom_in()
 			for cell in lines[i]:
 				cell.position += Vector2(2000, 2000) # Replace this by something that removes the cells
 		else:
