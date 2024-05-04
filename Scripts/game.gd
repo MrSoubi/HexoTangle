@@ -17,7 +17,7 @@ var state: GlobalData.GameState = GlobalData.GameState.MENU;
 var score: int = 0;
 var level: int = 1;
 var lines: int = 0;
-var linesToDoUntilNextLevel = 5;
+var lines_to_do_until_next_level = 5;
 var time: float = 0;
 
 var side_movement_flip_flop: bool = true;
@@ -41,7 +41,7 @@ func _input(event):
 			handle_pause_game();
 		if event.keycode == KEY_DOWN:
 			sound_manager.playSFX(GlobalData.SFX.SOFT_DROP)
-			handle_soft_drop();
+			handle_soft_drop(true);
 		if event.keycode == KEY_RIGHT:
 			sound_manager.playSFX(GlobalData.SFX.MOVEMENT)
 			handle_move_right();
@@ -62,8 +62,9 @@ func _input(event):
 
 func _on_timer_timeout():
 	handle_soft_drop();
+	ui.update_values(score, lines, level)
 
-func handle_soft_drop():
+func handle_soft_drop(add_score: bool = false):
 	if (state == GlobalData.GameState.PLAYING):
 		# Copying of the current hexomino state into a test hexomino, not visible for the player
 		var test_hexomino = hexomino.instantiate();
@@ -83,6 +84,9 @@ func handle_soft_drop():
 		and grid.is_position_available(test_hexomino.cell_3.global_position)
 		and grid.is_position_available(test_hexomino.cell_4.global_position)):
 			current_hexomino.move_to(test_hexomino.position);
+			if (add_score):
+				score += 1
+				ui.update_values(score, lines, level)
 		else:
 			current_hexomino.block();
 		
@@ -201,13 +205,18 @@ func handle_hard_drop():
 		test_hexomino.position = current_hexomino.position
 		test_hexomino.rotation = current_hexomino.rotation
 		
+		var steps = 0
+		
 		while (grid.is_position_available(test_hexomino.cell_1.global_position)
 		and grid.is_position_available(test_hexomino.cell_2.global_position)
 		and grid.is_position_available(test_hexomino.cell_3.global_position)
 		and grid.is_position_available(test_hexomino.cell_4.global_position)):
 			test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
+			steps += 1
 		
 		test_hexomino.move_to(test_hexomino.position - GlobalData.V_SPACING)
+		
+		score += (steps - 1) * 2
 		
 		current_hexomino.move_to(test_hexomino.position)
 		current_hexomino.block()
@@ -285,7 +294,7 @@ func handle_start_game(startingLevel : int = 1):
 	score = 0;
 	level = startingLevel;
 	lines = 0;
-	linesToDoUntilNextLevel = 5; #WARNING should be adressed when starting from a level > 1 !
+	lines_to_do_until_next_level = 5; #WARNING should be adressed when starting from a level > 1 !
 	time = 0;
 	
 	grid.reset()
@@ -314,12 +323,7 @@ func update_game():
 		4:
 			sound_manager.playSFX(GlobalData.SFX.FOUR_LINES);
 	
-	score += scoreAndLines.x * level;
-	lines += scoreAndLines.y;
-	
-	if (lines >= linesToDoUntilNextLevel):
-		level += 1
-		linesToDoUntilNextLevel += 5 * level
+
 	
 	timer.wait_time = get_fall_speed()
 	ui.update_values(score, lines, level);
@@ -345,9 +349,26 @@ func _on_hexomino_hexomino_has_blocked():
 	current_hexomino.set_type(bag.get_random_hex_type());
 	handle_phantom()
 
-
 func _on_grid_lines_completed(count):
-	score += count
-	lines += count
-	level += count
+	
+	match (count):
+		1:
+			score += 100 * level
+			lines += 1
+		2:
+			score += 300 * level
+			lines += 3
+		3:
+			score += 500 * level
+			lines += 5
+		4:
+			score += 800 * level
+			lines += 8
+	
+	
+	if (lines >= lines_to_do_until_next_level):
+		level += 1
+		lines_to_do_until_next_level += 5 * level
+		timer.set_wait_time(get_fall_speed())
+		
 	ui.update_values(score, lines, level)
