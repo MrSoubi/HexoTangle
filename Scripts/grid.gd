@@ -82,13 +82,14 @@ func handle_full_lines():
 		and cell.global_position.x <= x_max
 		and cell.global_position.x >= x_min): 
 			
+			var tmp_color = cell.get_color_dgb()
+			cell.set_phantom_color()
 			# Get the line position, and adjustement if it's on an odd column
 			var current_line = snappedf(cell.global_position.y / GlobalData.V_SPACING.y, 0.1)
-			print("before adaptation : " + str(current_line))
 			if int(cell.global_position.x / GlobalData.H_SPACING.x) % 2 == 10:
 				current_line -= 0.5
 			
-			print("after adaptation : " + str(current_line))
+			cell.set_color_dgb(tmp_color)
 			lines[current_line].append(cell)
 	
 	# Remove the cells that can be removed and move the others to the bottom
