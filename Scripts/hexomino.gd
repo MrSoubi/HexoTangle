@@ -80,6 +80,9 @@ func set_type(type: GlobalData.HexType):
 			cell_3.set_color(GlobalData.HexType.S)
 			cell_4.set_color(GlobalData.HexType.S)
 
+func get_type() -> GlobalData.HexType:
+	return type
+
 func _ready():
 	set_type(GlobalData.HexType.O)
 

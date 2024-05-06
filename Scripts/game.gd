@@ -191,9 +191,27 @@ func handle_rotate_clockwise():
 		
 		handle_phantom()
 
+var can_hold = true
+var has_never_held = true
+var held_type
+
 func handle_hold():
 	if (state == GlobalData.GameState.PLAYING):
-		timer.start();
+		if (can_hold):
+			var tmp: GlobalData.HexType = current_hexomino.get_type()
+			
+			if (has_never_held):
+				held_type = bag.get_random_hex_type()
+				has_never_held = false
+			
+			current_hexomino.set_type(held_type)
+			
+			held_type = tmp
+			
+			current_hexomino.position = Vector2(0,0)
+			current_hexomino.rotation = 0
+			
+			can_hold = false
 
 func handle_hard_drop():
 	if (state == GlobalData.GameState.PLAYING):
@@ -347,6 +365,7 @@ func _on_global_timer_timeout():
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
 	current_hexomino.set_type(bag.get_random_hex_type());
+	can_hold = true
 	handle_phantom()
 
 func _on_grid_lines_completed(count):
