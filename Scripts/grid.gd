@@ -82,14 +82,13 @@ func handle_full_lines():
 		and cell.global_position.x <= x_max
 		and cell.global_position.x >= x_min): 
 			
-			var tmp_color = cell.get_color_dgb()
-			cell.set_phantom_color()
-			# Get the line position, and adjustement if it's on an odd column
-			var current_line = snappedf(cell.global_position.y / GlobalData.V_SPACING.y, 0.1)
-			if int(cell.global_position.x / GlobalData.H_SPACING.x) % 2 == 10:
+			var local_y = snappedf(cell.global_position.y, GlobalData.V_SPACING.y / 2)
+			var current_line = local_y / GlobalData.V_SPACING.y
+			var decimal_part = current_line - floor(current_line)
+			if (decimal_part != 0):
 				current_line -= 0.5
 			
-			cell.set_color_dgb(tmp_color)
+			print(str(local_y) + " : " + str(current_line))
 			lines[current_line].append(cell)
 	
 	# Remove the cells that can be removed and move the others to the bottom
@@ -97,6 +96,7 @@ func handle_full_lines():
 	
 	# Looping backwards on the array
 	for i in range(lines.size() - 1, 0, -1):
+		print(str(i) + " : " + str(lines[i].size()))
 		if (lines[i].size() == WIDTH + 1):
 			full_line_count += 1
 			$"../Camera2D".zoom_in()

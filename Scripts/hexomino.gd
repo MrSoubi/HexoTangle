@@ -84,10 +84,10 @@ func _ready():
 	set_type(GlobalData.HexType.O)
 
 func rotate_clockwise():
-	rotate(deg_to_rad(-60))
+	rotate(-PI/3)
 
 func rotate_anti_clockwise():
-	rotate(deg_to_rad(60))
+	rotate(PI/3)
 
 func move_to(position: Vector2):
 	self.position = position
