@@ -483,55 +483,6 @@ texture = ExtResource("8_snm2o")
 layout_mode = 2
 texture = ExtResource("8_snm2o")
 
-[node name="PauseMenu" type="Control" parent="."]
-visible = false
-custom_minimum_size = Vector2(800, 910)
-layout_mode = 3
-anchors_preset = 0
-offset_right = 800.0
-offset_bottom = 910.0
-
-[node name="MarginContainer" type="MarginContainer" parent="PauseMenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -258.5
-offset_top = -268.0
-offset_right = 258.5
-offset_bottom = 268.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 100
-theme_override_constants/margin_top = 200
-theme_override_constants/margin_right = 100
-theme_override_constants/margin_bottom = 200
-
-[node name="ColorRect" type="ColorRect" parent="PauseMenu/MarginContainer"]
-layout_mode = 2
-color = Color(0, 0, 0, 0.784314)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/MarginContainer"]
-layout_mode = 2
-
-[node name="Button_Resume" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "RESUME"
-
-[node name="Button_Settings" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "OPTIONS"
-
-[node name="Button_Help" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "HOW TO PLAY"
-
-[node name="Button_Quit" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "QUIT"
-
 [node name="HelpUI" type="Control" parent="."]
 visible = false
 custom_minimum_size = Vector2(800, 910)
@@ -734,15 +685,64 @@ text = "RETRY"
 layout_mode = 2
 text = "QUIT"
 
+[node name="PauseMenu" type="Control" parent="."]
+visible = false
+custom_minimum_size = Vector2(800, 910)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 800.0
+offset_bottom = 910.0
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -258.5
+offset_top = -268.0
+offset_right = 258.5
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 200
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 200
+
+[node name="ColorRect" type="ColorRect" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Button_Resume" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESUME"
+
+[node name="Button_Settings" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "OPTIONS"
+
+[node name="Button_Help" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "HOW TO PLAY"
+
+[node name="Button_Quit" type="Button" parent="PauseMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
+
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Play" to="." method="_on_button_play_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
-[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Resume" to="." method="_on_button_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
-[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
-[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Left" to="HelpUI" method="_on_button_left_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Back" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Right" to="HelpUI" method="_on_button_right_pressed"]
 [connection signal="pressed" from="GameOverMenu/MarginContainer/VBoxContainer/Button_NewGame" to="." method="_on_button_new_game_pressed"]
 [connection signal="pressed" from="GameOverMenu/MarginContainer/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Resume" to="." method="_on_button_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
+[connection signal="pressed" from="PauseMenu/MarginContainer/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]

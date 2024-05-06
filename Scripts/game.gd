@@ -24,7 +24,8 @@ var side_movement_flip_flop: bool = true;
 
 func _ready():
 	ui.display_main_menu();
-	current_hexomino.set_type(bag.get_random_hex_type())
+	bag.fill_queue()
+	current_hexomino.set_type(bag.get_next_hex_type())
 
 func initialize_leaderBoard():
 	SilentWolf.configure({
@@ -210,6 +211,8 @@ func handle_hold():
 			
 			current_hexomino.position = Vector2(0,0)
 			current_hexomino.rotation = 0
+			
+			ui.set_hold_figure(held_type)
 			
 			can_hold = false
 

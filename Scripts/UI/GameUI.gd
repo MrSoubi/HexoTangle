@@ -25,7 +25,44 @@ func set_level(l: int):
 	level_value.text = str(l);
 
 func push_next_figure(f: GlobalData.HexType):
-	pass;
+	texture_rect_next_1.texture = texture_rect_next_2.texture
+	texture_rect_next_2.texture = texture_rect_next_3.texture
+	texture_rect_next_3.texture = texture_rect_next_4.texture
+	texture_rect_next_4.texture = texture_rect_next_5.texture
+	texture_rect_next_5.texture = texture_rect_next_6.texture
+	
+	print ("debug type : " + str(f))
+	match (f):
+		GlobalData.HexType.O:
+			texture_rect_next_6.texture = GlobalData.texture_Form_O
+		GlobalData.HexType.I:
+			texture_rect_next_6.texture = GlobalData.texture_Form_I
+		GlobalData.HexType.T:
+			texture_rect_next_6.texture = GlobalData.texture_Form_T
+		GlobalData.HexType.L:
+			texture_rect_next_6.texture = GlobalData.texture_Form_L
+		GlobalData.HexType.J:
+			texture_rect_next_6.texture = GlobalData.texture_Form_J
+		GlobalData.HexType.Z:
+			texture_rect_next_6.texture = GlobalData.texture_Form_Z
+		GlobalData.HexType.S:
+			texture_rect_next_6.texture = GlobalData.texture_Form_S
+			
+	print("debug texture : " + str(texture_rect_next_6))
 
 func set_hold_figure(f: GlobalData.HexType):
-	pass;
+	match (f):
+		GlobalData.HexType.O:
+			texture_rect_hold.texture = GlobalData.texture_Form_O
+		GlobalData.HexType.I:
+			texture_rect_hold.texture = GlobalData.texture_Form_I
+		GlobalData.HexType.T:
+			texture_rect_hold.texture = GlobalData.texture_Form_T
+		GlobalData.HexType.L:
+			texture_rect_hold.texture = GlobalData.texture_Form_L
+		GlobalData.HexType.J:
+			texture_rect_hold.texture = GlobalData.texture_Form_J
+		GlobalData.HexType.Z:
+			texture_rect_hold.texture = GlobalData.texture_Form_Z
+		GlobalData.HexType.S:
+			texture_rect_hold.texture = GlobalData.texture_Form_S

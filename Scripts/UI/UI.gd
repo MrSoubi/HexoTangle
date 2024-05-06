@@ -34,57 +34,63 @@ func _on_button_quit_pressed():
 	quitGame.emit();
 
 func display_main_menu():
-	main_menu.visible = true;
-	settings_menu.visible = false;
-	leader_board.visible = false;
-	game_ui.visible = false;
-	help_ui.visible = false;
-	pause_menu.visible = false;
-	game_over_menu.visible = false;
+	main_menu.visible = true
+	settings_menu.visible = false
+	leader_board.visible = false
+	game_ui.visible = false
+	help_ui.visible = false
+	pause_menu.visible = false
+	game_over_menu.visible = false
 
 func display_game_ui():
-	main_menu.visible = false;
-	settings_menu.visible = false;
-	leader_board.visible = false;
-	game_ui.visible = true;
-	help_ui.visible = false;
-	pause_menu.visible = false;
-	game_over_menu.visible = false;
+	main_menu.visible = false
+	settings_menu.visible = false
+	leader_board.visible = false
+	game_ui.visible = true
+	help_ui.visible = false
+	pause_menu.visible = false
+	game_over_menu.visible = false
 
 func display_settings_menu():
-	main_menu.visible = false;
-	settings_menu.visible = true;
-	leader_board.visible = false;
-	game_ui.visible = false;
-	help_ui.visible = false;
-	pause_menu.visible = false;
+	main_menu.visible = false
+	settings_menu.visible = true
+	leader_board.visible = false
+	game_ui.visible = false
+	help_ui.visible = false
+	pause_menu.visible = false
 
 func display_help_ui():
-	help_ui.visible = true;
+	help_ui.visible = true
 
 func display_leaderboard():
-	main_menu.visible = false;
-	settings_menu.visible = false;
-	leader_board.visible = true;
-	game_ui.visible = false;
-	help_ui.visible = false;
-	pause_menu.visible = false;
-	game_over_menu.visible = false;
+	main_menu.visible = false
+	settings_menu.visible = false
+	leader_board.visible = true
+	game_ui.visible = false
+	help_ui.visible = false
+	pause_menu.visible = false
+	game_over_menu.visible = false
 
 func display_pause_menu():
-	pause_menu.visible = true;
+	pause_menu.visible = true
 
 func display_game_over_menu():
-	game_over_menu.visible = true;
+	game_over_menu.visible = true
 
 func update_values(score, lines, level):
-	game_ui.set_score(score);
-	game_ui.set_lines(lines);
-	game_ui.set_level(level);
+	game_ui.set_score(score)
+	game_ui.set_lines(lines)
+	game_ui.set_level(level)
 
 func _on_button_back_pressed():
-	help_ui.visible = false;
+	help_ui.visible = false
 
 func _on_button_new_game_pressed():
-	display_game_ui();
-	startGame.emit();
+	display_game_ui()
+	startGame.emit()
+
+func set_hold_figure(f: GlobalData.HexType):
+	game_ui.set_hold_figure(f)
+
+func add_figure_to_queue(f: GlobalData.HexType):
+	game_ui.push_next_figure(f)
