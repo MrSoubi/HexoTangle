@@ -16,10 +16,10 @@ jobs:
         uses: manleydev/build-godot-action@f759ed7f8fcb5137cb70873ecf663aa8a1bd998b
         with:
           name: HexoTangle
-          preset: win64
+          preset: Windows Desktop
           debugMode: "true"
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Client - ${{ matrix.platform }}
+          name: Client - Windows
           path: ${{ github.workspace }}/${{ steps.build.outputs.build }}
