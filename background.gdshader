@@ -5,7 +5,7 @@ void vertex() {
 }
 
 void fragment() {
-	float speed = 0.05;
+	float speed = 0.02;
 	
 	vec3 red = vec3(237./256., 41./256., 57./256.);
 	vec3 dark_blue = vec3(0., 35./256., 149./256.);

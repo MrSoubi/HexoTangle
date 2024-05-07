@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=22 format=3 uid="uid://d33r44fu71nhh"]
 
-[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://grid.tscn" id="1_ae5do"]
-[ext_resource type="Script" path="res://Scripts/game.gd" id="1_xep6p"]
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_xep6p"]
 [ext_resource type="Shader" path="res://background.gdshader" id="2_hrjri"]
-[ext_resource type="PackedScene" uid="uid://dv0k3ctv3rp33" path="res://Scenes/ui.tscn" id="5_mbo66"]
+[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://Scenes/grid.tscn" id="4_ywkpk"]
+[ext_resource type="Script" path="res://Scripts/Grid.gd" id="5_absqa"]
+[ext_resource type="PackedScene" uid="uid://dv0k3ctv3rp33" path="res://Scenes/ui.tscn" id="5_e8trd"]
 [ext_resource type="AudioStream" uid="uid://dvg76orhtgq4o" path="res://Sound/HexoTangle_MainTheme.mp3" id="8_ftwso"]
 [ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="8_q1775"]
 [ext_resource type="Script" path="res://Scripts/SoundManager.gd" id="9_tkctc"]
@@ -16,17 +17,15 @@
 [ext_resource type="AudioStream" uid="uid://sfontjfbtqju" path="res://Sound/Rotation.wav" id="16_igtus"]
 [ext_resource type="AudioStream" uid="uid://jvthburumka2" path="res://Sound/Movement.wav" id="17_lc6ri"]
 [ext_resource type="AudioStream" uid="uid://dxm1fkjo6g522" path="res://Sound/Hold.wav" id="18_5ed10"]
+[ext_resource type="Script" path="res://Bag.gd" id="18_eur3c"]
 [ext_resource type="AudioStream" uid="uid://5h5wm8bomui0" path="res://Sound/Error.wav" id="19_45we2"]
+[ext_resource type="PackedScene" uid="uid://h67o4tsbw5rf" path="res://Scenes/hexomino.tscn" id="20_q73wq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gaa0i"]
 shader = ExtResource("2_hrjri")
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("timer", "soundManager", "grid", "ui")]
+[node name="Game" type="Node2D"]
 script = ExtResource("1_xep6p")
-timer = NodePath("Timer")
-soundManager = NodePath("SoundManager")
-grid = NodePath("Grid")
-ui = NodePath("UI")
 
 [node name="AnimatedBackground" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_gaa0i")
@@ -34,13 +33,15 @@ scale = Vector2(0.833333, 2.275)
 texture = ExtResource("8_q1775")
 centered = false
 
+[node name="GlobalTimer" type="Timer" parent="."]
+
 [node name="Timer" type="Timer" parent="."]
 
-[node name="Grid" parent="." node_paths=PackedStringArray("soundManager") instance=ExtResource("1_ae5do")]
+[node name="Grid" parent="." instance=ExtResource("4_ywkpk")]
 position = Vector2(400, 288)
-soundManager = NodePath("../SoundManager")
+script = ExtResource("5_absqa")
 
-[node name="UI" parent="." instance=ExtResource("5_mbo66")]
+[node name="UI" parent="." instance=ExtResource("5_e8trd")]
 
 [node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
 script = ExtResource("9_tkctc")
@@ -67,13 +68,12 @@ autoplay = true
 
 [node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 
-[node name="GlobalTimer" type="Timer" parent="."]
+[node name="Bag" type="Node" parent="."]
+script = ExtResource("18_eur3c")
+
+[node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="gameOver" from="Grid" to="." method="_on_grid_game_over"]
-[connection signal="hardDropDone" from="Grid" to="." method="_on_grid_hard_drop_done"]
-[connection signal="hexChanged" from="Grid" to="." method="_on_grid_hex_changed"]
 [connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
 [connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]
 [connection signal="startGame" from="UI" to="." method="_on_ui_start_game"]
-[connection signal="timeout" from="GlobalTimer" to="." method="_on_global_timer_timeout"]

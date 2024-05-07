@@ -1,0 +1,79 @@
+[gd_scene load_steps=22 format=3 uid="uid://d33r44fu71nhh"]
+
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_xep6p"]
+[ext_resource type="Shader" path="res://background.gdshader" id="2_hrjri"]
+[ext_resource type="PackedScene" uid="uid://cpin614h2rqoi" path="res://Scenes/grid.tscn" id="4_ywkpk"]
+[ext_resource type="Script" path="res://Scripts/Grid.gd" id="5_absqa"]
+[ext_resource type="PackedScene" uid="uid://dv0k3ctv3rp33" path="res://Scenes/ui.tscn" id="5_e8trd"]
+[ext_resource type="AudioStream" uid="uid://dvg76orhtgq4o" path="res://Sound/HexoTangle_MainTheme.mp3" id="8_ftwso"]
+[ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="8_q1775"]
+[ext_resource type="Script" path="res://Scripts/SoundManager.gd" id="9_tkctc"]
+[ext_resource type="AudioStream" uid="uid://ccoe3gq8k2b75" path="res://Sound/OneLine.wav" id="10_pmf37"]
+[ext_resource type="AudioStream" uid="uid://dh6wuu1hs72px" path="res://Sound/TwoLines.wav" id="11_prouk"]
+[ext_resource type="AudioStream" uid="uid://cfnvpu7y6c7nu" path="res://Sound/ThreeLines.wav" id="12_fcj3h"]
+[ext_resource type="AudioStream" uid="uid://didwcommunpne" path="res://Sound/FourLines.wav" id="13_xsvr1"]
+[ext_resource type="AudioStream" uid="uid://cq27ys0418ul8" path="res://Sound/HardDrop.wav" id="14_p1ys5"]
+[ext_resource type="AudioStream" uid="uid://dsy3xm0gjf0gi" path="res://Sound/SoftDrop.wav" id="15_kls3b"]
+[ext_resource type="AudioStream" uid="uid://sfontjfbtqju" path="res://Sound/Rotation.wav" id="16_igtus"]
+[ext_resource type="AudioStream" uid="uid://jvthburumka2" path="res://Sound/Movement.wav" id="17_lc6ri"]
+[ext_resource type="AudioStream" uid="uid://dxm1fkjo6g522" path="res://Sound/Hold.wav" id="18_5ed10"]
+[ext_resource type="Script" path="res://Bag.gd" id="18_eur3c"]
+[ext_resource type="AudioStream" uid="uid://5h5wm8bomui0" path="res://Sound/Error.wav" id="19_45we2"]
+[ext_resource type="PackedScene" uid="uid://h67o4tsbw5rf" path="res://Scenes/hexomino.tscn" id="20_q73wq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gaa0i"]
+shader = ExtResource("2_hrjri")
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_xep6p")
+
+[node name="AnimatedBackground" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_gaa0i")
+scale = Vector2(0.833333, 2.275)
+texture = ExtResource("8_q1775")
+centered = false
+
+[node name="GlobalTimer" type="Timer" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Grid" parent="." instance=ExtResource("4_ywkpk")]
+position = Vector2(400, 288)
+script = ExtResource("5_absqa")
+
+[node name="UI" parent="." instance=ExtResource("5_e8trd")]
+
+[node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
+script = ExtResource("9_tkctc")
+musicPlayer = NodePath("MusicPlayer")
+sfxPlayer_1 = NodePath("SFXPlayer_1")
+sfxPlayer_2 = NodePath("FXPlayer_2")
+sfx_oneLine = ExtResource("10_pmf37")
+sfx_twoLines = ExtResource("11_prouk")
+sfx_threeLines = ExtResource("12_fcj3h")
+sfx_fourLines = ExtResource("13_xsvr1")
+sfx_hardDrop = ExtResource("14_p1ys5")
+sfx_softDrop = ExtResource("15_kls3b")
+sfx_rotation = ExtResource("16_igtus")
+sfx_movement = ExtResource("17_lc6ri")
+sfx_hold = ExtResource("18_5ed10")
+sfx_error = ExtResource("19_45we2")
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="SoundManager"]
+stream = ExtResource("8_ftwso")
+volume_db = -80.0
+autoplay = true
+
+[node name="SFXPlayer_1" type="AudioStreamPlayer" parent="SoundManager"]
+
+[node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
+
+[node name="Bag" type="Node" parent="."]
+script = ExtResource("18_eur3c")
+
+[node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
+[connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]
+[connection signal="startGame" from="UI" to="." method="_on_ui_start_game"]

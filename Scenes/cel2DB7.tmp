@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bl0hqokjobc4"]
+
+[ext_resource type="Script" path="res://Scripts/cell.gd" id="1_gqpwa"]
+[ext_resource type="Texture2D" uid="uid://be1plmpgi48g0" path="res://Sprites/Hex_Empty.png" id="2_8e6lv"]
+
+[node name="Cell" type="Node2D"]
+script = ExtResource("1_gqpwa")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_8e6lv")

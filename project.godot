@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="HexTetris"
-run/main_scene="res://game.tscn"
+run/main_scene="res://Scenes/game.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-GlobalData="*res://Scripts/GlobalData.gd"
+GlobalData="*res://Scripts/global_data.gd"
 SilentWolf="*res://addons/silent_wolf/SilentWolf.gd"
 
 [display]

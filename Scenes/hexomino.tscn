@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://h67o4tsbw5rf"]
+
+[ext_resource type="Script" path="res://Scripts/hexomino.gd" id="1_0mx4w"]
+[ext_resource type="PackedScene" uid="uid://bl0hqokjobc4" path="res://Scenes/cell.tscn" id="2_lqanb"]
+
+[node name="Hexomino" type="Node2D"]
+script = ExtResource("1_0mx4w")
+
+[node name="Cell_1" parent="." instance=ExtResource("2_lqanb")]
+
+[node name="Cell_2" parent="." instance=ExtResource("2_lqanb")]
+
+[node name="Cell_3" parent="." instance=ExtResource("2_lqanb")]
+
+[node name="Cell_4" parent="." instance=ExtResource("2_lqanb")]
