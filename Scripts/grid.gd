@@ -35,6 +35,14 @@ func reset():
 		if (i%2 == 1):
 			c.position -= Vector2(0, GlobalData.V_SPACING.y / 2)
 
+func is_hexomino_in_valid_position(hex: Hexomino) -> bool:
+	var result = (is_position_available(hex.cell_2.global_position) and
+				is_position_available(hex.cell_3.global_position) and
+				is_position_available(hex.cell_4.global_position) and
+				is_position_available(hex.cell_1.global_position))
+	
+	return result
+
 func is_position_available(position: Vector2) -> bool:
 	var result = true
 	

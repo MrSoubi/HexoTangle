@@ -107,17 +107,18 @@ func handle_move_right():
 		test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
+		# First try
 		if (side_movement_flip_flop):
 			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
 			test_hexomino.position -= GlobalData.V_SPACING / 2;
 		
-		if (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		if (grid.is_hexomino_in_valid_position(test_hexomino)):
 			current_hexomino.move_to(test_hexomino.position);
 			side_movement_flip_flop = not side_movement_flip_flop;
+		else:
+			test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
+			test_hexomino.rotation = current_hexomino.rotation;
 		
 		test_hexomino.queue_free();
 		
@@ -133,17 +134,18 @@ func handle_move_left():
 		test_hexomino.position = current_hexomino.position - GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
+		# First try
 		if (side_movement_flip_flop):
 			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
 			test_hexomino.position -= GlobalData.V_SPACING / 2;
 		
-		if (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		if (grid.is_hexomino_in_valid_position(test_hexomino)):
 			current_hexomino.move_to(test_hexomino.position);
 			side_movement_flip_flop = not side_movement_flip_flop;
+		else:
+			test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
+			test_hexomino.rotation = current_hexomino.rotation;
 		
 		test_hexomino.queue_free();
 		
@@ -161,10 +163,7 @@ func handle_rotate_anti_clockwise():
 		
 		test_hexomino.rotate(deg_to_rad(60));
 		
-		if (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		if (grid.is_hexomino_in_valid_position(test_hexomino)):
 			current_hexomino.rotate_anti_clockwise();
 		
 		test_hexomino.queue_free();
@@ -182,10 +181,7 @@ func handle_rotate_clockwise():
 		test_hexomino.rotation = current_hexomino.rotation;
 		
 		test_hexomino.rotate(deg_to_rad(-60));
-		if (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		if (grid.is_hexomino_in_valid_position(test_hexomino)):
 			current_hexomino.rotate_clockwise();
 		
 		test_hexomino.queue_free();
@@ -228,10 +224,7 @@ func handle_hard_drop():
 		
 		var steps = 0
 		
-		while (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		while (grid.is_hexomino_in_valid_position(test_hexomino)):
 			test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
 			steps += 1
 		
@@ -258,10 +251,7 @@ func handle_phantom():
 		test_hexomino.position = current_hexomino.position
 		test_hexomino.rotation = current_hexomino.rotation
 		
-		while (grid.is_position_available(test_hexomino.cell_1.global_position)
-		and grid.is_position_available(test_hexomino.cell_2.global_position)
-		and grid.is_position_available(test_hexomino.cell_3.global_position)
-		and grid.is_position_available(test_hexomino.cell_4.global_position)):
+		while (grid.is_hexomino_in_valid_position(test_hexomino)):
 			test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
 		
 		test_hexomino.move_to(test_hexomino.position - GlobalData.V_SPACING)
@@ -370,7 +360,6 @@ func _on_hexomino_hexomino_has_blocked():
 	current_hexomino.set_type(bag.get_random_hex_type());
 	can_hold = true
 	handle_phantom()
-	handle_full_lines_v2()
 
 func _on_grid_lines_completed(count):
 	
@@ -395,22 +384,3 @@ func _on_grid_lines_completed(count):
 		timer.set_wait_time(get_fall_speed())
 		
 	ui.update_values(score, lines, level)
-
-func handle_full_lines_v2():
-	var full_lines = []
-	var line_positions = []
-	
-	for i in grid.WIDTH + 1:
-		var local_pos = Vector2((i - grid.WIDTH / 2) * GlobalData.H_SPACING.x, (grid.HEIGHT - 1) * GlobalData.V_SPACING.y - GlobalData.V_SPACING.y/2)
-		if (i%2 == 1):
-			local_pos -= Vector2(0, GlobalData.V_SPACING.y / 2)
-		line_positions.append(local_pos)
-	
-	for i in grid.HEIGHT:
-		full_lines.append(true)
-		for pos in line_positions:
-			full_lines[i] = full_lines[i] and !grid.is_position_available(pos - Vector2(0, i * GlobalData.V_SPACING.y))
-		if (full_lines[i]):
-			print(i)
-			for j in line_positions:
-				print(j - Vector2(0, i * GlobalData.V_SPACING.y))
