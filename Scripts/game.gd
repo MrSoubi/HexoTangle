@@ -107,7 +107,6 @@ func handle_move_right():
 		test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		# First try
 		if (side_movement_flip_flop):
 			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
@@ -118,7 +117,13 @@ func handle_move_right():
 			side_movement_flip_flop = not side_movement_flip_flop;
 		else:
 			test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
-			test_hexomino.rotation = current_hexomino.rotation;
+			if (side_movement_flip_flop):
+				test_hexomino.position -= GlobalData.V_SPACING / 2;
+			else:
+				test_hexomino.position += GlobalData.V_SPACING / 2;
+				if (grid.is_hexomino_in_valid_position(test_hexomino)):
+					current_hexomino.move_to(test_hexomino.position);
+					side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
 		
@@ -134,7 +139,6 @@ func handle_move_left():
 		test_hexomino.position = current_hexomino.position - GlobalData.H_SPACING;
 		test_hexomino.rotation = current_hexomino.rotation;
 		
-		# First try
 		if (side_movement_flip_flop):
 			test_hexomino.position += GlobalData.V_SPACING / 2;
 		else:
@@ -145,7 +149,13 @@ func handle_move_left():
 			side_movement_flip_flop = not side_movement_flip_flop;
 		else:
 			test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
-			test_hexomino.rotation = current_hexomino.rotation;
+			if (side_movement_flip_flop):
+				test_hexomino.position -= GlobalData.V_SPACING / 2;
+			else:
+				test_hexomino.position += GlobalData.V_SPACING / 2;
+				if (grid.is_hexomino_in_valid_position(test_hexomino)):
+					current_hexomino.move_to(test_hexomino.position);
+					side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
 		
