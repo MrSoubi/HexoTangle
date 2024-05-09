@@ -31,7 +31,6 @@ func push_next_figure(f: GlobalData.HexType):
 	texture_rect_next_4.texture = texture_rect_next_5.texture
 	texture_rect_next_5.texture = texture_rect_next_6.texture
 	
-	print ("debug type : " + str(f))
 	match (f):
 		GlobalData.HexType.O:
 			texture_rect_next_6.texture = GlobalData.texture_Form_O
@@ -48,7 +47,6 @@ func push_next_figure(f: GlobalData.HexType):
 		GlobalData.HexType.S:
 			texture_rect_next_6.texture = GlobalData.texture_Form_S
 			
-	print("debug texture : " + str(texture_rect_next_6))
 
 func set_hold_figure(f: GlobalData.HexType):
 	match (f):

@@ -55,13 +55,11 @@ func is_position_available(position: Vector2) -> bool:
 
 func add_cell(cell: Cell):
 	var temp_position = cell.global_position
-	var temp_rotation = cell.global_rotation
 	
 	cell.get_parent().remove_child(cell)
 	cell.name = "Cell_" + str(get_child_count())
 	add_child(cell)
-	cell.global_position = temp_position
-	#cell.global_rotation = temp_rotation # Do not rotate here, so the cell texture stays in the correct orientation in the stack
+	cell.global_position = Vector2(snapped(temp_position.x, 1), snapped(temp_position.y, 1))
 
 signal lines_completed(count: int)
 
@@ -88,7 +86,6 @@ func handle_full_lines():
 			if (decimal_part != 0):
 				current_line -= 0.5
 			
-			print(str(local_y) + " : " + str(current_line))
 			lines[current_line].append(cell)
 	
 	# Remove the cells that can be removed and move the others to the bottom
@@ -96,7 +93,6 @@ func handle_full_lines():
 	
 	# Looping backwards on the array
 	for i in range(lines.size() - 1, 0, -1):
-		print(str(i) + " : " + str(lines[i].size()))
 		if (lines[i].size() == WIDTH + 1):
 			full_line_count += 1
 			$"../Camera2D".zoom_in()

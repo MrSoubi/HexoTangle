@@ -370,6 +370,7 @@ func _on_hexomino_hexomino_has_blocked():
 	current_hexomino.set_type(bag.get_random_hex_type());
 	can_hold = true
 	handle_phantom()
+	handle_full_lines_v2()
 
 func _on_grid_lines_completed(count):
 	
@@ -394,3 +395,22 @@ func _on_grid_lines_completed(count):
 		timer.set_wait_time(get_fall_speed())
 		
 	ui.update_values(score, lines, level)
+
+func handle_full_lines_v2():
+	var full_lines = []
+	var line_positions = []
+	
+	for i in grid.WIDTH + 1:
+		var local_pos = Vector2((i - grid.WIDTH / 2) * GlobalData.H_SPACING.x, (grid.HEIGHT - 1) * GlobalData.V_SPACING.y - GlobalData.V_SPACING.y/2)
+		if (i%2 == 1):
+			local_pos -= Vector2(0, GlobalData.V_SPACING.y / 2)
+		line_positions.append(local_pos)
+	
+	for i in grid.HEIGHT:
+		full_lines.append(true)
+		for pos in line_positions:
+			full_lines[i] = full_lines[i] and !grid.is_position_available(pos - Vector2(0, i * GlobalData.V_SPACING.y))
+		if (full_lines[i]):
+			print(i)
+			for j in line_positions:
+				print(j - Vector2(0, i * GlobalData.V_SPACING.y))

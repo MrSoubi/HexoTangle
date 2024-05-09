@@ -1,18 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dv0k3ctv3rp33"]
+[gd_scene load_steps=9 format=3 uid="uid://dv0k3ctv3rp33"]
 
 [ext_resource type="Script" path="res://Scripts/UI/UI.gd" id="1_7dekt"]
-[ext_resource type="Texture2D" uid="uid://l2w8noafawqq" path="res://Sprites/Form_I.png" id="2_7riej"]
-[ext_resource type="Texture2D" uid="uid://dau5rnv8835yg" path="res://Sprites/Form_J.png" id="3_qm6dp"]
-[ext_resource type="Texture2D" uid="uid://culdqpvc2tsr4" path="res://Sprites/Form_L.png" id="4_2u2gg"]
 [ext_resource type="Texture2D" uid="uid://dxwuf0mde64xv" path="res://Sprites/Banner Image.png" id="5_d3vbs"]
 [ext_resource type="Script" path="res://Scripts/leader_board.gd" id="6_n5x4s"]
 [ext_resource type="Script" path="res://Scripts/UI/GameUI.gd" id="7_kevkj"]
 [ext_resource type="Texture2D" uid="uid://bxbcpvreqo6nr" path="res://icon.svg" id="8_snm2o"]
 [ext_resource type="Script" path="res://Scripts/UI/HelpUI.gd" id="9_jo1lo"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_3112v"]
-font_size = 30
-font_color = Color(0, 0.572549, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_f871y"]
 font_color = Color(0, 0, 0, 1)
@@ -24,69 +17,6 @@ font_color = Color(0, 0, 0, 1)
 [node name="UI" type="CanvasLayer"]
 follow_viewport_enabled = true
 script = ExtResource("1_7dekt")
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="."]
-visible = false
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -86.0
-offset_bottom = 623.0
-grow_horizontal = 0
-
-[node name="ThirdUpcoming" type="Sprite2D" parent="VBoxContainer2"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_7riej")
-centered = false
-offset = Vector2(-100, 100)
-
-[node name="SecondUpcoming" type="Sprite2D" parent="VBoxContainer2"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("3_qm6dp")
-centered = false
-offset = Vector2(-100, 600)
-
-[node name="FirstUpcoming" type="Sprite2D" parent="VBoxContainer2"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("4_2u2gg")
-centered = false
-offset = Vector2(-100, 1100)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-visible = false
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -48.0
-offset_right = 48.0
-offset_bottom = 92.0
-grow_horizontal = 2
-alignment = 1
-
-[node name="ScoreLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "SCORE"
-label_settings = SubResource("LabelSettings_3112v")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="LevelLabel" type="Label" parent="VBoxContainer"]
-layout_mode = 2
-text = "SCORE"
-label_settings = SubResource("LabelSettings_3112v")
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Control" type="Control" parent="VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="HoldLabel" type="Sprite2D" parent="VBoxContainer/Control"]
-scale = Vector2(0.2, 0.2)
-offset = Vector2(0, 200)
-metadata/_edit_use_anchors_ = true
 
 [node name="MainMenu" type="Control" parent="."]
 visible = false
@@ -377,7 +307,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameUI" type="Control" parent="."]
-visible = false
 custom_minimum_size = Vector2(800, 910)
 layout_mode = 3
 anchors_preset = 0
@@ -403,12 +332,16 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 theme_override_constants/margin_bottom = 150
 
 [node name="TextureRect_Hold" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Left/MarginContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 4
+stretch_mode = 4
 
 [node name="VBoxContainer_Score" type="VBoxContainer" parent="GameUI/MarginContainer/VBoxContainer_Left"]
 layout_mode = 2
@@ -455,6 +388,7 @@ layout_mode = 2
 text = "###"
 
 [node name="VBoxContainer_Right" type="VBoxContainer" parent="GameUI/MarginContainer"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
@@ -462,26 +396,38 @@ size_flags_vertical = 4
 [node name="TextureRect_Next_1" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="TextureRect_Next_2" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="TextureRect_Next_3" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="TextureRect_Next_4" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="TextureRect_Next_5" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="TextureRect_Next_6" type="TextureRect" parent="GameUI/MarginContainer/VBoxContainer_Right"]
 layout_mode = 2
 texture = ExtResource("8_snm2o")
+expand_mode = 5
+stretch_mode = 4
 
 [node name="HelpUI" type="Control" parent="."]
 visible = false
