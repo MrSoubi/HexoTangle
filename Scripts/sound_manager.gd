@@ -1,9 +1,9 @@
 extends Node
 
 @export_group("Audio Stream Players")
-@export var musicPlayer: AudioStreamPlayer;
-@export var sfxPlayer_1: AudioStreamPlayer;
-@export var sfxPlayer_2: AudioStreamPlayer;
+@export var music_player: AudioStreamPlayer;
+@export var sfx_player_1: AudioStreamPlayer;
+@export var sfx_player_2: AudioStreamPlayer;
 
 @export_group("Audio Streams")
 @export var sfx_oneLine: AudioStream
@@ -19,11 +19,11 @@ extends Node
 @export var sfx_error: AudioStream
 
 func _on_h_slider_music_value_changed(value):
-	musicPlayer.volume_db = (value / 100) * 80 - 80;
+	music_player.volume_db = (value / 100) * 80 - 80;
 
 func _on_h_slider_vfx_value_changed(value):
-	sfxPlayer_1.volume_db = (value / 100) * 80 - 80;
-	sfxPlayer_2.volume_db = (value / 100) * 80 - 80;
+	sfx_player_1.volume_db = (value / 100) * 80 - 80;
+	sfx_player_2.volume_db = (value / 100) * 80 - 80;
 
 func playSFX(sfx: GlobalData.SFX):
 	var audioStream: AudioStream
@@ -37,9 +37,9 @@ func playSFX(sfx: GlobalData.SFX):
 		GlobalData.SFX.FOUR_LINES:
 			audioStream = sfx_fourLines
 	
-	if (!sfxPlayer_1.playing):
-		sfxPlayer_1.stream = audioStream
-		sfxPlayer_1.play()
-	elif (!sfxPlayer_2.playing):
-		sfxPlayer_2.stream = audioStream
-		sfxPlayer_2.play()
+	if (!sfx_player_1.playing):
+		sfx_player_1.stream = audioStream
+		sfx_player_1.play()
+	elif (!sfx_player_2.playing):
+		sfx_player_2.stream = audioStream
+		sfx_player_2.play()

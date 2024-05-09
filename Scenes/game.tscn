@@ -47,11 +47,11 @@ centered = false
 [node name="UI" parent="." instance=ExtResource("5_e8trd")]
 follow_viewport_enabled = false
 
-[node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("musicPlayer", "sfxPlayer_1", "sfxPlayer_2")]
+[node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("music_player", "sfx_player_1", "sfx_player_2")]
 script = ExtResource("9_tkctc")
-musicPlayer = NodePath("MusicPlayer")
-sfxPlayer_1 = NodePath("SFXPlayer_1")
-sfxPlayer_2 = NodePath("FXPlayer_2")
+music_player = NodePath("MusicPlayer")
+sfx_player_1 = NodePath("SFXPlayer_1")
+sfx_player_2 = NodePath("SFXPlayer_2")
 sfx_oneLine = ExtResource("10_pmf37")
 sfx_twoLines = ExtResource("11_prouk")
 sfx_threeLines = ExtResource("12_fcj3h")
@@ -65,12 +65,17 @@ sfx_error = ExtResource("19_45we2")
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="SoundManager"]
 stream = ExtResource("8_ftwso")
-volume_db = -80.0
+volume_db = -15.0
 autoplay = true
+bus = &"Music"
 
 [node name="SFXPlayer_1" type="AudioStreamPlayer" parent="SoundManager"]
+volume_db = -10.0
+bus = &"SFX"
 
-[node name="FXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
+[node name="SFXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
+volume_db = -10.0
+bus = &"SFX"
 
 [node name="Bag" type="Node" parent="."]
 script = ExtResource("18_eur3c")

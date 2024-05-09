@@ -158,6 +158,7 @@ text = "Music volume"
 
 [node name="HSlider_Music" type="HSlider" parent="SettingsMenu/VBoxContainer"]
 layout_mode = 2
+value = 50.0
 
 [node name="Label_VFX" type="Label" parent="SettingsMenu/VBoxContainer"]
 layout_mode = 2
@@ -165,6 +166,7 @@ text = "Sound effects volume"
 
 [node name="HSlider_VFX" type="HSlider" parent="SettingsMenu/VBoxContainer"]
 layout_mode = 2
+value = 100.0
 
 [node name="Container_Hold" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
 layout_mode = 2
@@ -204,6 +206,7 @@ size_flags_horizontal = 8
 max_value = 6.0
 
 [node name="Container_LockDown" type="MarginContainer" parent="SettingsMenu/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Label" type="Label" parent="SettingsMenu/VBoxContainer/Container_LockDown"]
@@ -221,6 +224,10 @@ popup/item_1/text = "Extended"
 popup/item_1/id = 1
 popup/item_2/text = "Classic"
 popup/item_2/id = 2
+
+[node name="Button_Quit" type="Button" parent="SettingsMenu/VBoxContainer"]
+layout_mode = 2
+text = "QUIT"
 
 [node name="CreditsLabel" type="Label" parent="SettingsMenu"]
 custom_minimum_size = Vector2(0, 50)
@@ -683,6 +690,9 @@ text = "QUIT"
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Play" to="." method="_on_button_play_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Settings" to="." method="_on_button_settings_pressed"]
 [connection signal="pressed" from="MainMenu/VBoxContainer/Button_Help" to="." method="_on_button_help_pressed"]
+[connection signal="value_changed" from="SettingsMenu/VBoxContainer/HSlider_Music" to="." method="_on_h_slider_music_value_changed"]
+[connection signal="value_changed" from="SettingsMenu/VBoxContainer/HSlider_VFX" to="." method="_on_h_slider_vfx_value_changed"]
+[connection signal="pressed" from="SettingsMenu/VBoxContainer/Button_Quit" to="." method="_on_button_quit_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Left" to="HelpUI" method="_on_button_left_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Back" to="." method="_on_button_back_pressed"]
 [connection signal="pressed" from="HelpUI/MarginContainer/VBoxContainer/HBoxContainer_Buttons/Button_Right" to="HelpUI" method="_on_button_right_pressed"]

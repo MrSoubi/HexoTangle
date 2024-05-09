@@ -94,3 +94,9 @@ func set_hold_figure(f: GlobalData.HexType):
 
 func add_figure_to_queue(f: GlobalData.HexType):
 	game_ui.push_next_figure(f)
+
+func _on_h_slider_music_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(value/100))
+
+func _on_h_slider_vfx_value_changed(value):
+	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(value/100))
