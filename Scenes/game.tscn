@@ -39,6 +39,7 @@ centered = false
 [node name="Phantom" parent="." instance=ExtResource("20_q73wq")]
 
 [node name="Hexomino" parent="." instance=ExtResource("20_q73wq")]
+position = Vector2(0, -108)
 
 [node name="GlobalTimer" type="Timer" parent="."]
 
@@ -47,11 +48,8 @@ centered = false
 [node name="UI" parent="." instance=ExtResource("5_e8trd")]
 follow_viewport_enabled = false
 
-[node name="SoundManager" type="Node" parent="." node_paths=PackedStringArray("music_player", "sfx_player_1", "sfx_player_2")]
+[node name="SoundManager" type="Node" parent="."]
 script = ExtResource("9_tkctc")
-music_player = NodePath("MusicPlayer")
-sfx_player_1 = NodePath("SFXPlayer_1")
-sfx_player_2 = NodePath("SFXPlayer_2")
 sfx_oneLine = ExtResource("10_pmf37")
 sfx_twoLines = ExtResource("11_prouk")
 sfx_threeLines = ExtResource("12_fcj3h")
@@ -67,15 +65,12 @@ sfx_error = ExtResource("19_45we2")
 stream = ExtResource("8_ftwso")
 volume_db = -15.0
 autoplay = true
-bus = &"Music"
 
 [node name="SFXPlayer_1" type="AudioStreamPlayer" parent="SoundManager"]
 volume_db = -10.0
-bus = &"SFX"
 
 [node name="SFXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 volume_db = -10.0
-bus = &"SFX"
 
 [node name="Bag" type="Node" parent="."]
 script = ExtResource("18_eur3c")

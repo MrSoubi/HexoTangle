@@ -105,7 +105,7 @@ func handle_full_lines():
 			full_line_count += 1
 			$"../Camera2D".zoom_in()
 			for cell in lines[i]:
-				cell.queue_free()
+				cell.animate_destruction()
 		else:
 			for cell in lines[i]:
 				cell.position += GlobalData.V_SPACING * full_line_count # Replace this by something that moves the cells to the bottom with a nice effect

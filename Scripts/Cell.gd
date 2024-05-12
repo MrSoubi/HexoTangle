@@ -19,3 +19,10 @@ func set_color(type: GlobalData.HexType):
 
 func set_phantom_color():
 	$Sprite2D.texture = GlobalData.texturePhantom
+
+func animate_destruction():
+	var destruction_time = 0.5
+	var tween = get_tree().create_tween()
+	tween.tween_property($Sprite2D, "scale", Vector2(2, 2), destruction_time).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.parallel().tween_property($Sprite2D, "self_modulate:a", 0, destruction_time)
+	tween.tween_callback($".".queue_free)

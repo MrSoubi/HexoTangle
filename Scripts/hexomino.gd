@@ -83,9 +83,6 @@ func set_type(type: GlobalData.HexType):
 func get_type() -> GlobalData.HexType:
 	return type
 
-func _ready():
-	set_type(GlobalData.HexType.O)
-
 func rotate_clockwise():
 	rotate(-PI/3)
 
@@ -111,7 +108,7 @@ func block():
 	grid.add_cell(cell_4)
 	
 	# The figure moves back to the top of the screen
-	self.position = Vector2(0,0)
+	self.position = Vector2(0,-216)
 	self.rotation = 0
 	
 	# The figure generates a new set of cells

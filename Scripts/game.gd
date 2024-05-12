@@ -59,10 +59,10 @@ func _input(event):
 			handle_hold();
 		if event.keycode == KEY_SPACE:
 			sound_manager.playSFX(GlobalData.SFX.HARD_DROP)
-			handle_hard_drop();
+			handle_hard_drop()
 
 func _on_timer_timeout():
-	handle_soft_drop();
+	handle_soft_drop()
 	ui.update_values(score, lines, level)
 
 func handle_soft_drop(add_score: bool = false):
@@ -71,19 +71,19 @@ func handle_soft_drop(add_score: bool = false):
 		var test_hexomino = get_test_hexomino()
 		
 		# Application of the movement to the test hexomino
-		test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING);
+		test_hexomino.move_to(test_hexomino.position + GlobalData.V_SPACING)
 		
 		# Check of the new position and application of the movement to the current hexomino
 		# Or blocking of the current hexomino
 		if (grid.is_hexomino_in_valid_position(test_hexomino)):
-			current_hexomino.move_to(test_hexomino.position);
+			current_hexomino.move_to(test_hexomino.position)
 			if (add_score):
 				score += 1
 				ui.update_values(score, lines, level)
 		else:
-			current_hexomino.block();
+			current_hexomino.block()
 		
-		test_hexomino.queue_free();
+		test_hexomino.queue_free()
 		
 		handle_phantom()
 		
@@ -113,6 +113,30 @@ func handle_move_right():
 		
 		handle_phantom()
 
+func handle_move_left():
+	if (state == GlobalData.GameState.PLAYING):
+		# Copying of the current hexomino state into a test hexomino, not visible for the player
+		var test_hexomino = get_test_hexomino()
+		
+		move_left(test_hexomino)
+		
+		if (grid.is_hexomino_in_valid_position(test_hexomino)):
+			current_hexomino.move_to(test_hexomino.position);
+			side_movement_flip_flop = not side_movement_flip_flop;
+		else:
+			test_hexomino.position = current_hexomino.position - GlobalData.H_SPACING;
+			if (side_movement_flip_flop):
+				test_hexomino.position -= GlobalData.V_SPACING / 2;
+			else:
+				test_hexomino.position += GlobalData.V_SPACING / 2;
+				if (grid.is_hexomino_in_valid_position(test_hexomino)):
+					current_hexomino.move_to(test_hexomino.position);
+					side_movement_flip_flop = not side_movement_flip_flop;
+		
+		test_hexomino.queue_free();
+		
+		handle_phantom()
+
 func move_left(hex: Hexomino):
 	hex.position = hex.position - GlobalData.H_SPACING;
 		
@@ -128,30 +152,6 @@ func move_right(hex: Hexomino):
 		hex.position += GlobalData.V_SPACING / 2;
 	else:
 		hex.position -= GlobalData.V_SPACING / 2;
-
-func handle_move_left():
-	if (state == GlobalData.GameState.PLAYING):
-		# Copying of the current hexomino state into a test hexomino, not visible for the player
-		var test_hexomino = get_test_hexomino()
-		
-		move_left(test_hexomino)
-		
-		if (grid.is_hexomino_in_valid_position(test_hexomino)):
-			current_hexomino.move_to(test_hexomino.position);
-			side_movement_flip_flop = not side_movement_flip_flop;
-		else:
-			test_hexomino.position = current_hexomino.position + GlobalData.H_SPACING;
-			if (side_movement_flip_flop):
-				test_hexomino.position -= GlobalData.V_SPACING / 2;
-			else:
-				test_hexomino.position += GlobalData.V_SPACING / 2;
-				if (grid.is_hexomino_in_valid_position(test_hexomino)):
-					current_hexomino.move_to(test_hexomino.position);
-					side_movement_flip_flop = not side_movement_flip_flop;
-		
-		test_hexomino.queue_free();
-		
-		handle_phantom()
 
 func handle_rotate_anti_clockwise():
 	if (state == GlobalData.GameState.PLAYING):
@@ -319,6 +319,8 @@ func handle_start_game(startingLevel : int = 1):
 	ui.display_game_ui();
 	ui.set_time(0);
 	ui.update_values(score, lines, level);
+	
+	handle_phantom()
 
 
 func get_fall_speed() -> float:
@@ -340,8 +342,12 @@ func _on_global_timer_timeout():
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
 	current_hexomino.set_type(bag.get_random_hex_type());
-	can_hold = true
-	handle_phantom()
+	
+	if (!grid.is_hexomino_in_valid_position(current_hexomino)):
+		handle_game_over()
+	else:
+		can_hold = true
+		handle_phantom()
 
 func _on_grid_lines_completed(count):
 	

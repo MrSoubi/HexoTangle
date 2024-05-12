@@ -1,9 +1,9 @@
 extends Node
 
 @export_group("Audio Stream Players")
-@export var music_player: AudioStreamPlayer;
-@export var sfx_player_1: AudioStreamPlayer;
-@export var sfx_player_2: AudioStreamPlayer;
+@onready var music_player = $MusicPlayer
+@onready var sfx_player_1 = $SFXPlayer_1
+@onready var sfx_player_2 = $SFXPlayer_2
 
 @export_group("Audio Streams")
 @export var sfx_oneLine: AudioStream
