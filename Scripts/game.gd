@@ -341,13 +341,12 @@ func _on_global_timer_timeout():
 	ui.set_time(time)
 
 func _on_hexomino_hexomino_has_blocked():
-	grid.handle_full_lines()
-	current_hexomino.set_type(bag.get_next_hex_type());
-	
 	if (!grid.is_hexomino_in_valid_position(current_hexomino)):
 		handle_game_over()
 	else:
 		can_hold = true
+		grid.handle_full_lines()
+		current_hexomino.set_type(bag.get_next_hex_type());
 		handle_phantom()
 
 func _on_grid_lines_completed(count):

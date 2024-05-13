@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://d33r44fu71nhh"]
+[gd_scene load_steps=24 format=3 uid="uid://d33r44fu71nhh"]
 
 [ext_resource type="Script" path="res://Scripts/game.gd" id="1_3ujuc"]
 [ext_resource type="Shader" path="res://background.gdshader" id="2_hrjri"]
@@ -24,6 +24,14 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gaa0i"]
 shader = ExtResource("2_hrjri")
 
+[sub_resource type="Gradient" id="Gradient_g27ng"]
+colors = PackedColorArray(0, 0, 0, 0.501961, 0.501961, 0.501961, 0.501961, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t7pl6"]
+gradient = SubResource("Gradient_g27ng")
+width = 794
+height = 769
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_3ujuc")
 
@@ -32,6 +40,13 @@ material = SubResource("ShaderMaterial_gaa0i")
 position = Vector2(-2451, -1238)
 scale = Vector2(5.07333, 12.355)
 texture = ExtResource("8_q1775")
+centered = false
+
+[node name="DarkBackGround" type="Sprite2D" parent="."]
+position = Vector2(-588, 2079.72)
+rotation = -1.57079
+scale = Vector2(2.61604, 1.51617)
+texture = SubResource("GradientTexture2D_t7pl6")
 centered = false
 
 [node name="Grid" parent="." instance=ExtResource("4_ywkpk")]
