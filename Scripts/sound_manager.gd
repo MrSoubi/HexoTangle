@@ -18,13 +18,6 @@ extends Node
 @export var sfx_unhold: AudioStream
 @export var sfx_error: AudioStream
 
-func _on_h_slider_music_value_changed(value):
-	music_player.volume_db = (value / 100) * 80 - 80;
-
-func _on_h_slider_vfx_value_changed(value):
-	sfx_player_1.volume_db = (value / 100) * 80 - 80;
-	sfx_player_2.volume_db = (value / 100) * 80 - 80;
-
 func playSFX(sfx: GlobalData.SFX):
 	var audioStream: AudioStream
 	match (sfx):
