@@ -23,7 +23,8 @@ var time: float = 0;
 var side_movement_flip_flop: bool = true;
 
 func _ready():
-	ui.display_main_menu();
+	initialize_leaderBoard()
+	ui.display_main_menu()
 	bag.fill_queue()
 	current_hexomino.set_type(bag.get_next_hex_type())
 
@@ -33,8 +34,6 @@ func initialize_leaderBoard():
 		"game_id": "HexoTangle",
 		"log_level": 0
 	})
-	
-	#leaderboard.render();
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -105,9 +104,9 @@ func handle_move_right():
 				test_hexomino.position -= GlobalData.V_SPACING / 2;
 			else:
 				test_hexomino.position += GlobalData.V_SPACING / 2;
-				if (grid.is_hexomino_in_valid_position(test_hexomino)):
-					current_hexomino.move_to(test_hexomino.position);
-					side_movement_flip_flop = not side_movement_flip_flop;
+			if (grid.is_hexomino_in_valid_position(test_hexomino)):
+				current_hexomino.move_to(test_hexomino.position);
+				side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
 		
@@ -129,9 +128,9 @@ func handle_move_left():
 				test_hexomino.position -= GlobalData.V_SPACING / 2;
 			else:
 				test_hexomino.position += GlobalData.V_SPACING / 2;
-				if (grid.is_hexomino_in_valid_position(test_hexomino)):
-					current_hexomino.move_to(test_hexomino.position);
-					side_movement_flip_flop = not side_movement_flip_flop;
+			if (grid.is_hexomino_in_valid_position(test_hexomino)):
+				current_hexomino.move_to(test_hexomino.position);
+				side_movement_flip_flop = not side_movement_flip_flop;
 		
 		test_hexomino.queue_free();
 		
@@ -207,7 +206,7 @@ func handle_hold():
 			var tmp: GlobalData.HexType = current_hexomino.get_type()
 			
 			if (has_never_held):
-				held_type = bag.get_random_hex_type()
+				held_type = bag.get_next_hex_type()
 				has_never_held = false
 			
 			current_hexomino.set_type(held_type)
@@ -288,6 +287,8 @@ func handle_game_over():
 		timer.stop();
 		global_timer.stop();
 		
+		SilentWolf.Scores.save_score("player", score)
+		
 		ui.display_game_over_menu();
 
 func handle_quit_game():
@@ -341,7 +342,7 @@ func _on_global_timer_timeout():
 
 func _on_hexomino_hexomino_has_blocked():
 	grid.handle_full_lines()
-	current_hexomino.set_type(bag.get_random_hex_type());
+	current_hexomino.set_type(bag.get_next_hex_type());
 	
 	if (!grid.is_hexomino_in_valid_position(current_hexomino)):
 		handle_game_over()

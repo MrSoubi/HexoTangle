@@ -13,16 +13,16 @@ extends Control
 @onready var texture_rect_next_6 = $MarginContainer/VBoxContainer_Right/TextureRect_Next_6
 
 func set_time(s: int):
-	time_value.text = str(s/60) + "\'" + str(s%60) + "\'\'";
+	time_value.text = str(s/60) + "\'" + str(s%60) + "\'\'"
 
 func set_score(s: int):
-	score_value.text = str(s);
+	score_value.text = str(s)
 
 func set_lines(l: int):
-	lines_value.text = str(l);
+	lines_value.text = str(l)
 
 func set_level(l: int):
-	level_value.text = str(l);
+	level_value.text = str(l)
 
 func push_next_figure(f: GlobalData.HexType):
 	texture_rect_next_1.texture = texture_rect_next_2.texture

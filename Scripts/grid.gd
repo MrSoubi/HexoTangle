@@ -55,6 +55,8 @@ func is_position_available(position: Vector2) -> bool:
 		var distance = abs((cell.global_position - position).length())
 		result = (result # Do not continue if one cell is already on a bad place
 			and distance > DETECTION_LENGTH # Check if the cell is on top of another
+			and position.x <= x_max + 1
+			and position.x >= x_min - 1
 			)
 		if (!result):
 			break

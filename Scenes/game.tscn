@@ -65,12 +65,15 @@ sfx_error = ExtResource("19_45we2")
 stream = ExtResource("8_ftwso")
 volume_db = -15.0
 autoplay = true
+bus = &"Music"
 
 [node name="SFXPlayer_1" type="AudioStreamPlayer" parent="SoundManager"]
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="SFXPlayer_2" type="AudioStreamPlayer" parent="SoundManager"]
 volume_db = -10.0
+bus = &"SFX"
 
 [node name="Bag" type="Node" parent="."]
 script = ExtResource("18_eur3c")
@@ -83,6 +86,7 @@ script = ExtResource("20_o431x")
 [connection signal="lines_completed" from="Grid" to="." method="_on_grid_lines_completed"]
 [connection signal="hexomino_has_blocked" from="Phantom" to="." method="_on_hexomino_hexomino_has_blocked"]
 [connection signal="hexomino_has_blocked" from="Hexomino" to="." method="_on_hexomino_hexomino_has_blocked"]
+[connection signal="timeout" from="GlobalTimer" to="." method="_on_global_timer_timeout"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="quitGame" from="UI" to="." method="_on_ui_quit_game"]
 [connection signal="resumeGame" from="UI" to="." method="_on_ui_resume_game"]

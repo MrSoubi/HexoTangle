@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://ccdugevtib7jl"]
+
+[ext_resource type="FontFile" uid="uid://sy7h8p8wsm6h" path="res://Fonts/DIMITRI_.TTF" id="1_l468k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hx2ot"]
+bg_color = Color(0.301453, 0.54869, 0.118311, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mr7yw"]
+bg_color = Color(0.411765, 0.745098, 0.156863, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w6fie"]
+bg_color = Color(0.172746, 0.32834, 0.0591929, 1)
+
+[resource]
+default_font = ExtResource("1_l468k")
+default_font_size = 26
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/styles/hover = SubResource("StyleBoxFlat_hx2ot")
+Button/styles/normal = SubResource("StyleBoxFlat_mr7yw")
+Button/styles/pressed = SubResource("StyleBoxFlat_w6fie")

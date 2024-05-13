@@ -52,12 +52,10 @@ func display_game_ui():
 	game_over_menu.visible = false
 
 func display_settings_menu():
-	main_menu.visible = false
 	settings_menu.visible = true
-	leader_board.visible = false
-	game_ui.visible = false
-	help_ui.visible = false
-	pause_menu.visible = false
+
+func handle_quit_settings():
+	settings_menu.visible = false
 
 func display_help_ui():
 	help_ui.visible = true
@@ -70,6 +68,7 @@ func display_leaderboard():
 	help_ui.visible = false
 	pause_menu.visible = false
 	game_over_menu.visible = false
+	leader_board.render()
 
 func display_pause_menu():
 	pause_menu.visible = true
@@ -100,3 +99,11 @@ func _on_h_slider_music_value_changed(value):
 
 func _on_h_slider_vfx_value_changed(value):
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(value/100))
+
+
+func _on_button_leaderboard_pressed():
+	display_leaderboard()
+
+
+func _on_button_quit_settings_pressed():
+	handle_quit_settings()
