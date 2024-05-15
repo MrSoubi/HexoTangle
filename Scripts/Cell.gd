@@ -1,6 +1,5 @@
 class_name Cell extends Node2D
 
-
 func set_color(type: GlobalData.HexType):
 	match (type):
 		GlobalData.HexType.I:
